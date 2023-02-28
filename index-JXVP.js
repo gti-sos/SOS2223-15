@@ -21,7 +21,8 @@ demandantesAlmeria.forEach(element => {
 
 var media = sumaPrimerCiclo / demandantesAlmeria.length;
 
-console.log(`Media de los demandantes de empleo con estudios de primer ciclo en Almería: ${media}`)
+console.log(`Media de los demandantes de empleo con estudios de primer ciclo en Almería: ${media}`);
+
 
 
 
