@@ -1,9 +1,11 @@
 var express = require("express");
 var cool = require("cool-ascii-faces");
+var bodyParser = require("body-parser");
 
 var app = express();
 var port = process.env.PORT || 12345;
 
+app.use(bodyParser.json());
 
 app.get("/cool", (request, response) => {
     response.send(cool());
@@ -16,7 +18,7 @@ app.listen(port, ()=>{
 
 const BASE_API_URL = "/api/v1";
 
-//Parte Jara
+//-------------------------------------------------Parte Jara--------------------------------------------------------
 var jobseekers = [
     {year:2006 , gender:"Ambos sexos" , teritory:"Almería" , illiterate_and_uneducated:5.943 , primary:1.062 , fp_program:1.232 , general_education:16.120 , senior_professional_technicians:1.001 , first_cicle:1.077 , second_and_third_cicle:1.025 , other:9 , total:27.469},
     {year:2006 , gender:"Ambos sexos" , teritory:"Almería" , illiterate_and_uneducated:2.767 , primary:68 , fp_program:51 , general_education:2.394 , senior_professional_technicians:21 , first_cicle:9 , second_and_third_cicle:2 , other:"-" , total:5.312},
@@ -31,18 +33,64 @@ var jobseekers = [
 
 ];
 
-app.get(BASE_API_URL+"/jobseekers-according-to-level-of-studies-completed-stats", (request, response) => {
+const recurso_url = BASE_API_URL+"/jobseekers-studies";
+
+//GET al recurso
+app.get(recurso_url, (request, response) => {
     response.json(jobseekers);
-    console.log("New GET to /jobseekers-according-to-level-of-studies-completed-stats");
+    console.log("New GET to /jobseekers-studies");
+    response.sendStatus(200);
 });
 
-app.post(BASE_API_URL+"/jobseekers-according-to-level-of-studies-completed-stats", (request, response) => {
+//POST al recurso
+app.post(recurso_url, (request, response) => {
     var newEntry = request.body;
     console.log(`newEntry = <${JSON.stringify(newEntry,null,2)}>`);
-    console.log("New POST to /jobseekers-according-to-level-of-studies-completed-stats");
+    console.log("New POST to /jobseekers-studies");
+    jobseekers.push(newEntry);
+    response.sendStatus(201).send('Nuevo dato creado correctamente');
 });
 
-//ruta MMS
+//PUT al recurso
+app.put(recurso_url, (request, response) => {
+    response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
+});
+
+//DELETE al recurso
+app.delete(recurso_url, (request, response) => {
+    jobseekers = [];
+    console.log("New DELETE to /jobseekers-studies");
+    response.sendStatus(200);
+});
+
+//GET a ruta loadInitialData
+var new_data = [];
+app.get(recurso_url + "/loadInitialData", (request, response) => {
+    if(new_data.length === 0){
+        new_data.push(jobseekers);
+        response.json(new_data);
+        console.log("Se han creado datos para /jobseekers-studies/loadInitialData");
+    } else {
+        response.send('Esta ruta ya contiene datos');
+        console.log('Esta ruta ya contiene datos');
+    }
+});
+
+//No se puede hacer POST a loadInitialData
+app.post(recurso_url + "/loadInitialData", (request, response) => {
+    response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+});
+
+
+//GET a todas las estadísticas de Almeria
+app.get(recurso_url + "/Almeria", (request, response) => {
+    response.json(jobseekers.filter(dat => dat.teritory === 'Almería'));
+    console.log("New GET to /jobseekers-studies/Almeria");
+    response.sendStatus(200);
+});
+
+
+//-------------------------------------------------Parte Mario--------------------------------------------------------
 app.get("/samples/MMS", (req, res)=> {
 
     const lista = [[2022, "Ambos sexos", "Almería", 110379, 60831, 22827],
@@ -85,7 +133,7 @@ app.get("/samples/MMS", (req, res)=> {
 
 
 
-//ruta AMR
+//-------------------------------------------------Parte Angel--------------------------------------------------------
 
 app.get("/samples/AMR", (request, response)=> {
     const lista_datos = [["Almería", "male", 2021, 162.525, 21.311, 12.172], ["Almería", "female", 2021, 133.150, 20.786, 10.696], ["Cádiz",
