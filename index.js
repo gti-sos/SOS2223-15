@@ -37,11 +37,39 @@ const recurso_url = BASE_API_URL+"/jobseekers-studies";
 
 //GET al recurso
 app.get(recurso_url, (request, response) => {
-    response.json(jobseekers);
-    console.log("New GET to /jobseekers-studies");
-    response.sendStatus(200);
+   const from = request.query.from;
+   const to = request.query.to;
+
+   //buscar datos del periodo
+   if(from && to){
+        const datosPeriodo = jobseekers.filter(x => {return x.year >= from && x.year <= to});
+
+        //GET de datos del periodo
+        if(from >= to){
+            response.status(400).json("El rango es erróneo");
+        } else {
+            response.send(200);
+            response.json(datosPeriodo);
+            console.log(`New GET to /jobseekers-studies?from${from}&to${to}`);
+        }
+   } else {
+        const { year } = request.query;
+        if(year){
+            const datosAño = jobseekers.filter(x => x.year === parseInt(year));
+            response.send(200);
+            response.json(datosAño);
+            console.log(`New GET to /jobseekers-studies from a year`);
+        } else {
+            console.log(`New GET to /jobseekers-studies`);
+            response.status(200).json(jobseekers);
+        }
+   }
 });
 
+
+ 
+    
+    
 //POST al recurso
 app.post(recurso_url, (request, response) => {
     var newEntry = request.body;
