@@ -43,23 +43,22 @@ app.get(recurso_url, (request, response) => {
    //buscar datos del periodo
    if(from && to){
         const datosPeriodo = jobseekers.filter(x => {return x.year >= from && x.year <= to});
-
         //GET de datos del periodo
         if(from >= to){
             response.status(400).json("El rango es erróneo");
         } else {
-            response.send(200);
-            response.json(datosPeriodo);
+            response.status(200).json(datosPeriodo);
             console.log(`New GET to /jobseekers-studies?from${from}&to${to}`);
         }
    } else {
         const { year } = request.query;
+        //GET de datos de un año
         if(year){
             const datosAño = jobseekers.filter(x => x.year === parseInt(year));
-            response.send(200);
-            response.json(datosAño);
-            console.log(`New GET to /jobseekers-studies from a year`);
+            response.status(200).json(datosAño);
+            console.log(`New GET to /jobseekers-studies from ${year}`);
         } else {
+            //GET de datos del recurso entero
             console.log(`New GET to /jobseekers-studies`);
             response.status(200).json(jobseekers);
         }
@@ -67,17 +66,25 @@ app.get(recurso_url, (request, response) => {
 });
 
 
- 
-    
-    
 //POST al recurso
 app.post(recurso_url, (request, response) => {
     var newEntry = request.body;
-    console.log(`newEntry = <${JSON.stringify(newEntry,null,2)}>`);
-    console.log("New POST to /jobseekers-studies");
-    jobseekers.push(newEntry);
-    response.sendStatus(201).send('Nuevo dato creado correctamente');
+    var num_param = 12;
+
+    if(Object.keys(newEntry).length !== num_param){
+        //Error 400 si el número de parámetros es incorrecto
+        response.status(400).send("Número de parámetros incorrecto");
+    } else if (jobseekers.some(x => JSON.stringify(x) === JSON.stringify(newEntry))){
+        //Error 409 si el dato ya existe
+        response.status(409).send("El dato ya existe");
+    } else {
+        console.log(`newEntry = <${JSON.stringify(newEntry,null,2)}>`);
+        console.log("New POST to /jobseekers-studies");
+        jobseekers.push(newEntry);
+        response.sendStatus(201).send('Nuevo dato creado correctamente');
+    }
 });
+    
 
 //PUT al recurso
 app.put(recurso_url, (request, response) => {
@@ -86,9 +93,20 @@ app.put(recurso_url, (request, response) => {
 
 //DELETE al recurso
 app.delete(recurso_url, (request, response) => {
-    jobseekers = [];
-    console.log("New DELETE to /jobseekers-studies");
-    response.sendStatus(200);
+    if(!request.body || Object.keys(request.body).length === 0){
+        jobseekers = [];
+        console.log("New DELETE to /jobseekers-studies");
+        response.status(200).send("Datos borrados correctamente");
+    } else {
+        const { year, teritory } = request.body;
+        const objIndex = jobseekers.findIndex(x => x.year === year && x.teritory === teritory);
+        if(objIndex === -1) {
+            response.sendStatus(404).send('El dato no existe');
+        } else {
+           jobseekers.splice(objIndex, 1);
+           response.status(200).send("Dato borrado correctamente"); 
+        }
+    }
 });
 
 //GET a ruta loadInitialData
@@ -109,13 +127,18 @@ app.post(recurso_url + "/loadInitialData", (request, response) => {
     response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
 });
 
-
-//GET a todas las estadísticas de Almeria
-app.get(recurso_url + "/Almeria", (request, response) => {
-    response.json(jobseekers.filter(dat => dat.teritory === 'Almería'));
-    console.log("New GET to /jobseekers-studies/Almeria");
-    response.sendStatus(200);
+//PUT a loadInitialData
+app.put(recurso_url, (request, response) => {
+    if(!request.body){
+        response.status(400).send("No hay datos");
+    } else {
+        new_data = request.body;
+        response.status(200).send("Datos actualizados correctamente");
+    }
 });
+
+
+
 
 
 //-------------------------------------------------Parte Mario--------------------------------------------------------
