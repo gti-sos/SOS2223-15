@@ -135,8 +135,8 @@ app.get("/samples/MMS", (req, res)=> {
 
 //-------------------------------------------------Parte Angel--------------------------------------------------------
 
-app.get("/samples/AMR", (request, response)=> {
-    const lista_datos = [["Almería", "male", 2021, 162.525, 21.311, 12.172], ["Almería", "female", 2021, 133.150, 20.786, 10.696], ["Cádiz",
+
+const salario_medio = [["Almería", "male", 2021, 162.525, 21.311, 12.172], ["Almería", "female", 2021, 133.150, 20.786, 10.696], ["Cádiz",
     "male", 2021, 237.225, 25.200, 14.633], ["Cádiz", "female", 2021, 197.100, 22.189, 10.835],["Córdoba", "male", 2021, 159.800,
     23.220, 12.819], ["Córdoba", "female", 2021, 138.800, 21.573, 10.790], ["Granada", "male", 2021, 177.625, 24.186, 13.778], 
     ["Granada", "female", 2021, 161.125, 22.691, 11.540], ["Huelva", "male", 2021, 124.500, 22.875, 12.677], ["Huelva", "female", 
@@ -144,12 +144,80 @@ app.get("/samples/AMR", (request, response)=> {
     10.149]];
 
 
-    var filtro = lista_datos.filter(function(arr) {
-        return arr[0].match("Almería");
-    });
+const recurso_amr = BASE_API_URL+"/andalusian-population-salary-stats";
 
-    var resultado = filtro.reduce((acc, curr) => {return acc + curr[4];}, 0)/filtro.length;
 
+//GET a ruta loadInitialData (crea datos si no los hay ya creados).
+var crea_datos = [];
+app.get(recurso_url + "/loadInitialData", (request, response) => {
+if(crea_datos.length === 0){
+    crea_datos.push(salario_medio);
+    response.json(crea_datos);
+    console.log("Se han creado datos para /andalusian-population-salary-stats/loadInitialData");
+} else {
+    response.send('Esta ruta ya contiene datos');
+    console.log('Esta ruta ya contiene datos');
+}
+});
+
+
+
+// GET al recurso andalusian-population-salary-stats
+
+app.get(recurso_amr, (request, response) => {
+    response.json(salario_medio);
+    console.log("New GET to /andalusian-population-salary-stats");
+    response.sendStatus(200);
+});
+
+
+
+//POST al recurso
+app.post(recurso_amr, (request, response) => {
+    var newEntry_amr = request.body;
+    console.log(`newEntry = ${JSON.stringify(newEntry_amr,null,2)}`);
+    console.log("New POST to /andalusian-population-salary-stats");
+    salario_medio.push(newEntry_amr);
+    response.sendStatus(201).send('Nuevo dato creado correctamente');
+});
+
+
+//PUT al recurso
+app.put(recurso_amr, (request, response) => {
+    response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
+});
+
+//DELETE al recurso
+app.delete(recurso_amr, (request, response) => {
+    salario_medio = [];
+    console.log("New DELETE to /andalusian-population-salary-stats");
+    response.sendStatus(200);
+});
+
+
+//No se puede hacer POST a loadInitialData
+app.post(recurso_amr + "/loadInitialData", (request, response) => {
+    response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+});
+
+
+//GET a todas las estadísticas de Almeria
+app.get(recurso_amr + "/Almeria", (request, response) => {
+    console.log(response.json(salario_medio.filter(dato => dato[0] === 'Almería')));
+    console.log("New GET to /andalusian-population-salary-stats/Almeria");
+    response.sendStatus(200);
+});
+
+
+
+
+var filtro = salario_medio.filter(function(arr) {
+    return arr[0].match("Almería");
+});
+
+var resultado = filtro.reduce((acc, curr) => {return acc + curr[4];}, 0)/filtro.length;
+
+app.get("/samples/AMR", (request, response)=> {
     response.send(`La media del salario medio entre ambos géneros en la provincia de ${filtro[0][0]} es ${resultado}`);
     console.log(resultado);
 });
