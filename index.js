@@ -156,7 +156,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
 
 //GET a ruta loadInitialData (crea datos si no los hay ya creados).
 var crea_datos = [];
-app.get(recurso_url + "/loadInitialData", (request, response) => {
+app.get(rutaMMS + "/loadInitialData", (request, response) => {
 if(crea_datos.length === 0){
     crea_datos.push(población_media);
     response.json(crea_datos);
@@ -214,12 +214,18 @@ app.get(rutaMMS + "/Cordoba", (request, response) => {
 //-------------------------------------------------Parte Angel--------------------------------------------------------
 
 
-const salario_medio = [["Almería", "male", 2021, 162.525, 21.311, 12.172], ["Almería", "female", 2021, 133.150, 20.786, 10.696], ["Cádiz",
-    "male", 2021, 237.225, 25.200, 14.633], ["Cádiz", "female", 2021, 197.100, 22.189, 10.835],["Córdoba", "male", 2021, 159.800,
-    23.220, 12.819], ["Córdoba", "female", 2021, 138.800, 21.573, 10.790], ["Granada", "male", 2021, 177.625, 24.186, 13.778], 
-    ["Granada", "female", 2021, 161.125, 22.691, 11.540], ["Huelva", "male", 2021, 124.500, 22.875, 12.677], ["Huelva", "female", 
-    2021, 126.975, 19.305, 8.513],["Almería", "male", 2020, 156.725, 21.163, 11.718], ["Almería", "female", 2020, 128.225, 20.535,
-    10.149]];
+const salario_medio = [{"province":"Almería", "gender":"male", "year":2021, "salaried":162.525, "average_salary":21.311, "standard_deviation":12.172},
+{"province":"Almería", "gender":"female", "year":2021, "salaried":133.150, "average_salary":20.786, "standard_deviation":10.696},
+{"province":"Cádiz","gender":"male","year": 2021, "salaried":237.225, "average_salary":25.200, "standard_deviation":14.633},
+{"province":"Cádiz", "gender":"female", "year":2021, "salaried":197.100, "average_salary":22.189, "standard_deviation":10.835},
+{"province":"Córdoba", "gender":"male", "year":2021, "salaried":159.800,"average_salary":23.220, "standard_deviation":12.819},
+{"province":"Córdoba", "gender":"female", "year":2021, "salaried":138.800, "average_salary":21.573, "standard_deviation":10.790},
+{"province":"Granada", "gender":"male", "year":2021, "salaried":177.625, "average_salary":24.186, "standard_deviation":13.778}, 
+{"province":"Granada", "gender":"female", "year":2021, "salaried":161.125, "average_salary":22.691, "standard_deviation":11.540},
+{"province":"Huelva", "gender":"male", "year":2021, "salaried":124.500, "average_salary":22.875, "standard_deviation":12.677},
+{"province":"Huelva", "gender":"female", "year":2021, "salaried":126.975, "average_salary":19.305, "standard_deviation":8.513},
+{"province":"Almería", "gender":"male", "year":2020, "salaried":156.725, "average_salary":21.163, "standard_deviation":11.718},
+{"province":"Almería", "gender":"female", "year":2020, "salaried":128.225, "average_salary":20.535,"standard_deviation":10.149}];
 
 
 const recurso_amr = BASE_API_URL+"/andalusian-population-salary-stats";
@@ -227,7 +233,7 @@ const recurso_amr = BASE_API_URL+"/andalusian-population-salary-stats";
 
 //GET a ruta loadInitialData (crea datos si no los hay ya creados).
 var crea_datos = [];
-app.get(recurso_url + "/loadInitialData", (request, response) => {
+app.get(recurso_amr + "/loadInitialData", (request, response) => {
 if(crea_datos.length === 0){
     crea_datos.push(salario_medio);
     response.json(crea_datos);
@@ -281,14 +287,14 @@ app.post(recurso_amr + "/loadInitialData", (request, response) => {
 
 //GET a todas las estadísticas de Almeria
 app.get(recurso_amr + "/Almeria", (request, response) => {
-    console.log(response.json(salario_medio.filter(dato => dato[0] === 'Almería')));
+    console.log(response.json(salario_medio.filter(dato => dato === 'Almería')));
     console.log("New GET to /andalusian-population-salary-stats/Almeria");
     response.sendStatus(200);
 });
 
 
 
-
+/*
 var filtro = salario_medio.filter(function(arr) {
     return arr[0].match("Almería");
 });
@@ -299,3 +305,4 @@ app.get("/samples/AMR", (request, response)=> {
     response.send(`La media del salario medio entre ambos géneros en la provincia de ${filtro[0][0]} es ${resultado}`);
     console.log(resultado);
 });
+*/
