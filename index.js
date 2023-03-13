@@ -116,11 +116,11 @@ const población_media = [
 const rutaMMS = BASE_API_URL + "/loss-jobs";
 
 //GET a ruta loadInitialData (crea datos si no los hay ya creados).
-var crea_datos = [];
+var crea_datos_mms = [];
 app.get(rutaMMS + "/loadInitialData", (request, response) => {
-if(crea_datos.length === 0){
-    crea_datos.push(población_media);
-    response.json(crea_datos);
+if(crea_datos_mms.length === 0){
+  crea_datos_mms.push(población_media);
+    response.json(crea_datos_mms);
     console.log("Se han creado datos para /loss-jobs");
 } else {
     response.send('Esta ruta ya contiene datos');
@@ -139,7 +139,7 @@ app.get(rutaMMS, (request, response) => {
 //POST al recurso
 app.post(rutaMMS, (request, response) => {
   var newEntry_mms = request.body;
-  console.log(`newEntry = ${JSON.stringify(newEntry_amr,null,2)}`);
+  console.log(`newEntry = ${JSON.stringify(newEntry_mms,null,2)}`);
   console.log("New POST to /loss-jobs");
   población_media.push(newEntry_mms);
   response.sendStatus(201).send('Nuevo dato creado correctamente');
