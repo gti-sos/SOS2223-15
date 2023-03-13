@@ -137,6 +137,38 @@ app.put(recurso_url, (request, response) => {
     }
 });
 
+//DELETE a loadInitialData
+app.delete(recurso_url, (request, response) => {
+    new_data = [];
+    response.status(200).send("Datos actualizados correctamente");
+});
+
+app.get(recurso_url + "/:teritory", (request, response) => {
+    const territory = request.params.teritory.toLowerCase();
+    const from = request.query.from;
+    const to = request.query.to;
+    
+    if(from && to){
+        const datosPeriodo = jobseekers.filter(x =>  x.teritory.toLowerCase() === territory && x.year >= from && x.year <= to);
+        //GET de datos del periodo
+        if(from >= to){
+            response.status(400).json("El rango es erróneo");
+        } else {
+            response.status(200).json(datosPeriodo);
+            console.log(`New GET to /jobseekers-studies/${territory}?from${from}&to${to}`);
+        }
+   } else {
+        const datosTerrytory = jobseekers.filter(x => x.teritory.toLowerCase() === territory);
+        //GET de datos de una ciudad
+        if(datosTerrytory.length === 0){
+            response.status(404).send("Ruta no existente");
+        } else {
+            response.status(200).json(datosTerrytory);
+            console.log(`New GET to /jobseekers-studies`);
+        }
+   }
+});
+
 
 
 
