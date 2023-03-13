@@ -119,9 +119,12 @@ app.get(recurso_url + "/Almeria", (request, response) => {
 
 
 //-------------------------------------------------Parte Mario--------------------------------------------------------
-app.get("/samples/MMS", (req, res)=> {
+//Codigo para el F05
 
-    const lista = [[2022, "Ambos sexos", "Almería", 110379, 60831, 22827],
+//APARTADO CREAR 10 O MÁS DATOS RANDOM
+
+const población_media = [
+        [2022, "Ambos sexos", "Almería", 110379, 60831, 22827],
         [2022, "Ambos sexos", "Cadíz", 246181, 124697, 26756],
         [2022, "Ambos sexos", "Sevilla", 403262, 172309, 27654],
         [2022, "Hombres", "Almería", 51771, 27381, 11507],
@@ -135,31 +138,67 @@ app.get("/samples/MMS", (req, res)=> {
         [2022, "Hombres", "Córdoba", 88957, 27166, 11413],
         [2022, "Hombres", "Granada", 83366, 35666, 9755],
         [2022, "Hombres", "Huelva", 68019, 21665, 7518],
-        [2022, "Hombres", "Sevilla", 195063, 70369, 13977],];
+        [2022, "Hombres", "Sevilla", 195063, 70369, 13977]];
 
+//TABLA AZUL
+const rutaMMS = BASE_API_URL + "/loss-jobs";
 
+//GET a ruta loadInitialData (crea datos si no los hay ya creados).
+var crea_datos_mms = [];
+app.get(rutaMMS + "/loadInitialData", (request, response) => {
+if(crea_datos_mms.length === 0){
+  crea_datos_mms.push(población_media);
+    response.json(crea_datos_mms);
+    console.log("Se han creado datos para /loss-jobs");
+} else {
+    response.send('Esta ruta ya contiene datos');
+    console.log('Esta ruta ya contiene datos');
+}
+});
 
-    const provincia = "Córdoba";
-    const género = "Hombres";
-    const indiceGeografica = 2; // índice del campo que contiene la información geográfica
-    const indicePoblación = 3; // índice del campo que contiene la población total
-    const indiceGénero = 4; // índice del campo que contiene la población masculina
-  
-    // Filtramos los datos que pertenecen a la provincia y al género especificados
-    const datosFiltrados = lista.filter(
-        (fila) => fila[indiceGeografica] === provincia && fila[1] === género
-    );
-  
-    // Obtenemos la media de la población masculina
-    const suma = datosFiltrados.reduce((acc, fila) => acc + fila[indiceGénero], 0);
-    const media = suma / datosFiltrados.length;
-  
-    res.send(`La media de población masculina en ${provincia} es ${media}`);
-    console.log("New request");
+// GET al recurso loss-jobs
+
+app.get(rutaMMS, (request, response) => {
+  response.json(población_media);
+  console.log("New GET to /loss-jobs");
+  response.sendStatus(200);
+});
+
+//POST al recurso
+app.post(rutaMMS, (request, response) => {
+  var newEntry_mms = request.body;
+  console.log(`newEntry = ${JSON.stringify(newEntry_mms,null,2)}`);
+  console.log("New POST to /loss-jobs");
+  población_media.push(newEntry_mms);
+  response.sendStatus(201).send('Nuevo dato creado correctamente');
 });
 
 
+//PUT al recurso
+app.put(rutaMMS, (request, response) => {
+  response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
+});
 
+//DELETE al recurso
+app.delete(rutaMMS, (request, response) => {
+  población_media = [];
+  console.log("New DELETE to /loss-jobs");
+  response.sendStatus(200);
+});
+
+
+//No se puede hacer POST a loadInitialData
+app.post(rutaMMS + "/loadInitialData", (request, response) => {
+  response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+});
+
+
+//GET a todas las estadísticas de Cordoba
+app.get(rutaMMS + "/Cordoba", (request, response) => {
+  console.log(response.json(población_media.filter(dato => dato[0] === 'Córdoba')));
+  console.log("New GET to /loss-jobs/Cordoba");
+  response.sendStatus(200);
+});
 
 //-------------------------------------------------Parte Angel--------------------------------------------------------
 
