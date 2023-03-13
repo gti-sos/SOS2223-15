@@ -152,7 +152,7 @@ const población_media = [
         [2022, "Hombres", "Sevilla", 195063, 70369, 13977]];
 
 //TABLA AZUL
-const rutaMMS = '/loss-jobs';
+const rutaMMS = BASE_API_URL + '/loss-jobs';
 
 //GET a ruta loadInitialData (crea datos si no los hay ya creados).
 var crea_datos = [];
