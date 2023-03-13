@@ -127,34 +127,10 @@ const recurso_url = BASE_API_URL+"/jobseekers-studies";
 
 //GET al recurso
 app.get(recurso_url, (request, response) => {
-   const from = request.query.from;
-   const to = request.query.to;
-
-   //buscar datos del periodo
-   if(from && to){
-        const datosPeriodo = jobseekers.filter(x => {return x.year >= from && x.year <= to});
-        //GET de datos del periodo
-        if(from >= to){
-            response.status(400).json("El rango es erróneo");
-        } else {
-            response.status(200).json(datosPeriodo);
-            console.log(`New GET to /jobseekers-studies?from${from}&to${to}`);
-        }
-   } else {
-        const { year } = request.query;
-        //GET de datos de un año
-        if(year){
-            const datosAño = jobseekers.filter(x => x.year === parseInt(year));
-            response.status(200).json(datosAño);
-            console.log(`New GET to /jobseekers-studies from ${year}`);
-        } else {
-            //GET de datos del recurso entero
-            console.log(`New GET to /jobseekers-studies`);
-            response.status(200).json(jobseekers);
-        }
-   }
+    response.json(jobseekers);
+    console.log("New GET to /jobseekers-studies");
+    response.sendStatus(200);
 });
-
 
 //POST al recurso
 app.post(recurso_url, (request, response) => {
@@ -174,7 +150,6 @@ app.post(recurso_url, (request, response) => {
         response.sendStatus(201).send('Nuevo dato creado correctamente');
     }
 });
-    
 
 //PUT al recurso
 app.put(recurso_url, (request, response) => {
@@ -214,16 +189,6 @@ app.get(recurso_url + "/loadInitialData", (request, response) => {
 //No se puede hacer POST a loadInitialData
 app.post(recurso_url + "/loadInitialData", (request, response) => {
     response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
-});
-
-//PUT a loadInitialData
-app.put(recurso_url, (request, response) => {
-    if(!request.body){
-        response.status(400).send("No hay datos");
-    } else {
-        new_data = request.body;
-        response.status(200).send("Datos actualizados correctamente");
-    }
 });
 
 //DELETE a loadInitialData
@@ -298,6 +263,45 @@ app.put(recurso_url + "/:year/:gender/:territory/:type", (request, response) => 
 
 
 //-------------------------------------------------Parte Mario--------------------------------------------------------
+app.get("/samples/MMS", (req, res)=> {
+
+    const lista = [[2022, "Ambos sexos", "Almería", 110379, 60831, 22827],
+        [2022, "Ambos sexos", "Cadíz", 246181, 124697, 26756],
+        [2022, "Ambos sexos", "Sevilla", 403262, 172309, 27654],
+        [2022, "Hombres", "Almería", 51771, 27381, 11507],
+        [2022, "Mujeres", "Córdoba", 90524, 40810, 8721],
+        [2022, "Mujeres", "Almería", 58608, 33450, 11320],
+        [2022, "Mujeres", "Córdoba", 90524, 40810, 8721],
+        [2022, "Mujeres", "Sevilla", 200597, 101940, 13677],
+        [2022, "Mujeres", "Jaén", 79768, 33345, 10257],
+        [2022, "Mujeres", "Huelva", 80325, 30317, 9049],
+        [2022, "Hombres", "Cadíz", 124802, 51697, 14619],
+        [2022, "Hombres", "Córdoba", 88957, 27166, 11413],
+        [2022, "Hombres", "Granada", 83366, 35666, 9755],
+        [2022, "Hombres", "Huelva", 68019, 21665, 7518],
+        [2022, "Hombres", "Sevilla", 195063, 70369, 13977],];
+
+
+
+    const provincia = "Córdoba";
+    const género = "Hombres";
+    const indiceGeografica = 2; // índice del campo que contiene la información geográfica
+    const indicePoblación = 3; // índice del campo que contiene la población total
+    const indiceGénero = 4; // índice del campo que contiene la población masculina
+  
+    // Filtramos los datos que pertenecen a la provincia y al género especificados
+    const datosFiltrados = lista.filter(
+        (fila) => fila[indiceGeografica] === provincia && fila[1] === género
+    );
+  
+    // Obtenemos la media de la población masculina
+    const suma = datosFiltrados.reduce((acc, fila) => acc + fila[indiceGénero], 0);
+    const media = suma / datosFiltrados.length;
+  
+    res.send(`La media de población masculina en ${provincia} es ${media}`);
+    console.log("New request");
+});
+
 //Codigo para el F05
 
 //APARTADO CREAR 10 O MÁS DATOS RANDOM
@@ -320,14 +324,14 @@ const población_media = [
         [2022, "Hombres", "Sevilla", 195063, 70369, 13977]];
 
 //TABLA AZUL
-const rutaMMS = BASE_API_URL + "/loss-jobs";
+const rutaMMS = BASE_API_URL + '/loss-jobs';
 
 //GET a ruta loadInitialData (crea datos si no los hay ya creados).
-var crea_datos_mms = [];
+var crea_datos = [];
 app.get(rutaMMS + "/loadInitialData", (request, response) => {
-if(crea_datos_mms.length === 0){
-  crea_datos_mms.push(población_media);
-    response.json(crea_datos_mms);
+if(crea_datos.length === 0){
+    crea_datos.push(población_media);
+    response.json(crea_datos);
     console.log("Se han creado datos para /loss-jobs");
 } else {
     response.send('Esta ruta ya contiene datos');
@@ -346,7 +350,7 @@ app.get(rutaMMS, (request, response) => {
 //POST al recurso
 app.post(rutaMMS, (request, response) => {
   var newEntry_mms = request.body;
-  console.log(`newEntry = ${JSON.stringify(newEntry_mms,null,2)}`);
+  console.log(`newEntry = ${JSON.stringify(newEntry_amr,null,2)}`);
   console.log("New POST to /loss-jobs");
   población_media.push(newEntry_mms);
   response.sendStatus(201).send('Nuevo dato creado correctamente');
@@ -382,12 +386,18 @@ app.get(rutaMMS + "/Cordoba", (request, response) => {
 //-------------------------------------------------Parte Angel--------------------------------------------------------
 
 
-const salario_medio = [["Almería", "male", 2021, 162.525, 21.311, 12.172], ["Almería", "female", 2021, 133.150, 20.786, 10.696], ["Cádiz",
-    "male", 2021, 237.225, 25.200, 14.633], ["Cádiz", "female", 2021, 197.100, 22.189, 10.835],["Córdoba", "male", 2021, 159.800,
-    23.220, 12.819], ["Córdoba", "female", 2021, 138.800, 21.573, 10.790], ["Granada", "male", 2021, 177.625, 24.186, 13.778], 
-    ["Granada", "female", 2021, 161.125, 22.691, 11.540], ["Huelva", "male", 2021, 124.500, 22.875, 12.677], ["Huelva", "female", 
-    2021, 126.975, 19.305, 8.513],["Almería", "male", 2020, 156.725, 21.163, 11.718], ["Almería", "female", 2020, 128.225, 20.535,
-    10.149]];
+const salario_medio = [{"province":"Almería", "gender":"male", "year":2021, "salaried":162.525, "average_salary":21.311, "standard_deviation":12.172},
+{"province":"Almería", "gender":"female", "year":2021, "salaried":133.150, "average_salary":20.786, "standard_deviation":10.696},
+{"province":"Cádiz","gender":"male","year": 2021, "salaried":237.225, "average_salary":25.200, "standard_deviation":14.633},
+{"province":"Cádiz", "gender":"female", "year":2021, "salaried":197.100, "average_salary":22.189, "standard_deviation":10.835},
+{"province":"Córdoba", "gender":"male", "year":2021, "salaried":159.800,"average_salary":23.220, "standard_deviation":12.819},
+{"province":"Córdoba", "gender":"female", "year":2021, "salaried":138.800, "average_salary":21.573, "standard_deviation":10.790},
+{"province":"Granada", "gender":"male", "year":2021, "salaried":177.625, "average_salary":24.186, "standard_deviation":13.778}, 
+{"province":"Granada", "gender":"female", "year":2021, "salaried":161.125, "average_salary":22.691, "standard_deviation":11.540},
+{"province":"Huelva", "gender":"male", "year":2021, "salaried":124.500, "average_salary":22.875, "standard_deviation":12.677},
+{"province":"Huelva", "gender":"female", "year":2021, "salaried":126.975, "average_salary":19.305, "standard_deviation":8.513},
+{"province":"Almería", "gender":"male", "year":2020, "salaried":156.725, "average_salary":21.163, "standard_deviation":11.718},
+{"province":"Almería", "gender":"female", "year":2020, "salaried":128.225, "average_salary":20.535,"standard_deviation":10.149}];
 
 
 const recurso_amr = BASE_API_URL+"/andalusian-population-salary-stats";
@@ -395,7 +405,7 @@ const recurso_amr = BASE_API_URL+"/andalusian-population-salary-stats";
 
 //GET a ruta loadInitialData (crea datos si no los hay ya creados).
 var crea_datos = [];
-app.get(recurso_url + "/loadInitialData", (request, response) => {
+app.get(recurso_amr + "/loadInitialData", (request, response) => {
 if(crea_datos.length === 0){
     crea_datos.push(salario_medio);
     response.json(crea_datos);
@@ -449,14 +459,14 @@ app.post(recurso_amr + "/loadInitialData", (request, response) => {
 
 //GET a todas las estadísticas de Almeria
 app.get(recurso_amr + "/Almeria", (request, response) => {
-    console.log(response.json(salario_medio.filter(dato => dato[0] === 'Almería')));
+    console.log(response.json(salario_medio.filter(dato => dato === 'Almería')));
     console.log("New GET to /andalusian-population-salary-stats/Almeria");
     response.sendStatus(200);
 });
 
 
 
-
+/*
 var filtro = salario_medio.filter(function(arr) {
     return arr[0].match("Almería");
 });
@@ -467,3 +477,4 @@ app.get("/samples/AMR", (request, response)=> {
     response.send(`La media del salario medio entre ambos géneros en la provincia de ${filtro[0][0]} es ${resultado}`);
     console.log(resultado);
 });
+*/
