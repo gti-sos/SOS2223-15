@@ -1,4 +1,5 @@
 
+var Datastore = require('nedb'), db = new Datastore;
 const BASE_API_URL = "/api/v1";
 const recurso_url = BASE_API_URL + "/jobseekers-studies";
 
@@ -17,7 +18,7 @@ module.exports = (app) => {
         { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Otros-DENOs', primary: 125, fp_program: 188, general_education: 3.164, total: 4.590 }
     ];
 
-    
+
 
     //GET al recurso
     app.get(recurso_url, (request, response) => {
@@ -81,8 +82,8 @@ module.exports = (app) => {
             console.log("New DELETE to /jobseekers-studies");
             response.status(200).send("Datos borrados correctamente");
         } else {
-            const { year, territory } = request.body;
-            const objIndex = jobseekers.findIndex(x => x.year === year && x.territory === territory);
+            const { year, gender, territory, type } = request.body;
+            const objIndex = jobseekers.findIndex(x => x.year === parseInt(year) && x.gender === gender && x.territory === territory && x.type === type);
             if (objIndex === -1) {
                 response.sendStatus(404).send('El dato no existe');
             } else {
@@ -104,19 +105,29 @@ module.exports = (app) => {
         }
     });
 
-    //No se puede hacer POST a loadInitialData
+    /*
+    //POST a loadInitialData
     app.post(recurso_url + "/loadInitialData", (request, response) => {
-        response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+        var newEntry = request.body;
+        var num_param = 8;
+
+        if (Object.keys(newEntry).length !== num_param) {
+            //Error 400 si el número de parámetros es incorrecto
+            response.status(400).send("Número de parámetros incorrecto");
+        } else if (jobseekers.some(x => JSON.stringify(x) === JSON.stringify(newEntry))) {
+            //Error 409 si el dato ya existe
+            response.status(409).send("El dato ya existe");
+        } else {
+            console.log(`newEntry = <${JSON.stringify(newEntry, null, 2)}>`);
+            console.log("New POST to /jobseekers-studies");
+            jobseekers.push(newEntry);
+            response.sendStatus(201).send('Nuevo dato creado correctamente');
+        }
     });
 
-    //PUT a loadInitialData
-    app.put(recurso_url, (request, response) => {
-        if (!request.body) {
-            response.status(400).send("No hay datos");
-        } else {
-            new_data = request.body;
-            response.status(200).send("Datos actualizados correctamente");
-        }
+    //No se puede hacer PUT a loadInitialData
+    app.put(recurso_url + "/loadInitialData", (request, response) => {
+        response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
     });
 
     //DELETE a loadInitialData
@@ -124,6 +135,7 @@ module.exports = (app) => {
         new_data = [];
         response.status(200).send("Datos actualizados correctamente");
     });
+    */
 
     //GET a los recursos de una ciudad
     app.get(recurso_url + "/:territory", (request, response) => {
@@ -152,6 +164,32 @@ module.exports = (app) => {
         }
     });
 
+    //No se puede hacer PUT al recurso de una ciudad
+    app.put(recurso_url + "/:territory", (request, response) => {
+        response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
+    });
+
+    //DELETE a los recursos de una ciudad
+    app.delete(recurso_url + "/:territory", (request, response) => {
+        const territory = request.params.territory;
+        const filteredStats = jobseekers.filter(stats => stats.territory === territory);
+
+        if (filteredStats.length === 0) {
+            response.status(404).json(`No se encontraron datos para ${territory}`);
+        } else {
+            const newData = jobseekers.filter(stats => stats.territory !== territory);
+            const deleted = newData.length !== jobseekers.length;
+            jobseekers = newData;
+
+            if (deleted) {
+                console.log(`New DELETE to /jobseekers-studies/${territory}`);
+                response.status(200).send("Datos borrados correctamente");
+            } else {
+                response.status(404).json(`No se encontraron datos para /jobseekers-studies/${territory}`);
+            }
+        }
+    });
+
     //GET a un dato concreto
     app.get(recurso_url + "/:year/:gender/:territory/:type", (request, response) => {
         const { year, gender, territory, type } = request.params;
@@ -165,23 +203,60 @@ module.exports = (app) => {
         }
     });
 
+    //No se puede hacer POST a un dato concreto
+    app.post(recurso_url + "/:year/:gender/:territory/:type", (request, response) => {
+        response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+    });
+
     //PUT a un dato concreto
     app.put(recurso_url + "/:year/:gender/:territory/:type", (request, response) => {
         const { year, gender, territory, type } = request.params;
-        const yearbody = request.body.year;
-        const genderbody = request.body.gender;
-        const territorybody = request.body.territory;
-        const typebody = request.body.type;
+        var body = request.body;
+        var updated = false;
 
-        const dato = jobseekers.find(x => x.year === parseInt(year) && x.gender === gender && x.territory === territory && x.type === type);
-        if (!dato || yearbody !== year || genderbody !== gender || territorybody !== territory || typebody !== type) {
-            response.status(400).send("Dato erróneo");
+        if (body.year === parseInt(year) && body.gender === gender && body.territory === territory && body.type === type) { // verifica si los valores de año coinciden
+            jobseekers = jobseekers.map(x => {
+                if (x.year === parseInt(year) && x.gender === gender && x.territory === territory && x.type === type) {
+                    x.primary = body.primary;
+                    x.fp_program = body.fp_program;
+                    x.general_education = body.general_education
+                    x.total = body.total;
+                    updated = true;
+                }
+                return x;
+            });
+
+            if (updated) {
+                console.log(`New PUT a /jobseekers-studies/${year}/${gender}/${territory}/${type}`);
+                response.status(200).send("Actualizado");
+            } else {
+                console.log("No se ha encontrado el dato");
+                response.status(400).send("No se ha encontrado el dato");
+            }
         } else {
-            dato.primary = request.body.primary || dato.primary;
-            dato.fp_program = request.body.fp_program || dato.fp_program;
-            dato.general_education = request.body.general_education || dato.general_education;
-            dato.total = request.body.total || dato.total;
-            response.status(200).send("Datos actualizados correctamente");
+            console.log("Los datos de la URL no coinciden con los datos de la solicitud");
+            response.status(400).send("Los datos de la URL no coinciden con los datos de la solicitud");
+        }
+    });
+
+    //DELETE a un dato concreto
+    app.delete(recurso_url + "/:year/:gender/:territory/:type", (request, res) => {
+        const { year, gender, territory, type } = request.params;
+        const filteredStats = jobseekers.filter(x => x.year === parseInt(year) && x.gender === gender && x.territory === territory && x.type === type);
+
+        if (filteredStats.length === 0) {
+            res.status(404).json(`No se encontraron datos para /jobseekers-studies/${year}/${gender}/${territory}/${type}`);
+        } else {
+            const newData = jobseekers.filter(x => x.year !== parseInt(year) && x.gender !== gender && x.territory !== territory && x.type !== type);
+            const deleted = newData.length !== jobseekers.length;
+            jobseekers = newData;
+
+            if (deleted) {
+                console.log(`New DELETE to /jobseekers-studies/${year}/${gender}/${territory}/${type}`);
+                response.status(200).send("Datos borrados correctamente");
+            } else {
+                res.status(404).json(`No se encontraron datos para /jobseekers-studies/${year}/${gender}/${territory}/${type}`);
+            }
         }
     });
 };
