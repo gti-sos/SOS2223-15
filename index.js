@@ -20,106 +20,17 @@ const BASE_API_URL = "/api/v1";
 
 //-------------------------------------------------Parte Jara--------------------------------------------------------
 var jobseekers = [
-    { "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Almería",
-      "type": "Parados-registrados",
-      "primary": 1.062,
-      "fp_program": 1.232,
-      "general_education": 16.12,
-      "total": 27.469
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Almería",
-      "type": "TEAS",
-      "primary": 68,
-      "fp_program": 51,
-      "general_education": 2.394,
-      "total": 5.312
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Almería",
-      "type": "Otros-DENOs",
-      "primary": 40,
-      "fp_program": 64,
-      "general_education": 723,
-      "total": 1.177
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Almería",
-      "type": "Demandantes-no-ocupados-(DENOs)",
-      "primary": 1.17,
-      "fp_program": 1.347,
-      "general_education": 19.237,
-      "total": 33.957
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Almería",
-      "type": "Demandantes-ocupados",
-      "primary": 279,
-      "fp_program": 361,
-      "general_education": 3.784,
-      "total": 7.902
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Almería",
-      "type": "Otros-demandantes-excluidos-del-paro-registrado",
-      "primary": 56,
-      "fp_program": 120,
-      "general_education": 1.942,
-      "total": 2.926
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Almería",
-      "type": "Total-demandantes-de-empleo",
-      "primary": 1.505,
-      "fp_program": 1.828,
-      "general_education": 24.963,
-      "total": 44.785
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Cádiz",
-      "type": "Parados-registrados",
-      "primary": 2.644,
-      "fp_program": 7.56,
-      "general_education": 65.454,
-      "total": 99.399
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Cádiz",
-      "type": "TEAS",
-      "primary": 28,
-      "fp_program": 242,
-      "general_education": 7.316,
-      "total": 13.494
-    },
-    {
-      "year": 2006,
-      "gender": "Ambos-sexos",
-      "territory": "Cádiz",
-      "type": "Otros-DENOs",
-      "primary": 125,
-      "fp_program": 188,
-      "general_education": 3.164,
-      "total": 4.59
-    }
-  ]
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1.062, fp_program: 1.232, general_education: 16.120, total: 27.469},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'TEAS', primary: 68, fp_program: 51, general_education: 2.394, total: 5.312},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-DENOs', primary: 40, fp_program: 64, general_education: 723, total: 1.177},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-no-ocupados-(DENOs)', primary: 1.170, fp_program: 1.347, general_education: 19.237, total: 33.957},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-ocupados', primary: 279, fp_program: 361, general_education: 3784, total: 7.902},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-demandantes-excluidos-del-paro-registrado', primary: 56, fp_program: 120, general_education: 1.942, total: 2.926},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Total-demandantes-de-empleo', primary: 1.505, fp_program: 1.828, general_education: 24.963, total: 44.785},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Parados-registrados', primary: 2.644, fp_program: 7.560, general_education: 65.454, total: 99.399},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'TEAS', primary: 28, fp_program: 242, general_education: 7.316, total: 13.494},
+    {year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Otros-DENOs', primary: 125, fp_program: 188, general_education: 3.164, total: 4.590}
+];
 
 
 
@@ -127,10 +38,37 @@ const recurso_url = BASE_API_URL+"/jobseekers-studies";
 
 //GET al recurso
 app.get(recurso_url, (request, response) => {
-    response.json(jobseekers);
-    console.log("New GET to /jobseekers-studies");
-    response.sendStatus(200);
+    const from = request.query.from;
+    const to = request.query.to;
+
+    //buscar datos del periodo
+    if(from && to){
+            const datosPeriodo = jobseekers.filter(x => {return x.year >= from && x.year <= to});
+            //GET de datos del periodo
+            if(from >= to){
+                response.status(400).json("El rango es erróneo");
+            } else {
+                response.status(200).json(datosPeriodo);
+                console.log(`New GET to /jobseekers-studies?from${from}&to${to}`);
+            }
+    } else {
+            const { year } = request.query;
+            //GET de datos de un año
+            if(year){
+                const datosAño = jobseekers.filter(x => x.year === parseInt(year));
+                response.status(200).json(datosAño);
+                console.log(`New GET to /jobseekers-studies from ${year}`);
+            } else {
+                //GET de datos del recurso entero
+                console.log(`New GET to /jobseekers-studies`);
+                response.status(200).json(jobseekers);
+            }
+    }
+        response.json(jobseekers);
+        console.log("New GET to /jobseekers-studies");
+        response.sendStatus(200);
 });
+
 
 //POST al recurso
 app.post(recurso_url, (request, response) => {
@@ -189,6 +127,16 @@ app.get(recurso_url + "/loadInitialData", (request, response) => {
 //No se puede hacer POST a loadInitialData
 app.post(recurso_url + "/loadInitialData", (request, response) => {
     response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+});
+
+//PUT a loadInitialData
+app.put(recurso_url, (request, response) => {
+    if(!request.body){
+        response.status(400).send("No hay datos");
+    } else {
+        new_data = request.body;
+        response.status(200).send("Datos actualizados correctamente");
+    }
 });
 
 //DELETE a loadInitialData
