@@ -10,11 +10,6 @@ app.use(bodyParser.json());
 
 mudulo_jara(app);
 
-app.get("/cool", (request, response) => {
-    response.send(cool());
-    console.log("New request");
-});
-
 app.listen(port, () => {
     console.log(`Server ready in port ${port}`);
 });
