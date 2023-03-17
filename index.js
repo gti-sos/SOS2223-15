@@ -336,14 +336,39 @@ if(crea_datos.length === 0){
 });
 
 
-
-// GET al recurso andalusian-population-salary-stats
+// GETs al recurso de varias formas. Teniendo en cuenta querys y sin tenerlas en cuenta. No están por separado porque puede funcionar
+// mal (a veces se ejecuta un get antes que otro y no devuelve el resultado esperado, será por el orden de ejecución de JS)
 
 app.get(recurso_amr, (request, response) => {
-    response.json(salario_medio);
-    console.log("New GET to /andalusian-population-salary-stats");
-    response.sendStatus(200);
+    const from = request.query.from;
+    const to = request.query.to;
+
+    //buscar datos del periodo
+    if (from && to) {
+        const datosRango = salario_medio.filter(x => { return x.year >= from && x.year <= to });
+        //GET de datos del periodo
+        if (from >= to) {
+            response.status(400).json("El rango es erróneo");
+        } else {
+            response.status(200).json(datosRango);
+            console.log(`New GET to /andalusian-population-salary-stats?from${from}&to${to}`);
+        }
+    } else {
+        const  year  = request.query.year;
+        //GET de datos de un año dado en la query (con la ?year=algo en la url)
+        if (year) {
+            const datosAño = salario_medio.filter(x => x.year === parseInt(year));
+            response.status(200).json(datosAño);
+            console.log(`New GET to /andalusian-population-salary-stats from ${year}`);
+        } else {
+            //GET de datos del recurso entero
+            console.log(`New GET to /andalusian-population-salary-stats ${year}`);
+            response.status(200).json(salario_medio);
+        }
+    }
 });
+
+
 
 //GET a un recurso concreto usando filtro de año.
 
@@ -362,8 +387,12 @@ app.get(recurso_amr+"/:year", (request, response) => {
 });
 
 
+
+
+
 // GET con rango de fecha
 
+/*
 app.get(recurso_amr + '/andalusian-population-salary-stats', (req, res) => {
     const { from, to } = req.query;
     let filteredCampings = salario_medio;
@@ -378,7 +407,7 @@ app.get(recurso_amr + '/andalusian-population-salary-stats', (req, res) => {
     }
     res.json(filteredCampings);
   });
-
+*/
 
 
 //POSTs --------------------------------------------
