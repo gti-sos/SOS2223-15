@@ -3,6 +3,9 @@ var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
 const mudulo_jara = require("./Modulos/api_jara");
 const modulo_mario = require("./Modulos/api_mario.js");
+const Datastore = require('nedb');
+
+db_api_mario = new Datastore();
 
 var app = express();
 var port = process.env.PORT || 12345;
@@ -10,7 +13,7 @@ var port = process.env.PORT || 12345;
 app.use(bodyParser.json());
 
 mudulo_jara(app);
-modulo_mario(app);
+modulo_mario.register(app, db_api_mario);
 
 app.listen(port, () => {
     console.log(`Server ready in port ${port}`);

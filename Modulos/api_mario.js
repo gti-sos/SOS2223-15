@@ -5,7 +5,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
 //DATA MARIO
 
     var población_media = [
-        {province: "Almería", year: 2022, gender:"Ambos sexos",  low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827},
+        {province: "Almería", year: 2025, gender:"Ambos sexos",  low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827},
         {province:"Cadíz", year: 2022, gender:"Ambos sexos",  low_due_to_placement:246181, no_renovation:124697, other_reason:26756},
         {province:"Sevilla", year:2022, gender:"Ambos sexos",  low_due_to_placement:403262, no_renovation:172309, other_reason:27654},
         {province:"Almería", year:2022, gender:"Hombres",  low_due_to_placement:51771, no_renovation:27381, other_reason:11507},
@@ -23,7 +23,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
 
    
     
-        module.exports = (app, db) => {
+        module.exports.register = (app, db) => {
 
           app.get(rutaMMS + "/loadInitialData", (req, res) => {
       
@@ -113,9 +113,9 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
               })
           })
       
-          app.get(rutaMMS + "/:country", (req, res) => {
+          app.get(rutaMMS + "/:province", (req, res) => {
       
-              var country = req.params.country
+              var province = req.params.province
               var from = req.query.from;
               var to = req.query.to;
       
@@ -141,7 +141,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
                   }
       
                   filteredList = filteredList.filter((reg) => {
-                      return (reg.country == country);
+                      return (reg.province == province);
                   });
       
                   var from = req.query.from;
@@ -176,9 +176,9 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
           })
       
       
-          app.get(rutaMMS + "/:country/:year", (req, res) => {
+          app.get(rutaMMS + "/:province/:year", (req, res) => {
       
-              var country = req.params.country
+              var province = req.params.province
               var year = req.params.year
       
               db.find({}, function (err, filteredList) {
@@ -189,7 +189,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
                   }
       
                   filteredList = filteredList.filter((reg) => {
-                      return (reg.country == country && reg.year == year);
+                      return (reg.province == province && reg.year == year);
                   });
                   if (filteredList == 0) {
                       res.sendStatus(404, "NO EXIST");
@@ -221,7 +221,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
                       }
       
                       filteredList = filteredList.filter((reg) => {
-                          return (req.body.country == reg.country && req.body.year == reg.year)
+                          return (req.body.province == reg.province && req.body.year == reg.year)
                       })
       
                       if (filteredList.length != 0) {
@@ -235,7 +235,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
           })
       
       
-          app.post(rutaMMS + "/:country", (req, res) => {
+          app.post(rutaMMS + "/:province", (req, res) => {
               res.sendStatus(405, "METHOD NOT ALLOWED");
           })
       
@@ -245,14 +245,14 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
           })
       
       
-          app.put(rutaMMS + "/:country/:year", (req, res) => {
+          app.put(rutaMMS + "/:province/:year", (req, res) => {
       
       
               if (comprobar_body(req)) {
                   res.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
                   return;
               }
-              var countryR = req.params.country;
+              var provinceR = req.params.province;
               var yearR = req.params.year;
               var body = req.body;
       
@@ -264,7 +264,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
       
       
                   filteredList = filteredList.filter((reg) => {
-                      return (reg.country == countryR && reg.year == yearR);
+                      return (reg.province == provinceR && reg.year == yearR);
                   });
                   if (filteredList == 0) {
                       res.sendStatus(404, "NO EXIST");
@@ -273,14 +273,14 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
       
       
       
-                  if (countryR != body.country || yearR != body.year) {
+                  if (provinceR != body.province || yearR != body.year) {
                       res.sendStatus(400, "BAD REQUEST");
                       return;
                   }
       
       
       
-                  db.update({$and:[{country: String(countryR)}, {year: parseInt(yearR)}]}, {$set: body}, {},function(err, numUpdated) {
+                  db.update({$and:[{province: String(provinceR)}, {year: parseInt(yearR)}]}, {$set: body}, {},function(err, numUpdated) {
                       if (err) {
                           res.sendStatus(500, "INTERNAL SERVER ERROR");
                       }else{
@@ -305,11 +305,11 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
       
       
       
-          app.delete(rutaMMS+"/:country/:year",(req, res)=>{
-              var country = req.params.country;
+          app.delete(rutaMMS+"/:province/:year",(req, res)=>{
+              var province = req.params.province;
               var year = req.params.year;
       
-              db.find({country: country, year: parseInt(year)}, {}, (err, filteredList)=>{
+              db.find({province: province, year: parseInt(year)}, {}, (err, filteredList)=>{
                   if (err){
                       res.sendStatus(500,"INTERNAL SERVER ERROR");
                       return;
@@ -318,7 +318,7 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
                       res.sendStatus(404,"NOT FOUND");
                       return;
                   }
-                  db.remove({country: country, year: year}, {}, (err, numRemoved)=>{
+                  db.remove({province: province, year: year}, {}, (err, numRemoved)=>{
                       if (err){
                           res.sendStatus(500,"INTERNAL SERVER ERROR");
                           return;
@@ -335,11 +335,12 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
       
       
           function comprobar_body(req) {
-              return (req.body.country == null |
+              return (req.body.province == null |
                   req.body.year == null |
-                  req.body.ages_zero_fifty == null |
-                  req.body.ages_fifty_seventy == null |
-                  req.body.ages_seventy == null);
+                  req.body.gender == null |
+                  req.body.low_due_to_placement == null |
+                  req.body.no_renovation == null |
+                  req.body.other_reason == null);
           }
       
           function paginacion(req, lista){
