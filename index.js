@@ -13,7 +13,7 @@ var port = process.env.PORT || 12345;
 
 // Modularización--------------------
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); //Importante colocar esto antes de los modulo_fff(app) para que funcione bien.
 
 mudulo_jara(app);
 modulo_mario.register(app, db_api_mario);
