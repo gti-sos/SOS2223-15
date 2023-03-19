@@ -1,11 +1,12 @@
 var Datastore = require('nedb'), db = new Datastore;
 const BASE_API_URL = "/api/v1";
 const rutaMMS = BASE_API_URL + '/loss-jobs';
+const API_DOC_PORTAL = '';
 
 //DATA MARIO
 
     var población_media = [
-        {province: "Almería", year: 2025, gender:"Ambos sexos",  low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827},
+        {province: "Almería", year: 2021, gender:"Ambos sexos",  low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827},
         {province:"Cadíz", year: 2022, gender:"Ambos sexos",  low_due_to_placement:246181, no_renovation:124697, other_reason:26756},
         {province:"Sevilla", year:2022, gender:"Ambos sexos",  low_due_to_placement:403262, no_renovation:172309, other_reason:27654},
         {province:"Almería", year:2022, gender:"Hombres",  low_due_to_placement:51771, no_renovation:27381, other_reason:11507},
@@ -45,9 +46,10 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
           })
       
       
-          app.get(rutaMMS + "/docs", (req, res) => {
-              res.redirect("https://documenter.getpostman.com/view/19574593/UVyn1JRE")
-          })
+          //Redirect /docs
+          app.get(BASE_API_URL+"/loss-jobs/docs",(req,res)=>{
+            res.redirect(API_DOC_PORTAL);
+          });
       
       
           app.get(rutaMMS, (req, res) => {
@@ -64,7 +66,6 @@ const rutaMMS = BASE_API_URL + '/loss-jobs';
                       return;
                   }
               }
-      
       
               if (from > to) {
                   res.sendStatus(400, "BAD REQUEST");
