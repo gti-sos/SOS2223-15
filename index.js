@@ -14,6 +14,7 @@ var port = process.env.PORT || 12345;
 // Modularización--------------------
 
 app.use(bodyParser.json()); //Importante colocar esto antes de los modulo_fff(app) para que funcione bien.
+app.use("/", express.static("./public")); // HTML que se mostrará por defecto en la ruta /
 
 mudulo_jara(app);
 modulo_mario.register(app, db_api_mario);
@@ -26,6 +27,8 @@ app.listen(port, () => {
 });
 
 const BASE_API_URL = "/api/v1";
+
+
 
 //-------------------------------------------------Parte Mario--------------------------------------------------------
 app.get("/samples/MMS", (req, res) => {
