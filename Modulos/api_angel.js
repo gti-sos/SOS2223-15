@@ -228,73 +228,199 @@ module.exports = (app) => {
     */
 
 
-    //Get filtrando por provincia o por año
+    //Get filtrando por provincia, por género o por año
     app.get(recurso_amr, (req, res) => {
         var province = req.query.province
+        var gender = req.query.gender
         var year = req.query.year
+
         db.find({}, function (err, filteredList) {
-            if(year == undefined){ //Si no se da un año, filtramos por provincia.
-            if (err) {
-                res.sendStatus(500, "INTERNAL SERVER ERROR");
-            }
-            filteredList = filteredList.filter((reg) => {
-                return (reg.province == province);
-            });
-            if (filteredList == 0) {
-                res.sendStatus(404, "NO EXIST");
-                return;
-            }
-            if (req.query.limit != undefined || req.query.offset != undefined) {
-                filteredList = paginacion(req, filteredList);
-                res.send(JSON.stringify(filteredList, null, 2));
-            }
-            filteredList.forEach((element) => {
-                delete element._id;
-            });
-            res.send(JSON.stringify(filteredList, null, 2));
-        }else if (province == undefined){ //Si no se da una provincia, filtramos por año.
-            if (err) {
-                res.sendStatus(500, "INTERNAL SERVER ERROR");
-            }
-            filteredList = filteredList.filter((reg) => {
-                return (reg.year == parseInt(year));
-            });
-            if (filteredList == 0) {
-                res.sendStatus(404, "NO EXIST");
-                return;
-            }
-            if (req.query.limit != undefined || req.query.offset != undefined) {
-                filteredList = paginacion(req, filteredList);
-                res.send(JSON.stringify(filteredList, null, 2));
-            }
-            filteredList.forEach((element) => {
-                delete element._id;
-            });
-            res.send(JSON.stringify(filteredList, null, 2));
-        }else if (province != undefined && year != undefined){ //Si se dan tanto una provincia como un año, entonces fitramos por ambos.
-            if (err) {
-                res.sendStatus(500, "INTERNAL SERVER ERROR");
-            }
 
-            filteredList = filteredList.filter((reg) => {
-                return (reg.province == province && reg.year == year);
-            });
-            if (filteredList == 0) {
-                res.sendStatus(404, "NO EXIST");
-                return;
-            }
+            if (province != undefined && gender == undefined && year == undefined) { //Si no se da un año ni género, filtramos por provincia.
+                
+                filtro_province(req,res,err,filteredList,province,gender,year);
 
-            if (req.query.limit != undefined || req.query.offset != undefined) {
-                filteredList = paginacion(req, filteredList);
-                res.send(JSON.stringify(filteredList, null, 2));
+            } else if (province == undefined && gender == undefined && year != undefined) { //Si no se da una provincia, filtramos por año.
+
+                filtro_year(req,res,err,filteredList,province,gender,year);
+
+            } else if (province == undefined && gender != undefined && year == undefined) { //Filtramos por género.
+
+                filtro_gender(req,res,err,filteredList,province,gender,year);
+
+            } else if (province != undefined && gender != undefined && year == undefined) { //Filtramos por provincia y género.
+
+                filtro_province_gender(req,res,err,filteredList,province,gender,year);
+
+            } else if (province != undefined && gender == undefined && year != undefined) { //Filtramos por provincia y año.
+                
+                filtro_province_year(req,res,err,filteredList,province,gender,year);
+
+            } else if (province == undefined && gender != undefined && year != undefined) { //Filtramos por género y año
+                
+                filtro_gender_year(req,res,err,filteredList,province,gender,year);
+
             }
-            filteredList.forEach((element) => {
-                delete element._id;
-            });
-            res.send(JSON.stringify(filteredList, null, 2));
-        }
+            else if (province != undefined && gender == undefined && year != undefined) { //Filtramos por provincia,género y año.
+                
+                filtro_province_gender_year(req,res,err,filteredList,province,gender,year);
+
+            }
         });
     })
+
+        //---------Funciones auxiliares para el método get de arriba-------
+
+    function filtro_province(req,res,err,filteredList,province,gender,year){
+        if (err) {
+            res.sendStatus(500, "INTERNAL SERVER ERROR");
+        }
+        filteredList = filteredList.filter((reg) => {
+            return (reg.province == province);
+        });
+        if (filteredList == 0) {
+            res.sendStatus(404, "NO EXIST");
+        }
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+            filteredList = paginacion(req, filteredList);
+            res.send(JSON.stringify(filteredList, null, 2));
+        }
+        filteredList.forEach((element) => {
+            delete element._id;
+        });
+        res.send(JSON.stringify(filteredList, null, 2));
+    }
+
+    function filtro_year(req,res,err,filteredList,province,gender,year){
+        if (err) {
+            res.sendStatus(500, "INTERNAL SERVER ERROR");
+        }
+        filteredList = filteredList.filter((reg) => {
+            return (reg.year == parseInt(year));
+        });
+        if (filteredList == 0) {
+            res.sendStatus(404, "NO EXIST");
+            return;
+        }
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+            filteredList = paginacion(req, filteredList);
+            res.send(JSON.stringify(filteredList, null, 2));
+        }
+        filteredList.forEach((element) => {
+            delete element._id;
+        });
+        res.send(JSON.stringify(filteredList, null, 2));
+    }
+
+    function filtro_gender(req,res,err,filteredList,province,gender,year){
+        if (err) {
+            res.sendStatus(500, "INTERNAL SERVER ERROR");
+        }
+        filteredList = filteredList.filter((reg) => {
+            return (reg.gender == gender);
+        });
+        if (filteredList == 0) {
+            res.sendStatus(404, "NO EXIST");
+            return;
+        }
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+            filteredList = paginacion(req, filteredList);
+            res.send(JSON.stringify(filteredList, null, 2));
+        }
+        filteredList.forEach((element) => {
+            delete element._id;
+        });
+        res.send(JSON.stringify(filteredList, null, 2));
+    }
+
+    function filtro_province_gender(req,res,err,filteredList,province,gender,year){
+        if (err) {
+            res.sendStatus(500, "INTERNAL SERVER ERROR");
+        }
+        filteredList = filteredList.filter((reg) => {
+            return (reg.province == province);
+        });
+        if (filteredList == 0) {
+            res.sendStatus(404, "NO EXIST");
+            return;
+        }
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+            filteredList = paginacion(req, filteredList);
+            res.send(JSON.stringify(filteredList, null, 2));
+        }
+        filteredList.forEach((element) => {
+            delete element._id;
+        });
+        res.send(JSON.stringify(filteredList, null, 2));
+    }
+
+    function filtro_province_year(req,res,err,filteredList,province,gender,year){
+        if (err) {
+            res.sendStatus(500, "INTERNAL SERVER ERROR");
+        }
+        filteredList = filteredList.filter((reg) => {
+            return (reg.province == province && reg.year == parseInt(year));
+        });
+        if (filteredList == 0) {
+            res.sendStatus(404, "NO EXIST");
+            return;
+        }
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+            filteredList = paginacion(req, filteredList);
+            res.send(JSON.stringify(filteredList, null, 2));
+        }
+        filteredList.forEach((element) => {
+            delete element._id;
+        });
+        res.send(JSON.stringify(filteredList, null, 2));
+    }
+
+    function filtro_gender_year(req,res,err,filteredList,province,gender,year){
+        if (err) {
+            res.sendStatus(500, "INTERNAL SERVER ERROR");
+        }
+        filteredList = filteredList.filter((reg) => {
+            return (reg.gender == gender && reg.year == year);
+        });
+        if (filteredList == 0) {
+            res.sendStatus(404, "NO EXIST");
+            return;
+        }
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+            filteredList = paginacion(req, filteredList);
+            res.send(JSON.stringify(filteredList, null, 2));
+        }
+        filteredList.forEach((element) => {
+            delete element._id;
+        });
+        res.send(JSON.stringify(filteredList, null, 2));
+    }
+    
+    function filtro_province_gender_year(req,res,err,filteredList,province,gender,year){
+        if (err) {
+            res.sendStatus(500, "INTERNAL SERVER ERROR");
+        }
+
+        filteredList = filteredList.filter((reg) => {
+            return (reg.province == province && reg.year == year);
+        });
+        if (filteredList == 0) {
+            res.sendStatus(404, "NO EXIST");
+            return;
+        }
+
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+            filteredList = paginacion(req, filteredList);
+            res.send(JSON.stringify(filteredList, null, 2));
+        }
+        filteredList.forEach((element) => {
+            delete element._id;
+        });
+        res.send(JSON.stringify(filteredList, null, 2));
+    }
+
+
+    //GETs con parámetros en la URL--------
 
     app.get(recurso_amr + "/:province/:year", (req, res) => {
 
@@ -324,9 +450,7 @@ module.exports = (app) => {
             });
             res.send(JSON.stringify(filteredList[0], null, 2));
         });
-    })
-
-    //GET a un recurso concreto usando filtro de año con parámetros en la url.
+    });
 
     app.get(recurso_amr + "/:year", (request, response) => {
         const year = request.params.year.slice([5]); // Con esto, obtenemos el valor de la clave "year" de la url, si es que se le pasa dicho parámetro al realizar la petición (en realidad devuelve "year=año", por eso se hace el slicing)
@@ -344,7 +468,7 @@ module.exports = (app) => {
 
 
 
-    //POSTs --------------------------------------------
+    //POSTs -----------------------------------------------------
 
     //POST al recurso
     app.post(recurso_amr, (request, response) => {
