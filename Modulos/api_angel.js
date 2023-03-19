@@ -253,7 +253,7 @@ module.exports = (app) => {
 
             } else if (province == undefined && gender == undefined && year != undefined) { //Si no se da una provincia, filtramos por año.
 
-                    filtro_year(req, res, err, filteredList, province, gender, year);
+                filtro_year(req, res, err, filteredList, province, gender, year);
 
             } else if (province == undefined && gender != undefined && year == undefined) { //Filtramos por género.
 
@@ -272,7 +272,7 @@ module.exports = (app) => {
                 filtro_gender_year(req, res, err, filteredList, province, gender, year);
 
             }
-            else if (province != undefined && gender == undefined && year != undefined) { //Filtramos por provincia,género y año.
+            else if (province != undefined && gender != undefined && year != undefined) { //Filtramos por provincia,género y año.
 
                 filtro_province_gender_year(req, res, err, filteredList, province, gender, year);
 
@@ -502,6 +502,15 @@ module.exports = (app) => {
         response.sendStatus(201).send('Nuevo dato creado correctamente');
     });
 
+    app.post(recurso_amr + "/:province", (req, res) => {
+        res.sendStatus(405, "METHOD NOT ALLOWED");
+    });
+
+    //No se puede hacer POST a loadInitialData
+    app.post(recurso_amr + "/loadInitialData", (request, response) => {
+        response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+    });
+
     //PUT a un recurso (un dato concreto)
 
     app.put(recurso_amr + "/:province/:gender/:year", (request, response) => {
@@ -542,68 +551,57 @@ module.exports = (app) => {
         response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
     });
 
+    //PUT a un recurso.
     app.put(recurso_amr, (request, response) => {
 
     });
 
 
-    //DELETE al recurso
+    //DELETE a un recurso
+
     app.delete(recurso_amr + "/:province/:gender/:year", (request, response) => {
         var province = request.params.province;
         var gender = request.params.gender;
         var year = request.params.year;
         console.log("New DELETE to /andalusian-population-salary-stats");
-        db.find({ province: province, gender: gender, year: year }, {}, (err, filteredList) => {
+        db.remove({ "province": province, "gender": gender, "year": parseInt(year) }, (err, entryRemoved) => {
             if (err) {
+                console.log(`Error deleting entry : ${province, gender, year}:${err} `)
                 response.sendStatus(500, "INTERNAL SERVER ERROR");
+            } else {
+                console.log(`Removed entry ${entryRemoved}`)
+                response.sendStatus(200, "DELETED");
             }
-            if (filteredList == 0) {
-                response.sendStatus(404, "NOT FOUND");
-            }
-            db.remove({ "province": province, "gender": gender, "year": parseInt(year) }, {}, (err, entryRemoved) => {
-                if (err) {
-                    console.log(`Error deleting entry : ${province, gender, year}:${err} `)
-                    response.sendStatus(500, "INTERNAL SERVER ERROR");
-                } else {
-                    console.log(`Removed entry ${entryRemoved}`)
-                    //response.sendStatus(200, "DELETED");
-                }
-            });
-        })
+        });
     });
 
-
-    //No se puede hacer POST a loadInitialData
-    app.post(recurso_amr + "/loadInitialData", (request, response) => {
-        response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+    //DELETE a la colección.
+    app.delete(recurso_amr, (req,res) => {
+        console.log(`New DELETE to collection`);
+        db.remove({},{multi:true},(err, numRemoved)=>{
+            if(err){
+                console.log(`Error deleting /andalusian-population-salary-stats`);
+                response.sendStatus(500);
+            }else{
+                console.log(`Data removed ${numRemoved}`);
+                response.sendStatus(200);
+            }
+        });
     });
-
-
-
 
 
     /*
-    //GET a todas las estadísticas de Almeria
-    app.get(recurso_amr + "/Almeria", (request, response) => {
-        console.log(response.json(salario_medio.filter(dato => dato === 'Almería')));
-        console.log("New GET to /andalusian-population-salary-stats/Almeria");
-        response.sendStatus(200);
-    });
-    
-    
-    
-    
-    var filtro = salario_medio.filter(function(arr) {
-        return arr[0].match("Almería");
-    });
-    
-    var resultado = filtro.reduce((acc, curr) => {return acc + curr[4];}, 0)/filtro.length;
-    
-    app.get("/samples/AMR", (request, response)=> {
-        response.send(`La media del salario medio entre ambos géneros en la provincia de ${filtro[0][0]} es ${resultado}`);
-        console.log(resultado);
-    });
-    */
+        var filtro = salario_medio.filter(function(arr) {
+            return arr[0].match("Almería");
+        });
+        
+        var resultado = filtro.reduce((acc, curr) => {return acc + curr[4];}, 0)/filtro.length;
+        
+        app.get("/samples/AMR", (request, response)=> {
+            response.send(`La media del salario medio entre ambos géneros en la provincia de ${filtro[0][0]} es ${resultado}`);
+            console.log(resultado);
+        });
+        */
 
     function paginacion(req, lista) { //lista tendrá la lista que le pasemos al llamar a esta función en otros métodos de la API
         var res = [];
