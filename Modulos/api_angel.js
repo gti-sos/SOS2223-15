@@ -4,7 +4,7 @@ db = new Datastore;
 
 const BASE_API_URL = "/api/v1";
 const recurso_amr = BASE_API_URL + '/andalusian-population-salary-stats';
-
+const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93JzMgXR";
 
 module.exports = (app) => {
 
@@ -136,8 +136,13 @@ module.exports = (app) => {
                     }))
                 }
             }
-        });
-    })
+        })
+    });
+
+    //Redirect /docs
+    app.get(BASE_API_URL+"/andalusian-population-salary-stats/docs",(req,res)=>{
+        res.redirect(API_DOC_PORTAL);
+    });
 
     // GETs al recurso de varias formas. Teniendo en cuenta querys y sin tenerlas en cuenta. No están por separado porque puede funcionar
     // mal (a veces se ejecuta un get antes que otro y no devuelve el resultado esperado, será por el orden de ejecución de JS)
