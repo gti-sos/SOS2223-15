@@ -55,13 +55,14 @@ const API_DOC_PORTAL = '';
           app.get(rutaMMS, (req, res) => {
       
               var year = req.query.year;
+              var province = req.query.province;
               var from = req.query.from;
               var to = req.query.to;
       
       
               for (var i = 0; i < Object.keys(req.query).length; i++) {
                   var element = Object.keys(req.query)[i];
-                  if (element != "year" && element != "from" && element != "to" && element != "limit" && element != "offset") {
+                  if (element != "year" && element != "from" && element != "to" && element != "limit" && element != "offset" && element != "province") {
                       res.sendStatus(400, "BAD REQUEST");
                       return;
                   }
@@ -79,12 +80,16 @@ const API_DOC_PORTAL = '';
                       return;
                   }
       
-      
-      
+                  if (province != null) {
+                    var filteredList = filteredList.filter((reg) => {
+                        return (reg.province == province);
+                    });
+                }
                   if (year != null) {
                       var filteredList = filteredList.filter((reg) => {
                           return (reg.year == year);
                       });
+                      
                       if (filteredList == 0) {
                           res.sendStatus(404, "NO EXIST");
                           return;
@@ -113,6 +118,8 @@ const API_DOC_PORTAL = '';
                   res.send(JSON.stringify(filteredList, null, 2));
               })
           })
+
+          
       
           app.get(rutaMMS + "/:province", (req, res) => {
       
@@ -234,6 +241,50 @@ const API_DOC_PORTAL = '';
                   })
               }
           })
+
+/*              // Método POST para la ruta base
+    app.post(rutaMMS, (request, response) => {
+        const province = request.body.province;
+        const year = request.body.year;
+        console.log("New POST to /loss-jobs"); //console.log en el servidor  
+        db.find({}, function (err, filteredList) {
+
+            if (err) {
+                res.sendStatus(500, "Client Error");
+            }
+            // Validar que se envíen todos los campos necesarios
+            const requiredFields = ['year', 'province', 'gender', 'low_due_to_placement', 'no_renovation', 'other_reason'];
+            for (const field of requiredFields) {
+                if (!request.body.hasOwnProperty(field)) {
+                    response.status(400).json(`Missing required field: ${field}`);
+                    return;
+                }
+            }
+            // Verificar que la solicitud se hizo en la ruta correcta
+            if (request.originalUrl !== '/api/v1/loss-jobs') {
+                res.status(405).json('Método no permitido');
+                return;
+            } else {
+
+                // Verificar si el recurso ya existe
+                //const existingObject = evolution_stats.find(obj => obj.province === province && obj.year === year);
+                filteredList = filteredList.filter((obj) => {
+                    return (province == obj.province && year == obj.year)
+                });
+                //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
+                if (filteredList.length != 0) {
+                    // Si el recurso ya existe, devolver un código de respuesta 409
+                    response.status(409).json(`El recurso ya existe.`);
+                } else {
+                    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+                    db.insert(request.body);
+                    //evolution_stats.push(request.body);
+                    response.sendStatus(201);
+                }
+            }
+        });
+    });
+*/
       
       
           app.post(rutaMMS + "/:province", (req, res) => {
