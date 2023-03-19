@@ -117,6 +117,7 @@ module.exports = (app) => {
 
 
     app.get(recurso_amr + "/loadInitialData", (request, response) => {
+        console.log("New loadInitialData Request to /andalusian-population-salary-stats")
         db.find({}, function (err, initialData) {
             if (err) { //Si ocurre un error al hacer la petición a la base de datos...
                 response.sendStatus(500, "INTERNAL SERVER ERROR");
@@ -233,10 +234,19 @@ module.exports = (app) => {
         var province = req.query.province
         var gender = req.query.gender
         var year = req.query.year
-
+        console.log("New GET to /andalusian-population-salary-stats")
+        
         db.find({}, function (err, filteredList) {
+            if(province == undefined && gender == undefined && year == undefined){
 
-            if (province != undefined && gender == undefined && year == undefined) { //Si no se da un año ni género, filtramos por provincia.
+                if(err){
+                    console.log(`Error getting contacts ${err}`);
+                    res.sendStatus(500);
+                } else{
+                    res.json(filteredList);
+                }
+
+            } else if (province != undefined && gender == undefined && year == undefined) { //Si no se da un año ni género, filtramos por provincia.
                 
                 filtro_province(req,res,err,filteredList,province,gender,year);
 
