@@ -327,7 +327,6 @@ const API_DOC_PORTAL = '';
                   
                       res.sendStatus(200,"DELETED");
                       return;
-                      
                   });
               });
       

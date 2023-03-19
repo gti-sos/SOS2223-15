@@ -272,7 +272,7 @@ module.exports = (app) => {
                 filtro_gender_year(req, res, err, filteredList, province, gender, year);
 
             }
-            else if (province != undefined && gender == undefined && year != undefined) { //Filtramos por provincia,género y año.
+            else if (province != undefined && gender != undefined && year != undefined) { //Filtramos por provincia,género y año.
 
                 filtro_province_gender_year(req, res, err, filteredList, province, gender, year);
 
@@ -502,6 +502,15 @@ module.exports = (app) => {
         response.sendStatus(201).send('Nuevo dato creado correctamente');
     });
 
+    app.post(recurso_amr + "/:province", (req, res) => {
+        res.sendStatus(405, "METHOD NOT ALLOWED");
+    });
+
+    //No se puede hacer POST a loadInitialData
+    app.post(recurso_amr + "/loadInitialData", (request, response) => {
+        response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+    });
+
     //PUT a un recurso (un dato concreto)
 
     app.put(recurso_amr + "/:province/:gender/:year", (request, response) => {
@@ -553,14 +562,14 @@ module.exports = (app) => {
         var gender = request.params.gender;
         var year = request.params.year;
         console.log("New DELETE to /andalusian-population-salary-stats");
-        db.find({ province: province, gender: gender, year: year }, {}, (err, filteredList) => {
+        db.find({ "province": province, "gender": gender, "year": parseInt(year) }, (err, filteredList) => {
             if (err) {
                 response.sendStatus(500, "INTERNAL SERVER ERROR");
             }
             if (filteredList == 0) {
                 response.sendStatus(404, "NOT FOUND");
             }
-            db.remove({ "province": province, "gender": gender, "year": parseInt(year) }, {}, (err, entryRemoved) => {
+            db.remove({"province": province, "gender": gender, "year": parseInt(year)}, (err, entryRemoved) => {
                 if (err) {
                     console.log(`Error deleting entry : ${province, gender, year}:${err} `)
                     response.sendStatus(500, "INTERNAL SERVER ERROR");
@@ -573,26 +582,7 @@ module.exports = (app) => {
     });
 
 
-    //No se puede hacer POST a loadInitialData
-    app.post(recurso_amr + "/loadInitialData", (request, response) => {
-        response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
-    });
-
-
-
-
-
-    /*
-    //GET a todas las estadísticas de Almeria
-    app.get(recurso_amr + "/Almeria", (request, response) => {
-        console.log(response.json(salario_medio.filter(dato => dato === 'Almería')));
-        console.log("New GET to /andalusian-population-salary-stats/Almeria");
-        response.sendStatus(200);
-    });
-    
-    
-    
-    
+/*
     var filtro = salario_medio.filter(function(arr) {
         return arr[0].match("Almería");
     });
