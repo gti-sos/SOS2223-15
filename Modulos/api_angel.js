@@ -235,53 +235,54 @@ module.exports = (app) => {
         var gender = req.query.gender
         var year = req.query.year
         console.log("New GET to /andalusian-population-salary-stats")
-        
-        db.find({}, function (err, filteredList) {
-            if(province == undefined && gender == undefined && year == undefined){
 
-                if(err){
+        db.find({}, function (err, filteredList) {
+
+            if (province == undefined && gender == undefined && year == undefined) { //GET sin ningún filtro en la query.
+
+                if (err) {
                     console.log(`Error getting contacts ${err}`);
                     res.sendStatus(500);
-                } else{
+                } else {
                     res.json(filteredList);
                 }
 
             } else if (province != undefined && gender == undefined && year == undefined) { //Si no se da un año ni género, filtramos por provincia.
-                
-                filtro_province(req,res,err,filteredList,province,gender,year);
+
+                filtro_province(req, res, err, filteredList, province, gender, year);
 
             } else if (province == undefined && gender == undefined && year != undefined) { //Si no se da una provincia, filtramos por año.
 
-                filtro_year(req,res,err,filteredList,province,gender,year);
+                    filtro_year(req, res, err, filteredList, province, gender, year);
 
             } else if (province == undefined && gender != undefined && year == undefined) { //Filtramos por género.
 
-                filtro_gender(req,res,err,filteredList,province,gender,year);
+                filtro_gender(req, res, err, filteredList, province, gender, year);
 
             } else if (province != undefined && gender != undefined && year == undefined) { //Filtramos por provincia y género.
 
-                filtro_province_gender(req,res,err,filteredList,province,gender,year);
+                filtro_province_gender(req, res, err, filteredList, province, gender, year);
 
             } else if (province != undefined && gender == undefined && year != undefined) { //Filtramos por provincia y año.
-                
-                filtro_province_year(req,res,err,filteredList,province,gender,year);
+
+                filtro_province_year(req, res, err, filteredList, province, gender, year);
 
             } else if (province == undefined && gender != undefined && year != undefined) { //Filtramos por género y año
-                
-                filtro_gender_year(req,res,err,filteredList,province,gender,year);
+
+                filtro_gender_year(req, res, err, filteredList, province, gender, year);
 
             }
             else if (province != undefined && gender == undefined && year != undefined) { //Filtramos por provincia,género y año.
-                
-                filtro_province_gender_year(req,res,err,filteredList,province,gender,year);
+
+                filtro_province_gender_year(req, res, err, filteredList, province, gender, year);
 
             }
-        });
-    })
+        })
+    });
 
-        //---------Funciones auxiliares para el método get de arriba-------
+    //---------Funciones auxiliares para el método get de arriba-------
 
-    function filtro_province(req,res,err,filteredList,province,gender,year){
+    function filtro_province(req, res, err, filteredList, province, gender, year) {
         if (err) {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
@@ -301,7 +302,9 @@ module.exports = (app) => {
         res.send(JSON.stringify(filteredList, null, 2));
     }
 
-    function filtro_year(req,res,err,filteredList,province,gender,year){
+    function filtro_year(req, res, err, filteredList, province, gender, year) {
+
+
         if (err) {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
@@ -322,7 +325,7 @@ module.exports = (app) => {
         res.send(JSON.stringify(filteredList, null, 2));
     }
 
-    function filtro_gender(req,res,err,filteredList,province,gender,year){
+    function filtro_gender(req, res, err, filteredList, province, gender, year) {
         if (err) {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
@@ -343,7 +346,7 @@ module.exports = (app) => {
         res.send(JSON.stringify(filteredList, null, 2));
     }
 
-    function filtro_province_gender(req,res,err,filteredList,province,gender,year){
+    function filtro_province_gender(req, res, err, filteredList, province, gender, year) {
         if (err) {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
@@ -364,7 +367,7 @@ module.exports = (app) => {
         res.send(JSON.stringify(filteredList, null, 2));
     }
 
-    function filtro_province_year(req,res,err,filteredList,province,gender,year){
+    function filtro_province_year(req, res, err, filteredList, province, gender, year) {
         if (err) {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
@@ -385,7 +388,7 @@ module.exports = (app) => {
         res.send(JSON.stringify(filteredList, null, 2));
     }
 
-    function filtro_gender_year(req,res,err,filteredList,province,gender,year){
+    function filtro_gender_year(req, res, err, filteredList, province, gender, year) {
         if (err) {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
@@ -405,8 +408,8 @@ module.exports = (app) => {
         });
         res.send(JSON.stringify(filteredList, null, 2));
     }
-    
-    function filtro_province_gender_year(req,res,err,filteredList,province,gender,year){
+
+    function filtro_province_gender_year(req, res, err, filteredList, province, gender, year) {
         if (err) {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
