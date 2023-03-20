@@ -1,6 +1,6 @@
 var Datastore = require('nedb'), db = new Datastore;
-const BASE_API_URL = "/api/v1";
-const rutaMMS = BASE_API_URL + '/loss-jobs';
+//const BASE_API_URL = "/api/v1";
+//const rutaMMS = BASE_API_URL + '/loss-jobs';
 const API_DOC_PORTAL = 'https://documenter.getpostman.com/view/26052697/2s93JzMgDq';
 
 //DATA MARIO
