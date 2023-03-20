@@ -6,7 +6,6 @@ var modulo_mario = require("./Modulos/api_mario.js");
 var modulo_angel = require("./Modulos/api_angel.js");
 const Datastore = require('nedb');
 
-db_api_mario = new Datastore();
 
 var app = express();
 var port = process.env.PORT || 12345;
@@ -17,7 +16,7 @@ app.use(bodyParser.json()); //Importante colocar esto antes de los modulo_fff(ap
 app.use("/", express.static("./public")); // HTML que se mostrará por defecto en la ruta /
 
 mudulo_jara(app);
-modulo_mario.register(app, db_api_mario);
+modulo_mario(app);
 modulo_angel(app);
 
 // ----------------------------------
