@@ -4,7 +4,7 @@ db = new Datastore;
 
 const BASE_API_URL = "/api/v1";
 const recurso_amr = BASE_API_URL + '/andalusian-population-salary-stats';
-
+const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93JzMgXR";
 
 module.exports = (app) => {
 
@@ -136,8 +136,13 @@ module.exports = (app) => {
                     }))
                 }
             }
-        });
-    })
+        })
+    });
+
+    //Redirect /docs
+    app.get(BASE_API_URL+"/andalusian-population-salary-stats/docs",(req,res)=>{
+        res.redirect(API_DOC_PORTAL);
+    });
 
     // GETs al recurso de varias formas. Teniendo en cuenta querys y sin tenerlas en cuenta. No están por separado porque puede funcionar
     // mal (a veces se ejecuta un get antes que otro y no devuelve el resultado esperado, será por el orden de ejecución de JS)
@@ -393,7 +398,7 @@ module.exports = (app) => {
             res.sendStatus(500, "INTERNAL SERVER ERROR");
         }
         filteredList = filteredList.filter((reg) => {
-            return (reg.gender == gender && reg.year == year);
+            return (reg.province = province && reg.gender == gender && reg.year == year);
         });
         if (filteredList == 0) {
             res.sendStatus(404, "NO EXIST");
@@ -511,8 +516,13 @@ module.exports = (app) => {
         response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
     });
 
+
+   //PUTs ----------------------------------------------
+
+
     //PUT a un recurso (un dato concreto)
 
+    /*
     app.put(recurso_amr + "/:province/:gender/:year", (request, response) => {
         const { province, gender, year } = request.params;
         var body = request.body;
@@ -541,54 +551,104 @@ module.exports = (app) => {
             response.status(400).send(`Los datos de la URL no coinciden con los datos de la solicitudddd ${province} ${year} ${body.year} ${body.province}`); //Esto se mostrará en Postman cuando se haga una petición.
         }
     });
+    */
 
 
-
-    //PUTs ----------------------------------------------
+ 
 
     //PUT a la colección está prohibido.
     app.put(recurso_amr, (request, response) => {
-        response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
+        response.sendStatus(405).send('Method not allowed');
     });
 
     //PUT a un recurso.
-    app.put(recurso_amr, (request, response) => {
 
-    });
+    app.put(recurso_amr + "/:province/:gender/:year", (req, res) => {
+        if (comprobar_body(req)) {
+            res.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
+            return;
+        }
+        var province = req.params.province;
+        var gender = req.params.gender;
+        var year = req.params.year;
+        var body = req.body;
 
-
-    //DELETE a un recurso
-
-    app.delete(recurso_amr + "/:province/:gender/:year", (request, response) => {
-        var province = request.params.province;
-        var gender = request.params.gender;
-        var year = request.params.year;
-        console.log("New DELETE to /andalusian-population-salary-stats");
-        db.remove({ "province": province, "gender": gender, "year": parseInt(year) }, (err, entryRemoved) => {
+        db.find({}, function (err, filteredList) {
             if (err) {
-                console.log(`Error deleting entry : ${province, gender, year}:${err} `)
-                response.sendStatus(500, "INTERNAL SERVER ERROR");
-            } else {
-                console.log(`Removed entry ${entryRemoved}`)
-                response.sendStatus(200, "DELETED");
+                res.sendStatus(500, "INTERNAL SERVER ERROR");
+                return;
             }
+            filteredList = filteredList.filter((reg) => {
+                return (reg.province == province && reg.gender == gender && reg.year == year);
+            });
+            if (filteredList == 0) {
+                res.sendStatus(404, "NO EXIST");
+                return;
+            }
+            if (province != body.province || gender != body.gender || year != body.year) {
+                res.sendStatus(400, "BAD REQUEST");
+                return;
+            }
+            db.update({$and:[{"province": String(province)},{"gender" : String(gender)}, {"year": parseInt(year)}]}, {$set: body}, {},function(err, numUpdated) {
+                if (err) {
+                    res.sendStatus(500, "INTERNAL SERVER ERROR");
+                }else{
+                    res.sendStatus(200,"UPDATED");
+                }
+            });
+        })
+    })
+
+
+
+
+     //DELETE a un recurso
+
+     app.delete(recurso_amr+"/:province/:gender/:year",(req, res)=>{
+        var province = req.params.country;
+        var gender = req.params.country;
+        var year = req.params.year;
+
+        db.find({province: province, gender : gender, year: parseInt(year)}, {}, (err, filteredList)=>{
+            if (err){
+                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                return;
+            }
+            if(filteredList==0){
+                res.sendStatus(404,"NOT FOUND");
+                return;
+            }
+            db.remove({province: province, gender : gender, year: parseInt(year)}, {}, (err, numRemoved)=>{
+                if (err){
+                    console.log(`Error deleting entry : ${province, gender, year}:${err} `)
+                    res.sendStatus(500,"INTERNAL SERVER ERROR");
+                    return;
+                }
+                console.log(`Removed entry ${entryRemoved}`)
+                res.sendStatus(200,"DELETED");
+                return;
+                
+            });
         });
+
     });
 
     //DELETE a la colección.
-    app.delete(recurso_amr, (req,res) => {
-        console.log(`New DELETE to collection`);
-        db.remove({},{multi:true},(err, numRemoved)=>{
-            if(err){
+    app.delete(recurso_amr,(req, res)=>{
+        db.remove({}, { multi: true }, (err, numRemoved)=>{
+            if (err){
                 console.log(`Error deleting /andalusian-population-salary-stats`);
-                response.sendStatus(500);
-            }else{
-                console.log(`Data removed ${numRemoved}`);
-                response.sendStatus(200);
+                res.sendStatus(500,"INTERNAL SERVER ERROR");
+                return;
             }
+            console.log(`Data removed ${numRemoved}`);
+            res.sendStatus(200,"DELETED");
+            return;
         });
     });
 
+
+   
 
     /*
         var filtro = salario_medio.filter(function(arr) {
@@ -614,6 +674,15 @@ module.exports = (app) => {
         res = lista.slice(offset, parseInt(limit) + parseInt(offset)); //Spliteamos la lista slice(elemento por el que spliteamos, límite hasta donde devolveremos al hacer el split)
         return res;
 
+    }
+
+    function comprobar_body(req) {
+        return (req.body.province == null |
+            req.body.gender == null |
+            req.body.year == null |
+            req.body.salaried == null |
+            req.body.average_salary == null |
+            req.body.standard_deviation == null);
     }
 
 };
