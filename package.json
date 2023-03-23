@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index",
     "test-jobs" : "npx newman run ./tests/marmedsan6.json -e ./tests/env/marmedsan6_gcloud.json",
-    "test": "npm run test-jobs"
+    "test-jobseekers-studies" : "npx newman run ./tests/jardelpac.json -e ./tests/env/jardelpac_gcloud.json",
+    "test": "npm run test-jobseekers-studies"
   },
   "repository": {
     "type": "git",
