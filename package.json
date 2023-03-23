@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-jobs" : "npx newman run ./tests/marmedsan6.json -e ./tests/env/marmedsan6_gcloud.json",
+    "test": "npm run test-jobs"
   },
   "repository": {
     "type": "git",
