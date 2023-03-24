@@ -523,10 +523,11 @@ module.exports = (app) => {
       }
     });
   });
-
+/*
   app.use((req, res) => {
     res.status(405).send('Method Not Allowed');
 });
+*/
   //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y year.
   app.delete('/api/v1/loss-jobs/:province/:year', (req, res) => {
     const province = req.params.province;

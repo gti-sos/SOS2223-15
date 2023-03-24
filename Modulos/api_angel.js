@@ -263,11 +263,13 @@ module.exports = (app) => {
     });
 
     //MÉTODOS TABLA AZUL.
+
     const rutaBase = '/api/v1/salary-stats';
 
     // Método POST para la ruta base
     app.post(rutaBase, (request, response) => {
         const province = request.body.province;
+        const gender = request.body.gender;
         const year = request.body.year;
         console.log("New POST to /salary-stats"); //console.log en el servidor  
         db.find({}, function (err, filteredList) {
@@ -276,7 +278,7 @@ module.exports = (app) => {
                 res.sendStatus(500, "Client Error");
             }
             // Validar que se envíen todos los campos necesarios
-            const requiredFields = ['province', ,'gender','year', 'salaried', 'average_salary', 'standard_deviation'];
+            const requiredFields = ['province', , 'gender', 'year', 'salaried', 'average_salary', 'standard_deviation'];
             for (const field of requiredFields) {
                 if (!request.body.hasOwnProperty(field)) {
                     response.status(400).json(`Missing required field: ${field}`);
@@ -292,7 +294,7 @@ module.exports = (app) => {
                 // Verificar si el recurso ya existe
                 //const existingObject = salario_medio.find(obj => obj.province === province && obj.year === year);
                 filteredList = filteredList.filter((obj) => {
-                    return (province == obj.province && year == obj.year)
+                    return (province == obj.province && gender == obj.gender && year == obj.year)
                 });
                 //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
                 if (filteredList.length != 0) {
@@ -320,7 +322,7 @@ module.exports = (app) => {
         res.status(405).json('El método POST no está permitido en esta ruta');
     });
 
-    //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y yearO CONCRETO.
+    //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y year CONCRETO.
     app.get('/api/v1/salary-stats/:province', (req, res) => {
         const province = req.params.province.toLowerCase();
         const from = req.query.from;
@@ -339,16 +341,16 @@ module.exports = (app) => {
                 res.sendStatus(500, "Client Error");
             }
             if (from && to) {
-                // Lógica para devolver los datos de la ciudad para el yearo especificado
+                // Lógica para devolver los datos dada una provincia y otro dato especificado.
                 filteredList = filteredList.filter((obj) => {
                     return (obj.province.toLowerCase() == province && obj.year >= from && obj.year <= to);
                 });
-                console.log(`/GET to /salary-stats/${province}?from=${from}&to=${to}`); //console.log en el servidor
+                console.log(`/GET to /salary-stats/${province}?from=${from}&to=${to}`); //Usando from y to.
                 filteredList.forEach((e) => {
                     delete e._id;
                 });
                 res.status(200).json(filteredList);
-            } else if (year) {
+            } else if (year) { // Filtrando por provincia y año.
                 filteredList = filteredList.filter((obj) => {
                     return (obj.year == year && obj.province.toLowerCase() == province);
                 });
@@ -357,7 +359,7 @@ module.exports = (app) => {
                     delete e._id;
                 });
                 res.status(200).json(filteredList);
-            } else if (gender) {
+            } else if (gender) { // Filtrando por provincia y género.
                 filteredList = filteredList.filter((obj) => {
                     return (obj.gender == gender && obj.province.toLowerCase() == province);
                 });
@@ -427,7 +429,7 @@ module.exports = (app) => {
 
 
 
-    //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
+    //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y AÑO ESPECÍFICOS.
     app.get('/api/v1/salary-stats/:province/:year', (req, res) => {
         const { province, year } = req.params;
         db.find({}, function (err, filteredList) {
@@ -454,66 +456,41 @@ module.exports = (app) => {
             console.log("Solicitud /GET")
         });
     });
-    //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-    app.put('/api/v1/salary-stats/:province/:year', (req, res) => {
+    //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA DADA UNA PROVINCIA Y UN AÑO POR PARÁMETROS.
+    app.put('/api/v1/salary-stats/:province/:gender/:year', (req, res) => {
         const province = req.params.province;
-        const year = parseInt(req.params.year);
+        const gender = req.params.gender;
+        const year = req.params.year;
         const provincebody = req.body.province;
+        const genderbody = req.body.gender;
         const yearbody = req.body.year;
+        const salariedbody = req.body.salaried;
         const body = req.body;
         db.find({}, function (err, filteredList) {
-
-            if (err) {
-                res.sendStatus(500, "Client Error");
-            }
-            filteredList = filteredList.filter((obj) => {
-                return (obj.province === province && obj.year === year);
+          if (err) {
+            res.sendStatus(500, "Client Error");
+          }
+          filteredList = filteredList.filter((obj) => {
+            return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year));
+          });
+          if (filteredList.length === 0) {  // province === provincebody || gender === genderbody || year === yearbody || salaried === salariedbody 
+            //console.log(filteredList.length)
+            return res.status(400).json('Estadística errónea');
+          } else {
+            db.update({ province: String(province), gender: String(gender), year: parseInt(year) }, { $set: body }, { multi: true }, function (err, numUpdated) {
+              if (err) {
+                res.sendStatus(500, "INTERNAL SERVER ERROR");
+              } else {
+                console.log(yearbody) //mostrar por consola
+                res.sendStatus(200, "UPDATED");
+              }
             });
-            if (!filteredList || province !== provincebody || year !== yearbody) {
-                return res.status(400).json('Estadística errónea');
-            } else {
-                filteredList.gender = req.body.gender || filteredList.gender;
-                filteredList.salaried = req.body.salaried || filteredList.salaried;
-                filteredList.average_salary = req.body.average_salary || filteredList.average_salary;
-                filteredList.standard_deviation = req.body.standard_deviation || filteredList.standard_deviation;
-
-                db.update({ $and: [{ province: String(province) }, { year: parseInt(year) }] }, { $set: body }, {}, function (err, numUpdated) {
-                    if (err) {
-                        res.sendStatus(500, "INTERNAL SERVER ERROR");
-                    } else {
-                        res.sendStatus(200, "UPDATED");
-                    }
-                });
-            }
+          }
         });
-    });
+      });
 
-    //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
-    app.put('/api/v1/salary-stats/:province', (req, res) => {
-        const province = req.params.province;
-        const provincebody = req.body.province;
-        const body = req.body;
-        db.find({}, function (err, filteredList) {
 
-            if (err) {
-                res.sendStatus(500, "Client Error");
-            }
-            filteredList = filteredList.filter((obj) => {
-                return (obj.province === province);
-            });
-            if (filteredList.length === 0 || province !== provincebody) {
-                return res.status(400).json('Estadística errónea');
-            } else {
-                db.update({ province: String(province) }, { $set: body }, { multi: true }, function (err, numUpdated) {
-                    if (err) {
-                        res.sendStatus(500, "INTERNAL SERVER ERROR");
-                    } else {
-                        res.sendStatus(200, "UPDATED");
-                    }
-                });
-            }
-        });
-    });
+    
 
     //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
     app.delete(BASE_API_URL + "/salary-stats", (req, res) => {
@@ -522,7 +499,7 @@ module.exports = (app) => {
             if (err) {
                 res.sendStatus(500, "Client Error");
             }
-            if (!req.body || Object.keys(req.body).length === 0) {
+            if (!req.body || Object.keys(req.body).length === 0) { // Delete a la colección
                 db.remove({}, { multi: true }, (err, numRemoved) => {
                     if (err) {
                         res.sendStatus(500, "ERROR EN CLIENTE");
@@ -532,8 +509,8 @@ module.exports = (app) => {
                     }
 
                 });
-            } else {
-                const { year, province } = req.body;
+            } else { //Delete a un recurso concreto.
+                const { province, gender, year } = req.body;
                 db.find({}, function (err, filteredList) {
 
                     if (err) {
@@ -541,9 +518,9 @@ module.exports = (app) => {
                     }
                     // Buscar el objeto en la matriz salario_medio
                     filteredList = filteredList.filter((obj) => {
-                        return (obj.province === province && obj.year === year);
+                        return (obj.province === province && obj.gender === gender && obj.year === year);
                     });
-                    db.remove({ province: province, year: year }, {}, (err, numRemoved) => {
+                    db.remove({ province: province, gender: gender, year: year }, {}, (err, numRemoved) => {
                         if (err) {
                             res.sendStatus(500, "ERROR EN CLIENTE");
                             return;
@@ -563,45 +540,10 @@ module.exports = (app) => {
         });
     });
 
-    //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
-    app.delete('/api/v1/salary-stats/:province', (req, res) => {
+    //DELETE PARA UNA RUTA ESPECÍFICA DE UNA PROVINCIA Y AÑO.
+    app.delete('/api/v1/salary-stats/:province/:gender/:year', (req, res) => {
         const province = req.params.province;
-        db.find({}, function (err, filteredList) {
-
-            if (err) {
-                res.sendStatus(500, "Client Error");
-            }
-            //const filteredStats = salario_medio.filter(stats => stats.province === province);
-            filteredList = filteredList.filter((obj) => {
-                return (obj.province === province);
-            });
-            if (filteredList.length === 0) {
-                res.status(404).json(`No se encontraron datos para ${province}`);
-            } else {
-                filteredList = filteredList.filter((obj) => { return (obj.province === province); });
-
-                if (filteredList) {
-                    db.remove({ province: province }, { multi: true }, (err, numRemoved) => {
-                        if (err) {
-                            res.sendStatus(500, "ERROR EN CLIENTE");
-                            return;
-                        }
-                        else {
-                            res.sendStatus(200, "DELETED");
-                            return;
-                        }
-
-                    });
-                } else {
-                    res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
-                }
-            }
-        });
-    });
-
-    //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y year.
-    app.delete('/api/v1/salary-stats/:province/:year', (req, res) => {
-        const province = req.params.province;
+        const gender = req.params.gender;
         const year = req.params.year;
         db.find({}, function (err, filteredList) {
 
@@ -610,14 +552,13 @@ module.exports = (app) => {
             }
             //const filteredStats = salario_medio.filter(stats => stats.province === province);
             filteredList = filteredList.filter((obj) => {
-                return (obj.province === province && obj.year === parseInt(year));
+                return (obj.province === province && obj.gender === gender && obj.year === parseInt(year));
             });
             if (filteredList.length === 0) {
                 res.status(404).json(`No se encontraron datos para ${province} y ${year}`);
             } else {
-                filteredList = filteredList.filter((obj) => { return (obj.province === province && obj.year === parseInt(year)); });
                 if (filteredList) {
-                    db.remove({ $and: [{ province: province }, { year: parseInt(year) }] }, { multi: true }, (err, numRemoved) => {
+                    db.remove({ province: province, gender: gender, year: parseInt(year) }, {}, (err, numRemoved) => {
                         if (err) {
                             res.sendStatus(500, "ERROR EN CLIENTE");
                             return;
