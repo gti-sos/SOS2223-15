@@ -378,21 +378,23 @@ module.exports = (app) => {
     });
   });
   //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-  app.put('/api/v1/loss-jobs/:province/:year', (req, res) => {
+  app.put('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
     const province = req.params.province;
     const year = parseInt(req.params.year);
     const provincebody = req.body.province;
     const yearbody = req.body.year;
     const body = req.body;
+    const gender = req.params.gender;
+    const genderbody = req.body.gender;
     db.find({}, function (err, filteredList) {
 
       if (err) {
         res.sendStatus(500, "Client Error");
       }
       filteredList = filteredList.filter((obj) => {
-        return (obj.province === province && obj.year === year);
+        return (obj.province === province && obj.year === year && obj.gender == gender);
       });
-      if (!filteredList || province !== provincebody || year !== yearbody) {
+      if (!filteredList || province !== provincebody || year !== yearbody || gender !== genderbody) {
         return res.status(400).json('Estadística errónea');
       } else {
         filteredList.gender = req.body.gender || filteredList.gender;
@@ -437,7 +439,7 @@ module.exports = (app) => {
       }
     });
   });
-
+ 
   //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
   app.delete(BASE_API_URL + "/loss-jobs", (req, res) => {
     db.remove({}, { multi: true }, (err, numRemoved) => {
@@ -522,6 +524,9 @@ module.exports = (app) => {
     });
   });
 
+  app.use((req, res) => {
+    res.status(405).send('Method Not Allowed');
+});
   //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y year.
   app.delete('/api/v1/loss-jobs/:province/:year', (req, res) => {
     const province = req.params.province;
@@ -531,16 +536,16 @@ module.exports = (app) => {
       if (err) {
         res.sendStatus(500, "Client Error");
       }
-      //const filteredStats = población_media.filter(stats => stats.province === province);
       filteredList = filteredList.filter((obj) => {
-        return (obj.province === province && obj.year === parseInt(year));
+        return (obj.provincia === province && obj.anyo === parseInt(year));
       });
       if (filteredList.length === 0) {
         res.status(404).json(`No se encontraron datos para ${province} y ${year}`);
       } else {
-        filteredList = filteredList.filter((obj) => { return (obj.province === province && obj.year === parseInt(year)); });
+        filteredList = filteredList.filter((obj) => { return (obj.provincia === province && obj.anyo === parseInt(year)); 
+        });
         if (filteredList) {
-          db.remove({ $and: [{ province: province }, { year: parseInt(year) }] }, { multi: true }, (err, numRemoved) => {
+          db.remove({ $and: [{ provincia: province }, { anyo: parseInt(year) }] }, { multi: true }, (err, numRemoved) => {
             if (err) {
               res.sendStatus(500, "ERROR EN CLIENTE");
               return;
@@ -560,7 +565,6 @@ module.exports = (app) => {
       }
     });
   });
-
   function pagination(req, lista) {
 
     var res = [];
