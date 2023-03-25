@@ -439,7 +439,7 @@ module.exports = (app) => {
       }
     });
   });
- 
+
   //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
   app.delete(BASE_API_URL + "/loss-jobs", (req, res) => {
     db.remove({}, { multi: true }, (err, numRemoved) => {
@@ -487,66 +487,69 @@ module.exports = (app) => {
 
     });
   });
-
-  //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
-  app.delete('/api/v1/loss-jobs/:province', (req, res) => {
-    const province = req.params.province;
-    db.find({}, function (err, filteredList) {
-
-      if (err) {
-        res.sendStatus(500, "Client Error");
-      }
-      //const filteredStats = población_media.filter(stats => stats.province === province);
-      filteredList = filteredList.filter((obj) => {
-        return (obj.province === province);
-      });
-      if (filteredList.length === 0) {
-        res.status(404).json(`No se encontraron datos para ${province}`);
-      } else {
-        filteredList = filteredList.filter((obj) => { return (obj.province === province); });
-
-        if (filteredList) {
-          db.remove({ province: province }, { multi: true }, (err, numRemoved) => {
-            if (err) {
-              res.sendStatus(500, "ERROR EN CLIENTE");
-              return;
-            }
-            else {
-              res.sendStatus(200, "DELETED");
-              return;
-            }
-
-          });
-        } else {
-          res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
+  
+    //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
+    app.delete('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
+      const province = req.params.province;
+      const year = req.params.year;
+      const gender = req.params.gender;
+      db.find({}, function (err, filteredList) {
+  
+        if (err) {
+          res.sendStatus(500, "Client Error");
         }
-      }
-    });
+        //const filteredStats = población_media.filter(stats => stats.province === province);
+        filteredList = filteredList.filter((obj) => {
+          return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender);
+        });
+        if (filteredList.length === 0) {
+          res.status(404).json(`No se encontraron datos para ${province}`);
+        } else {
+          filteredList = filteredList.filter((obj) => { return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender); });
+  
+          if (filteredList) {
+            db.remove({ province: province, year : parseInt(year), gender: gender }, { multi: true }, (err, numRemoved) => {
+              if (err) {
+                res.sendStatus(500, "ERROR EN CLIENTE");
+                return;
+              }
+              else {
+                res.sendStatus(200, "DELETED");
+                return;
+              }
+  
+            });
+          } else {
+            res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
+          }
+        }
+      });
+    }); 
+  /*
+    app.use((req, res) => {
+      res.status(405).send('Method Not Allowed');
   });
+  */
 /*
-  app.use((req, res) => {
-    res.status(405).send('Method Not Allowed');
-});
-*/
-  //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y year.
-  app.delete('/api/v1/loss-jobs/:province/:year', (req, res) => {
+  //DELETE PARA UNA RUTA ESPECÍFICA DE UNA PROVINCIA Y AÑO.
+  app.delete('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
     const province = req.params.province;
+    const gender = req.params.gender;
     const year = req.params.year;
     db.find({}, function (err, filteredList) {
 
       if (err) {
         res.sendStatus(500, "Client Error");
       }
+      //const filteredStats = salario_medio.filter(stats => stats.province === province);
       filteredList = filteredList.filter((obj) => {
-        return (obj.provincia === province && obj.anyo === parseInt(year));
+        return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender);
       });
       if (filteredList.length === 0) {
         res.status(404).json(`No se encontraron datos para ${province} y ${year}`);
       } else {
-        filteredList = filteredList.filter((obj) => { return (obj.provincia === province && obj.anyo === parseInt(year)); 
-        });
         if (filteredList) {
-          db.remove({ $and: [{ provincia: province }, { anyo: parseInt(year) }] }, { multi: true }, (err, numRemoved) => {
+          db.remove({ province: province, year: year, gender: parseInt(gender) }, {}, (err, numRemoved) => {
             if (err) {
               res.sendStatus(500, "ERROR EN CLIENTE");
               return;
@@ -566,6 +569,9 @@ module.exports = (app) => {
       }
     });
   });
+*/
+
+
   function pagination(req, lista) {
 
     var res = [];
@@ -618,6 +624,6 @@ module.exports = (app) => {
   });
 
   
-*/  
+*/
 
 }
