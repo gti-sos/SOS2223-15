@@ -1,0 +1,649 @@
+{
+	"info": {
+		"_postman_id": "7e10a027-57e1-4841-bbda-4e9b6ce49554",
+		"name": "Entregable 01",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26059557"
+	},
+	"item": [
+		{
+			"name": "GET a la colección",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"There is initial data loaded correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Responsse is an Array\", function () {\r",
+							"\tvar jsonData = pm.response.json();\r",
+							"\tpm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET a la colección por provincia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an Array\", function () {\r",
+							"\tvar jsonData = pm.response.json();\r",
+							"\tpm.expect(Array.isArray(jsonData)).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Responsse is a single resource\", function () {\r",
+							"\tvar jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Almería",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Almería"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET FALLO a la colección por provincia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 404\", function () {\r",
+							"\tpm.response.to.have.status(404);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Madrid",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Madrid"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET a la colección por año",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?year=2020",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET a un recurso concreto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Resource loaded correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.be.eq(1);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Responsse is a single resource\", function () {\r",
+							"\tvar jsonData = pm.response.json();\r",
+							"\tpm.expect(jsonData.length).to.be.eq(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Almería&gender=male&year=2020",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Almería"
+						},
+						{
+							"key": "gender",
+							"value": "male"
+						},
+						{
+							"key": "year",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST a la colección",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 201\", function (){\r",
+							"\tpm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"province\":\"Sevilla\",\r\n    \"gender\":\"male\",\r\n    \"year\":2023,\r\n    \"salaried\":200000,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET al recurso después del POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returning the specified resoruce correctly. Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Almería&gender=male&year=2020",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Almería"
+						},
+						{
+							"key": "gender",
+							"value": "male"
+						},
+						{
+							"key": "year",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET a la colección después del POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"There is one more resource in the collection now\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.be.at.least(13);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST de un recurso que ya existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"You can not create a resource that already exists. Status code 409\", function () {\r",
+							"\tpm.response.to.have.status(409);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"province\":\"Sevilla\",\r\n    \"gender\":\"male\",\r\n    \"year\":2023,\r\n    \"salaried\":200000,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT al recurso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Resource updated correctly. Status code 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"province\":\"Sevilla\",\r\n    \"gender\":\"male\",\r\n    \"year\":2028,\r\n    \"salaried\":162525,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats/Sevilla/male/2023",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats",
+						"Sevilla",
+						"male",
+						"2023"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET a un recurso después del PUT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returning the specified resoruce correctly. Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2028",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Sevilla"
+						},
+						{
+							"key": "gender",
+							"value": "male"
+						},
+						{
+							"key": "year",
+							"value": "2028"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT FALLO a un recurso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Can't update a non existing resource. Status code 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"province\":\"Granada\",\r\n    \"gender\":\"male\",\r\n    \"year\":2021,\r\n    \"salaried\":162525,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats/Sevilla/male/2040",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats",
+						"Sevilla",
+						"male",
+						"2040"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT a la colección (Debe dar error)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Forbidden method. Status code 405\", function () {\r",
+							"\tpm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"province\":\"Granada\",\r\n    \"gender\":\"male\",\r\n    \"year\":2021,\r\n    \"salaried\":162525,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE al recurso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function () {\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats/Sevilla/male/2028",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats",
+						"Sevilla",
+						"male",
+						"2028"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET a un recurso después del DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"There is one less resource in the collection now\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.be.below(13);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
