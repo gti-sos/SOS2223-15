@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "test-jobs" : "npx newman run ./tests/marmedsan6.json -e ./tests/env/marmedsan6_gcloud.json",
+    "test-jobs" : "npx newman run ./tests/marmedsan6.json",
     "test-jobseekers-studies" : "npx newman run ./tests/jardelpac.json -e ./tests/env/jardelpac_gcloud.json",
     "test-salary-stats" : "npx newman run ./tests/backend_angmarrod4.json -e ./tests/env/angmarrod4_gcloud.json",
-    "test": "npm run test-jobseekers-studies"
+    "test": "npm run test-jobseekers-studies && npm run test-jobs"
   },
   
   "repository": {
