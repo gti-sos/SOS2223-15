@@ -116,51 +116,6 @@ module.exports = (app) => {
     });
 
 
-    app.post(BASE_API_URL + "/salary-stats", (request, response) => {
-        //var NewEvolution = request.body;
-        const province = request.body.province;
-        const year = request.body.year;
-        console.log("New POST to /salary-stats"); //console.log en el servidor
-        db.find({}, function (err, filteredList) {
-
-            if (err) {
-                res.sendStatus(500, "CLIENT ERROR");
-            }
-
-            // Validar que se envíen todos los campos necesarios
-            const requiredFields = ['province', 'gender', 'year', 'salaried', 'average_salary', 'standard_deviation'];
-            for (const field of requiredFields) {
-                if (!request.body.hasOwnProperty(field)) {
-                    return response.status(400).json(`Missing required field: ${field}`);
-                }
-            }
-            // Verificar que la solicitud se hizo en la ruta correcta
-            if (request.originalUrl !== '/api/v1/salary-stats') {
-                res.status(405).json('Método no permitido');
-            } else {
-
-                // Verificar si el recurso ya existe
-                //const existingObject = salario_medio.find(obj => obj.province === province && obj.year === year);
-                filteredList = filteredList.filter((obj) => {
-                    return (province == obj.province && year == obj.year)
-                });
-                //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
-                if (filteredList.length != 0) {
-                    // Si el recurso ya existe, devolver un código de respuesta 409
-                    response.status(409).json(`El recurso ya existe.`);
-                } else {
-                    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
-                    db.insert(request.body);
-                    //salario_medio.push(request.body);
-                    response.sendStatus(201);
-                }
-            }
-        });
-    });
-
-
-
-
     //APARTADO CREAR 10 O MÁS DATOS RANDOM
 
     app.get(BASE_API_URL + "/salary-stats/loadInitialData", (req, res) => {
@@ -266,29 +221,35 @@ module.exports = (app) => {
 
     const rutaBase = '/api/v1/salary-stats';
 
-    // Método POST para la ruta base
-    app.post(rutaBase, (request, response) => {
+    app.post(BASE_API_URL + "/salary-stats", (request, response) => {
+        //var NewEvolution = request.body;
         const province = request.body.province;
-        const gender = request.body.gender;
         const year = request.body.year;
-        console.log("New POST to /salary-stats"); //console.log en el servidor  
+        const gender = request.body.gender;
+        const salaried = request.body.salaried;
+        const average_salary = request.body.average_salary;
+        const standard_deviation = request.body.standard_deviation;
+        console.log("New POST to /salary-stats"); //console.log en el servidor
+        if (comprobar_tipos( province,gender,year,salaried,average_salary,standard_deviation) ) {
+            response.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
+            console.log("INCORRECT PARAMETER TYPE")
+        } else {
         db.find({}, function (err, filteredList) {
 
             if (err) {
-                res.sendStatus(500, "Client Error");
+                response.sendStatus(500, "CLIENT ERROR");
             }
+
             // Validar que se envíen todos los campos necesarios
-            const requiredFields = ['province', , 'gender', 'year', 'salaried', 'average_salary', 'standard_deviation'];
+            const requiredFields = ['province', 'gender', 'year', 'salaried', 'average_salary', 'standard_deviation'];
             for (const field of requiredFields) {
                 if (!request.body.hasOwnProperty(field)) {
-                    response.status(400).json(`Missing required field: ${field}`);
-                    return;
+                    return response.status(400).json(`Missing required field: ${field}`);
                 }
             }
             // Verificar que la solicitud se hizo en la ruta correcta
             if (request.originalUrl !== '/api/v1/salary-stats') {
                 res.status(405).json('Método no permitido');
-                return;
             } else {
 
                 // Verificar si el recurso ya existe
@@ -308,7 +269,65 @@ module.exports = (app) => {
                 }
             }
         });
+    }
     });
+
+    // Método POST para la ruta base
+
+    /*
+    app.post(rutaBase, (request, response) => {
+        const province = request.body.province;
+        const gender = request.body.gender;
+        const year = request.body.year;
+        const salaried = request.body.salaried;
+        const average_salary = request.body.average_salary;
+        const standard_deviation = request.body.standard_deviation;
+        console.log("New POST to /salary-stats"); //console.log en el servidor 
+        if (comprobar_tipos( province,gender,year,salaried,average_salary,standard_deviation) ) {
+            res.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
+        } else {
+            db.find({}, function (err, filteredList) {
+
+                if (err) {
+                    res.sendStatus(500, "Client Error");
+                }
+                // Validar que se envíen todos los campos necesarios
+                const requiredFields = ['province', , 'gender', 'year', 'salaried', 'average_salary', 'standard_deviation'];
+                for (const field of requiredFields) {
+                    if (!request.body.hasOwnProperty(field)) {
+                        response.status(400).json(`Missing required field: ${field}`);
+                        return;
+                    }
+                }
+                // Verificar que la solicitud se hizo en la ruta correcta
+                if (request.originalUrl !== '/api/v1/salary-stats') {
+                    res.status(405).json('Método no permitido');
+                    return;
+                } else {
+
+                    // Verificar si el recurso ya existe
+                    //const existingObject = salario_medio.find(obj => obj.province === province && obj.year === year);
+                    filteredList = filteredList.filter((obj) => {
+                        return (province == obj.province && gender == obj.gender && year == obj.year)
+                    });
+                    //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
+                    if (filteredList.length != 0) {
+                        // Si el recurso ya existe, devolver un código de respuesta 409
+                        response.status(409).json(`El recurso ya existe.`);
+                        console.log(typeof province);
+                        console.log(typeof year)
+                    } else {
+                        // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+                        db.insert(request.body);
+                        //salario_medio.push(request.body);
+                        response.sendStatus(201);
+                    }
+                }
+            });
+        }
+    });
+
+    */
 
     // Método PUT para la ruta base
     app.put(rutaBase, (req, res) => {
@@ -467,32 +486,32 @@ module.exports = (app) => {
         const salariedbody = req.body.salaried;
         const body = req.body;
         db.find({}, function (err, filteredList) {
-          if (err) {
-            res.sendStatus(500, "Client Error");
-          }
-          filteredList = filteredList.filter((obj) => {
-            return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year));
-          });
-          if (filteredList.length === 0) {  // province === provincebody || gender === genderbody || year === yearbody || salaried === salariedbody 
-            //console.log(filteredList.length)
-            return res.status(400).json('Estadística errónea');
-          } else {
-            db.update({ province: String(province), gender: String(gender), year: parseInt(year) }, { $set: body }, { multi: true }, function (err, numUpdated) {
-              if (err) {
-                res.sendStatus(500, "INTERNAL SERVER ERROR");
-              } else {
-                console.log(yearbody) //mostrar por consola
-                res.sendStatus(200, "UPDATED");
-              }
+            if (err) {
+                res.sendStatus(500, "Client Error");
+            }
+            filteredList = filteredList.filter((obj) => {
+                return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year));
             });
-          }
+            if (filteredList.length === 0) {  // province === provincebody || gender === genderbody || year === yearbody || salaried === salariedbody 
+                //console.log(filteredList.length)
+                return res.status(400).json('Estadística errónea');
+            } else {
+                db.update({ province: String(province), gender: String(gender), year: parseInt(year) }, { $set: body }, { multi: true }, function (err, numUpdated) {
+                    if (err) {
+                        res.sendStatus(500, "INTERNAL SERVER ERROR");
+                    } else {
+                        console.log(yearbody) //mostrar por consola
+                        res.sendStatus(200, "UPDATED");
+                    }
+                });
+            }
         });
-      });
+    });
 
 
-    
 
-    //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
+
+    //METODO DELETE PARA BORRAR LA COLECCIÓN.
     app.delete(BASE_API_URL + "/salary-stats", (req, res) => {
         db.remove({}, { multi: true }, (err, numRemoved) => {
 
@@ -540,8 +559,8 @@ module.exports = (app) => {
         });
     });
 
-    //DELETE PARA UNA RUTA ESPECÍFICA DE UNA PROVINCIA Y AÑO.
-    app.delete('/api/v1/salary-stats/:province/:gender/:year', (req, res) => {
+    //DELETE PARA UN RECURSO ESPECÍFICO.
+    app.delete(BASE_API_URL + '/salary-stats/:province/:gender/:year', (req, res) => {
         const province = req.params.province;
         const gender = req.params.gender;
         const year = req.params.year;
@@ -594,6 +613,16 @@ module.exports = (app) => {
 
     };
 
+    function comprobar_tipos(province, gender, year, salaried, average_salary, standard_deviation) { //Esta función es para comprobar que los datos introducidos en el POST son correctos.
+        return ( typeof province !== "string" ||
+            typeof gender !== "string" ||
+            typeof year !== "number" ||
+            typeof salaried !== "number" ||
+            typeof average_salary !== "number" ||
+            typeof standard_deviation !== "number");
+    }
+
+    
     // Manejador de errores
     app.use((err, req, res, next) => {
         if (err instanceof SyntaxError) {
