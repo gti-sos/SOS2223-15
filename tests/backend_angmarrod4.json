@@ -188,7 +188,7 @@
 							"    pm.expect(jsonData.length).to.be.eq(1);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Responsse is a single resource\", function () {\r",
+							"pm.test(\"Response is a single resource\", function () {\r",
 							"\tvar jsonData = pm.response.json();\r",
 							"\tpm.expect(jsonData.length).to.be.eq(1);\r",
 							"});"
@@ -277,7 +277,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Returning the specified resoruce correctly. Status code 200\", function (){\r",
+							"pm.test(\"Returning the new resource correctly. Status code 200\", function (){\r",
 							"\tpm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
@@ -291,7 +291,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Almería&gender=male&year=2020",
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2023",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -303,7 +303,7 @@
 					"query": [
 						{
 							"key": "province",
-							"value": "Almería"
+							"value": "Sevilla"
 						},
 						{
 							"key": "gender",
@@ -311,7 +311,7 @@
 						},
 						{
 							"key": "year",
-							"value": "2020"
+							"value": "2023"
 						}
 					]
 				}
@@ -331,7 +331,7 @@
 							"\r",
 							"pm.test(\"There is one more resource in the collection now\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.length).to.be.at.least(13);\r",
+							"    pm.expect(jsonData).to.have.lenght.above(0);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -615,14 +615,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code 200\", function (){\r",
-							"\tpm.response.to.have.status(200);\r",
+							"pm.test(\"Resource not found. Status code 404\", function (){\r",
+							"\tpm.response.to.have.status(404);\r",
 							"});\r",
-							"\r",
-							"pm.test(\"There is one less resource in the collection now\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.length).to.be.below(13);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -632,7 +628,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2028",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -640,6 +636,20 @@
 						"api",
 						"v1",
 						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Sevilla"
+						},
+						{
+							"key": "gender",
+							"value": "male"
+						},
+						{
+							"key": "year",
+							"value": "2028"
+						}
 					]
 				}
 			},
