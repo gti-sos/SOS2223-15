@@ -416,7 +416,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"province\":\"Sevilla\",\r\n    \"gender\":\"male\",\r\n    \"year\":2028,\r\n    \"salaried\":162525,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"raw": "{\r\n    \"province\":\"Sevilla\",\r\n    \"gender\":\"male\",\r\n    \"year\":2023,\r\n    \"salaried\":0,\r\n    \"average_salary\":0,\r\n    \"standard_deviation\":0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -459,7 +459,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2028",
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2023",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -479,7 +479,7 @@
 						},
 						{
 							"key": "year",
-							"value": "2028"
+							"value": "2023"
 						}
 					]
 				}
@@ -493,7 +493,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Can't update a non existing resource. Status code 400\", function () {\r",
+							"pm.test(\"Can't update a non existing resource\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
 							"});"
 						],
@@ -525,6 +525,140 @@
 						"Sevilla",
 						"male",
 						"2040"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST a la colección para comprobar el PUT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 201\", function (){\r",
+							"\tpm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"province\":\"Sevilla\",\r\n    \"gender\":\"female\",\r\n    \"year\":2023,\r\n    \"salaried\":200000,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET al recurso después del POST 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returning the new resource correctly. Status code 200\", function (){\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2023",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Sevilla"
+						},
+						{
+							"key": "gender",
+							"value": "male"
+						},
+						{
+							"key": "year",
+							"value": "2023"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT FALLO a un recurso por id distinto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The url params must be the same that the specified in body. Status code 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"province\":\"Sevilla\",\r\n    \"gender\":\"female\",\r\n    \"year\":2023,\r\n    \"salaried\":162525,\r\n    \"average_salary\":21311,\r\n    \"standard_deviation\":12172\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats/Sevilla/male/2023",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats",
+						"Sevilla",
+						"male",
+						"2023"
 					]
 				}
 			},
@@ -592,7 +726,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/salary-stats/Sevilla/male/2028",
+					"raw": "{{URL_BASE}}/api/v1/salary-stats/Sevilla/male/2023",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -602,7 +736,44 @@
 						"salary-stats",
 						"Sevilla",
 						"male",
-						"2028"
+						"2023"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE al recurso 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function () {\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats/Sevilla/female/2023",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats",
+						"Sevilla",
+						"female",
+						"2023"
 					]
 				}
 			},
@@ -628,7 +799,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2028",
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=male&year=2023",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -648,7 +819,54 @@
 						},
 						{
 							"key": "year",
-							"value": "2028"
+							"value": "2023"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET a un recurso después del DELETE Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Resource not found. Status code 404\", function (){\r",
+							"\tpm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/salary-stats?province=Sevilla&gender=female&year=2023",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"salary-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Sevilla"
+						},
+						{
+							"key": "gender",
+							"value": "female"
+						},
+						{
+							"key": "year",
+							"value": "2023"
 						}
 					]
 				}

@@ -483,7 +483,6 @@ module.exports = (app) => {
         const provincebody = req.body.province;
         const genderbody = req.body.gender;
         const yearbody = req.body.year;
-        const salariedbody = req.body.salaried;
         const body = req.body;
         db.find({}, function (err, filteredList) {
             if (err) {
@@ -492,9 +491,10 @@ module.exports = (app) => {
             filteredList = filteredList.filter((obj) => {
                 return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year));
             });
-            if (filteredList.length === 0) {  // province === provincebody || gender === genderbody || year === yearbody || salaried === salariedbody 
+            if (filteredList.length === 0 || province !== provincebody || gender !== genderbody || parseInt(year) !== yearbody) { 
                 //console.log(filteredList.length)
-                return res.status(400).json('Estadística errónea');
+                //console.log(typeof province,typeof provincebody,typeof gender, typeof genderbody,typeof year,typeof yearbody)
+                return res.status(400).json('No resource found with such parameters (url and body resource id must be the same).');
             } else {
                 db.update({ province: String(province), gender: String(gender), year: parseInt(year) }, { $set: body }, { multi: true }, function (err, numUpdated) {
                     if (err) {
