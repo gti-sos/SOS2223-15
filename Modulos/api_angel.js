@@ -210,7 +210,7 @@ module.exports = (app) => {
 
                     console.log(`Datos de salary-stats devueltos: ${datos.length}`);
                     // Devolvemos dichos datos, estado 200: OK
-                    res.json(datos);
+                    res.status(200).json(datos);
 
                 }
             }
