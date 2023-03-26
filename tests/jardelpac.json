@@ -7,6 +7,484 @@
 	},
 	"item": [
 		{
+			"name": "/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Parados-registrados\",\r\n        \"primary\": 999,\r\n        \"fp_program\": 999,\r\n        \"general_education\": 999,\r\n        \"total\": 999\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2008/Ambos-sexos/Almería/Parados-registrados",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"2008",
+						"Ambos-sexos",
+						"Almería",
+						"Parados-registrados"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies recurso existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Parados-registrados\",\r\n        \"primary\": 1.062,\r\n        \"fp_program\": 1.232,\r\n        \"general_education\": 16.12,\r\n        \"total\": 27.469\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies faltan campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Parados-registrados\",\r\n        \"primary\": 1.062,\r\n        \"fp_program\": 1.232,\r\n        \"general_education\": 16.12\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/Madrid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Madrid",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"Madrid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"2006",
+						"Ambos-sexos",
+						"Almería",
+						"Parados-registrados"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?type=Parados-registrados",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Parados-registrados"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?year",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?year=2007",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2007"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?territory",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?territory=Cádiz",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "Cádiz"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/territory?from&to",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Almería?from=2007&to=2008",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"Almería"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2007"
+						},
+						{
+							"key": "to",
+							"value": "2008"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?from&to",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?from=2005&to=2006",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2005"
+						},
+						{
+							"key": "to",
+							"value": "2006"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?offset&limit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?limit=10&offset=5",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/jobseekers-studies",
 			"event": [
 				{
@@ -40,12 +518,25 @@
 		},
 		{
 			"name": "/jobseekers-studies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": " {\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Cádiz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7.316\r\n        \r\n    }",
+					"raw": "{\r\n        \"year\": 2008,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Cádiz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7.316,\r\n        \"total\": 13.494\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -76,7 +567,7 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"Contact number must be greater than 1\", function () {\r",
+							"pm.test(\"The array must contain more than 1 element\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.a.lengthOf.above(0);\r",
 							"});"
@@ -103,19 +594,36 @@
 			"response": []
 		},
 		{
-			"name": "/jobseekers-studies",
+			"name": "/jobseekers-studies/2008/Ambos-sexos/Cádiz/TEAS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies",
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2008/Ambos-sexos/Cádiz/TEAS",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"jobseekers-studies"
+						"jobseekers-studies",
+						"2008",
+						"Ambos-sexos",
+						"Cádiz",
+						"TEAS"
 					]
 				}
 			},
@@ -155,8 +663,331 @@
 		},
 		{
 			"name": "/jobseekers-studies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"year\": 2007,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Badajoz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7.316,\r\n        \"total\": 13.494\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Badajoz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7.316,\r\n        \"total\": 13.494\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/Badajoz",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"The array must contain more than 1 element\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.a.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Badajoz",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"Badajoz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/2006/Ambos-sexos/Badajoz/TEAS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"1 element must be returned\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.a.lengthOf(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Badajoz/TEAS",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"2006",
+						"Ambos-sexos",
+						"Badajoz",
+						"TEAS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/2006/Ambos-sexos/Badajoz/TEAS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Badajoz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 999,\r\n        \"fp_program\": 999,\r\n        \"general_education\": 999,\r\n        \"total\": 999\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Badajoz/TEAS",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"2006",
+						"Ambos-sexos",
+						"Badajoz",
+						"TEAS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/2006/Ambos-sexos/Badajoz/TEAS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"1 element must be returned\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.a.lengthOf(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Badajoz/TEAS",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"2006",
+						"Ambos-sexos",
+						"Badajoz",
+						"TEAS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/Badajoz",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Badajoz",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"Badajoz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies/Badajoz",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Badajoz",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies",
+						"Badajoz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/jobseekers-studies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
 				"header": [],
 				"url": {
 					"raw": "{{URLBASE}}/api/v1/jobseekers-studies",
@@ -174,189 +1005,24 @@
 		},
 		{
 			"name": "/jobseekers-studies/loadInitialData",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/loadInitialData",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"loadInitialData"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/loadInitialData",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/loadInitialData",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"loadInitialData"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/Almería",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Almería",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"Almería"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/Madrid",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Madrid",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"Madrid"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/Almería",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/Almería",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"Almería"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"2006",
-						"Ambos-sexos",
-						"Almería",
-						"Parados-registrados"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"2006",
-						"Ambos-sexos",
-						"Almería",
-						"Parados-registrados"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Parados-registrados\",\r\n        \"primary\": 9999,\r\n        \"fp_program\": 1.232,\r\n        \"general_education\": 16.12,\r\n        \"total\": 27.469\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
 					}
-				},
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies",
-						"2006",
-						"Ambos-sexos",
-						"Almería",
-						"Parados-registrados"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
+			],
 			"request": {
-				"method": "DELETE",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/2006/Ambos-sexos/Almería/Parados-registrados",
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies/loadInitialData",
 					"host": [
 						"{{URLBASE}}"
 					],
@@ -364,10 +1030,7 @@
 						"api",
 						"v1",
 						"jobseekers-studies",
-						"2006",
-						"Ambos-sexos",
-						"Almería",
-						"Parados-registrados"
+						"loadInitialData"
 					]
 				}
 			},

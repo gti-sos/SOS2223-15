@@ -44,24 +44,21 @@ module.exports = (app) => {
 
     //Docs
     app.get(recurso_url + "/docs", (req, res) => {
-        console.log("/GET jobseekers-studies/docs");
+        console.log("new GET to /jobseekers-studies/docs");
         res.redirect(API_DOC);
     });
 
     //GET al recurso
     app.get(recurso_url, (req, res) => {
-        console.log("/GET jobseekers-studies");
+        console.log("New GET to /jobseekers-studies");
         // Empezamos viendo los registros de la db y eliminamos el _id.
         db.find({}, { _id: 0 }, (err, data) => {
-            // Comprobamos los errores que han podido surgir
             if (err) {
                 console.log(`Error getting jobseekers-studies`);
-                // El estado es el 500 de Internal Server Error
                 res.sendStatus(500);
                 // Comprobamos si existen datos:
             } else if (data.length == 0) {
-                console.log(`Ruta jobseekers-studies Not Found`);
-                // Si no existen datos usamos el estado es 404 de Not Found
+                console.log(`Ruta /jobseekers-studies Not Found`);
                 res.send(data);
             } else {
                 // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
@@ -102,12 +99,10 @@ module.exports = (app) => {
                 // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                 if (datos.length == 0) {
                     console.log(`jobseekers-studies not found`);
-                    // Estado 404: Not Found
-                    res.sendS(datos);
+                    res.sendStatus(400);
                     // Si por el contrario encontramos datos
                 } else {
                     console.log(`Datos de jobseekers-studies: ${datos.length}`);
-                    // Devolvemos dichos datos, estado 200: OK
                     res.json(datos);
                 }
             }
@@ -123,7 +118,7 @@ module.exports = (app) => {
         console.log("New POST to /jobseekers-studies"); //console.log en el servidor  
         db.find({}, function (err, data) {
             if (err) {
-                res.sendStatus(500, "Client Error");
+                res.sendStatus(500);
             }
             // Validar que se envíen todos los campos necesarios
             const requiredFields = ['year', 'gender', 'territory', 'type', 'primary', 'fp_program', 'general_education', 'total'];
@@ -138,14 +133,13 @@ module.exports = (app) => {
                 res.status(405).json('Método no permitido');
                 return;
             } else {
-
                 // Verificar si el recurso ya existe
                 data = data.filter((obj) => {
                     return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type)
                 });
                 if (data.length != 0) {
                     // Si el recurso ya existe, devolver un código de respuesta 409
-                    response.status(409).json(`El recurso ya existe.`);
+                    response.status(409).json(`Recurso ya existente.`);
                 } else {
                     // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
                     db.insert(request.body);
@@ -164,22 +158,22 @@ module.exports = (app) => {
     app.delete(recurso_url, (req, res) => {
         db.remove({}, { multi: true }, (err, numRemoved) => {
             if (err) {
-                res.sendStatus(500, "Client Error");
+                res.sendStatus(500);
             }
             if (!req.body || Object.keys(req.body).length === 0) {
                 db.remove({}, { multi: true }, (err, numRemoved) => {
                     if (err) {
-                        res.sendStatus(500, "ERROR EN CLIENTE");
+                        res.sendStatus(500);
                         return;
                     } else {
-                        res.sendStatus(200, "DELETED");
+                        res.sendStatus(200);
                     }
                 });
             } else {
                 const { year, gender, territory, type } = req.body;
                 db.find({}, function (err, data) {
                     if (err) {
-                        res.sendStatus(500, "Client Error");
+                        res.sendStatus(500);
                     }
                     // Buscar el objeto en la matriz evolution_stats
                     data = data.filter((obj) => {
@@ -187,14 +181,14 @@ module.exports = (app) => {
                     });
                     db.remove({ year: year, gender: gender, territory: territory, type: type }, {}, (err, numRemoved) => {
                         if (err) {
-                            res.sendStatus(500, "ERROR EN CLIENTE");
+                            res.sendStatus(500);
                             return;
                         }
                         if (data === []) {
                             // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
                             res.status(404).json('El objeto no existe');
                         } else {
-                            res.sendStatus(200, "DELETED");
+                            res.sendStatus(200);
                             return;
                         }
                     });
@@ -209,7 +203,7 @@ module.exports = (app) => {
     app.get(recurso_url + "/loadInitialData", (req, res) => {
         db.find({}, function (err, data) {
             if (err) {
-                res.sendStatus(500, "CLIENT ERROR");
+                res.sendStatus(500);
 
             }
             console.log(data);
@@ -220,39 +214,39 @@ module.exports = (app) => {
                 res.sendStatus(200);
                 console.log("Se han creado datos")
             } else {
-                res.json('El arreglo ya contiene datos');
-                console.log('El arreglo ya contiene datos')
+                res.json('El recurso ya contiene datos');
+                console.log('El recurso ya contiene datos')
             }
         });
     });
 
-    //GET a los recursos de una ciudad
-    app.get(recurso_url + '/:city', (req, res) => {
+    //GET a los datos de una ciudad
+    app.get(recurso_url + '/:territory', (req, res) => {
         const from = req.query.from;
         const to = req.query.to;
         const year = req.query.year;
         const gender = req.query.gender;
-        const city = req.params.city;
+        const territory = req.params.territory;
         const type = req.query.type;
-        const primary = req.query.primary;
+        /*const primary = req.query.primary;
         const fp_program = req.query.fp_program;
         const general_education = req.query.general_education;
-        const total = req.query.total;
+        const total = req.query.total;*/
 
         db.find({}, function (err, data) {
             if (err) {
-                res.sendStatus(500, "Client Error");
+                res.sendStatus(500);
             }
             if (from && to) {
                 // Lógica para devolver los datos de la ciudad para el periodo especificado
                 data = data.filter((obj) => {
-                    return (obj.territory == city && obj.year >= from && obj.year <= to);
+                    return (obj.territory == territory && obj.year >= from && obj.year <= to);
                 });
                 //GET de datos del periodo
                 if (from >= to) {
                     response.status(400).json("El rango es erróneo");
                 } else {
-                    console.log(`/GET to /jobseekers-studies/${city}?from=${from}&to=${to}`); //console.log en el servidor
+                    console.log(`New GET to /jobseekers-studies/${territory}?from=${from}&to=${to}`);
                     data.forEach((e) => {
                         delete e._id;
                     });
@@ -261,27 +255,27 @@ module.exports = (app) => {
 
             } else if (year) {
                 data = data.filter((obj) => {
-                    return (obj.year == year && obj.territory == city);
+                    return (obj.year == year && obj.territory == citerritoryty);
                 });
-                console.log(`/GET to /jobseekers-studies/${city}?${year}`); //console.log en el servidor
+                console.log(`New GET to /jobseekers-studies/${territory}?${year}`);
                 data.forEach((e) => {
                     delete e._id;
                 });
                 res.status(200).json(data);
             } else if (type) {
                 data = data.filter((obj) => {
-                    return (obj.type == type);
+                    return (obj.type == type && obj.territory == territory);
                 });
-                console.log(`/GET to /jobseekers-studies/${city}?${fp_program}`); //console.log en el servidor
+                console.log(`New GET to /jobseekers-studies/${territory}?${type}`);
                 data.forEach((e) => {
                     delete e._id;
                 });
                 res.status(200).json(data);
             } else if (gender) {
                 data = data.filter((obj) => {
-                    return (obj.gender == gender && obj.territory == city);
+                    return (obj.gender == gender && obj.territory == territory);
                 });
-                console.log(`/GET to /jobseekers-studies/${city}?${gender}`); //console.log en el servidor
+                console.log(`New GET to /jobseekers-studies/${territory}?${gender}`); //console.log en el servidor
                 data.forEach((e) => {
                     delete e._id;
                 });
@@ -290,12 +284,12 @@ module.exports = (app) => {
             else {
                 // Lógica para devolver los datos de la ciudad
                 data = data.filter((obj) => {
-                    return (obj.territory == city);
+                    return (obj.territory == territory);
                 });
                 if (data.length === 0) {
                     res.status(404).json('La ruta solicitada no existe');
                 } else {
-                    console.log("/GET a una ciudad concreta");
+                    console.log(`New GET to /jobseekers-studies/${territory}`);
                     data.forEach((e) => {
                         delete e._id;
                     });
@@ -309,12 +303,12 @@ module.exports = (app) => {
     });
 
 
-    //DELETE a los datos de una ciudad concreta
+    //DELETE a los datos de una ciudad
     app.delete(recurso_url + '/:territory', (req, res) => {
         const territory = req.params.territory;
         db.find({}, function (err, data) {
             if (err) {
-                res.sendStatus(500, "Client Error");
+                res.sendStatus(500);
             }
             data = data.filter((obj) => {
                 return (obj.territory === territory);
@@ -326,11 +320,11 @@ module.exports = (app) => {
                 if (data) {
                     db.remove({ territory: territory }, { multi: true }, (err, numRemoved) => {
                         if (err) {
-                            res.sendStatus(500, "ERROR EN CLIENTE");
+                            res.sendStatus(500);
                             return;
                         }
                         else {
-                            res.sendStatus(200, "DELETED");
+                            res.sendStatus(200);
                             return;
                         }
                     });
@@ -347,7 +341,7 @@ module.exports = (app) => {
         db.find({}, function (err, data) {
 
             if (err) {
-                res.sendStatus(500, "Client Error");
+                res.sendStatus(500);
             }
             // Buscamos las estadísticas para el territorio y el año indicados
             data = data.filter((obj) => {
@@ -364,7 +358,7 @@ module.exports = (app) => {
             } else {
                 res.status(404).json('La ruta solicitada no existe');
             }
-            console.log("Solicitud /GET")
+            console.log(`New GET to /jobseekers-studies/${year}/${gender}/${territory}/${type}`)
         });
     });
 
@@ -375,31 +369,40 @@ module.exports = (app) => {
     });
 
     //PUT a un dato concreto
-    app.put(recurso_url + '/:year/:gender/:territory/:type', (req, res) => {
-        const { year, gender, territory, type } = req.params;
+    app.put(recurso_url + "/:year/:gender/:territory/:type", (req, res) => {
+        const { gender, territory, type } = req.params;
+        const year = parseInt(req.params.year);
         const yearbody = req.body.year;
+        const genderbody = req.body.gender;
+        const territorybody = req.body.territory;
+        const typebody = req.body.type;
         const body = req.body;
-        db.find({}, function (err, data) {
-            if (err) {
-                res.sendStatus(500, "Client Error");
-            }
-            data = data.filter((obj) => {
-                return (obj.year === parseInt(year) && obj.gender === gender && obj.territory === territory && obj.type === type);
-            });
-            if (data) {
-                db.update({ year: parseInt(year), gender: gender, territory: String(territory), type: type }, { $set: body }, { multi: true }, function (err, numUpdated) {
-                    if (err) {
-                        res.sendStatus(500, "INTERNAL SERVER ERROR");
-                    } else {
-                        console.log(yearbody) //mostrar por consola
-                        res.sendStatus(200, "UPDATED");
-                    }
-                });
-            } else {
-                return res.status(400).json('Estadística errónea');
-            }
+        db.find({}, function (err, filteredList) {
+    
+          if (err) {
+            res.sendStatus(500);
+          }
+          filteredList = filteredList.filter((obj) => {
+            return (obj.year === year && obj.gender == gender && obj.territory === territory && obj.type === type );
+          });
+          if (!filteredList || year !== yearbody || gender !== genderbody || territory !== territorybody || type !== typebody) {
+              return res.status(400).json('Estadística errónea');
+        } else {
+            filteredList.primary = req.body.primary || filteredList.primary;
+            filteredList.fp_program = req.body.fp_program || filteredList.fp_program;
+            filteredList.general_education = req.body.general_education || filteredList.general_education;
+            filteredList.total = req.body.total || filteredList.total;
+            
+            db.update({ $and: [ { year: parseInt(year) }, { territory: String(territory) }] }, { $set: body }, {}, function (err, numUpdated) {
+                if (err) {
+                    res.sendStatus(500, "INTERNAL SERVER ERROR");
+                  } else {
+                      res.sendStatus(200, "UPDATED");
+                  }
+              });
+          }
         });
-    });
+      });
 
 
     //DELETE a un dato concreto
@@ -433,7 +436,7 @@ module.exports = (app) => {
 
                     });
                 } else {
-                    res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
+                    res.status(404).json(`No se encontraron datos para ${territory}`);
                 }
             }
         });
