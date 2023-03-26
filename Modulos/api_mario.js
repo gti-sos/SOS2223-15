@@ -1,8 +1,3 @@
-/*Cosas que faltan:
--Añadir el gender al put.
--Mirar del grupo 13 la extensión del postman realizada. (minuto 20 video l08 y punto 2 del backlog)
--
-*/
 var Datastore = require('nedb'), db = new Datastore;
 //const BASE_API_URL = "/api/v1";
 //const rutaMMS = BASE_API_URL + '/loss-jobs';
