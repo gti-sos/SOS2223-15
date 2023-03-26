@@ -331,7 +331,7 @@
 							"\r",
 							"pm.test(\"There is one more resource in the collection now\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lenght.above(0);\r",
+							"    pm.expect(jsonData).to.have.length.above(0);\r",
 							"});"
 						],
 						"type": "text/javascript"
