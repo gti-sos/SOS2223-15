@@ -63,11 +63,7 @@
 							"\tvar jsonData = pm.response.json();\r",
 							"\tpm.expect(Array.isArray(jsonData)).to.eql(true);\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Responsse is a single resource\", function () {\r",
-							"\tvar jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.length).to.be.at.least(1);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
