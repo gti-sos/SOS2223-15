@@ -208,7 +208,7 @@ module.exports = (app) => {
                     // Si por el contrario encontramos datos
                 } else {
 
-                    console.log(`Datos de salary-stats devueltos : ${datos.length}`);
+                    console.log(`Datos de salary-stats devueltos: ${datos.length}`);
                     // Devolvemos dichos datos, estado 200: OK
                     res.status(200).json(datos);
 
