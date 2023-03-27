@@ -126,6 +126,9 @@ module.exports = (app) => {
                 if (!request.body.hasOwnProperty(field)) {
                     response.status(400).json(`Missing required field: ${field}`);
                     return;
+                } 
+                if(request.body.length!=8){
+                    response.sendStatus(400).json(`El número de campos no es correcto`)
                 }
             }
             // Verificar que la solicitud se hizo en la ruta correcta
