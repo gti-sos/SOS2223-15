@@ -126,26 +126,26 @@ module.exports = (app) => {
                 if (!request.body.hasOwnProperty(field)) {
                     response.status(400).json(`Missing required field: ${field}`);
                     return;
-                } 
+                }
             }
             // Verificar que la solicitud se hizo en la ruta correcta
             if (request.originalUrl !== '/api/v1/jobseekers-studies') {
                 response.status(405).json('Método no permitido');
                 return;
-            } else{
-                    // Verificar si el recurso ya existe
-                    data = data.filter((obj) => {
-                        return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type)
-                    });
-                    if (data.length != 0) {
-                        // Si el recurso ya existe, devolver un código de respuesta 409
-                        response.status(409).json(`Recurso ya existente.`);
-                    } else {
-                        // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
-                        db.insert(request.body);
-                        response.sendStatus(201);
-                    }
-                
+            } else {
+                // Verificar si el recurso ya existe
+                data = data.filter((obj) => {
+                    return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type)
+                });
+                if (data.length != 0) {
+                    // Si el recurso ya existe, devolver un código de respuesta 409
+                    response.status(409).json(`Recurso ya existente.`);
+                } else {
+                    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+                    db.insert(request.body);
+                    response.sendStatus(201);
+                }
+
             }
         });
     });
@@ -379,31 +379,31 @@ module.exports = (app) => {
         const typebody = req.body.type;
         const body = req.body;
         db.find({}, function (err, filteredList) {
-    
-          if (err) {
-            res.sendStatus(500);
-          }
-          filteredList = filteredList.filter((obj) => {
-            return (obj.year === year && obj.gender == gender && obj.territory === territory && obj.type === type );
-          });
-          if (!filteredList || year !== yearbody || gender !== genderbody || territory !== territorybody || type !== typebody) {
-              return res.status(400).json('Estadística errónea');
-        } else {
-            filteredList.primary = req.body.primary || filteredList.primary;
-            filteredList.fp_program = req.body.fp_program || filteredList.fp_program;
-            filteredList.general_education = req.body.general_education || filteredList.general_education;
-            filteredList.total = req.body.total || filteredList.total;
-            
-            db.update({ $and: [ { year: parseInt(year) }, { territory: String(territory) }] }, { $set: body }, {}, function (err, numUpdated) {
-                if (err) {
-                    res.sendStatus(500, "INTERNAL SERVER ERROR");
-                  } else {
-                      res.sendStatus(200, "UPDATED");
-                  }
-              });
-          }
+
+            if (err) {
+                res.sendStatus(500);
+            }
+            filteredList = filteredList.filter((obj) => {
+                return (obj.year === year && obj.gender == gender && obj.territory === territory && obj.type === type);
+            });
+            if (!filteredList || year !== yearbody || gender !== genderbody || territory !== territorybody || type !== typebody) {
+                return res.status(400).json('Estadística errónea');
+            } else {
+                filteredList.primary = req.body.primary || filteredList.primary;
+                filteredList.fp_program = req.body.fp_program || filteredList.fp_program;
+                filteredList.general_education = req.body.general_education || filteredList.general_education;
+                filteredList.total = req.body.total || filteredList.total;
+
+                db.update({ $and: [{ year: parseInt(year) }, { territory: String(territory) }] }, { $set: body }, {}, function (err, numUpdated) {
+                    if (err) {
+                        res.sendStatus(500, "INTERNAL SERVER ERROR");
+                    } else {
+                        res.sendStatus(200, "UPDATED");
+                    }
+                });
+            }
         });
-      });
+    });
 
 
     //DELETE a un dato concreto
