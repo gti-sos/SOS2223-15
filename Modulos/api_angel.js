@@ -210,7 +210,7 @@ module.exports = (app) => {
 
                     console.log(`Datos de salary-stats devueltos : ${datos.length}`);
                     // Devolvemos dichos datos, estado 200: OK
-                    res.status(300).json(datos);
+                    res.status(200).json(datos);
 
                 }
             }
@@ -265,7 +265,7 @@ module.exports = (app) => {
                     // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
                     db.insert(request.body);
                     //salario_medio.push(request.body);
-                    response.sendStatus(201);
+                    response.sendStatus(20001);
                 }
             }
         });
