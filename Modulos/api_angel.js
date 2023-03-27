@@ -265,7 +265,7 @@ module.exports = (app) => {
                     // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
                     db.insert(request.body);
                     //salario_medio.push(request.body);
-                    response.sendStatus(20001);
+                    response.sendStatus(201);
                 }
             }
         });
