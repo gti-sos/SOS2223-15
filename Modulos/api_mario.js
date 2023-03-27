@@ -346,8 +346,8 @@ module.exports = (app) => {
 
 
   //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-  app.get('/api/v1/loss-jobs/:province/:year', (req, res) => {
-    const { province, year } = req.params;
+  app.get('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
+    const { province, year, gender } = req.params;
     db.find({}, function (err, filteredList) {
 
       if (err) {
@@ -355,7 +355,7 @@ module.exports = (app) => {
       }
       // Buscamos las estadísticas para el territorio y el año indicados
       filteredList = filteredList.filter((obj) => {
-        return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year));
+        return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year)&& obj.gender === gender);
       });
 
       if (filteredList) {
@@ -365,7 +365,7 @@ module.exports = (app) => {
         if (req.query.limit != undefined || req.query.offset != undefined) {
           filteredList = pagination(req, filteredList);
         }
-        res.status(200).json(filteredList);
+        res.status(200).json(filteredList[0]);
       } else {
         res.status(404).json('La ruta solicitada no existe');
       }
