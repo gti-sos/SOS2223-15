@@ -127,27 +127,25 @@ module.exports = (app) => {
                     response.status(400).json(`Missing required field: ${field}`);
                     return;
                 } 
-                if(request.body.length!=8){
-                    response.sendStatus(400).json(`El número de campos no es correcto`)
-                }
             }
             // Verificar que la solicitud se hizo en la ruta correcta
             if (request.originalUrl !== '/api/v1/jobseekers-studies') {
-                res.status(405).json('Método no permitido');
+                response.status(405).json('Método no permitido');
                 return;
-            } else {
-                // Verificar si el recurso ya existe
-                data = data.filter((obj) => {
-                    return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type)
-                });
-                if (data.length != 0) {
-                    // Si el recurso ya existe, devolver un código de respuesta 409
-                    response.status(409).json(`Recurso ya existente.`);
-                } else {
-                    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
-                    db.insert(request.body);
-                    response.sendStatus(201);
-                }
+            } else{
+                    // Verificar si el recurso ya existe
+                    data = data.filter((obj) => {
+                        return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type)
+                    });
+                    if (data.length != 0) {
+                        // Si el recurso ya existe, devolver un código de respuesta 409
+                        response.status(409).json(`Recurso ya existente.`);
+                    } else {
+                        // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+                        db.insert(request.body);
+                        response.sendStatus(201);
+                    }
+                
             }
         });
     });
