@@ -17,11 +17,11 @@ module.exports = (app) => {
         { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Parados-registrados', primary: 2.644, fp_program: 7.560, general_education: 65.454, total: 99.399 },
         { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'TEAS', primary: 28, fp_program: 242, general_education: 7.316, total: 13.494 },
         { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Otros-DENOs', primary: 125, fp_program: 188, general_education: 3.164, total: 4.590 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1344, fp_program: 1241, general_education: 16823, total: 29870 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'TEAS', primary: 61, fp_program: 44, general_education: 2196, total: 4921 },
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1.344, fp_program: 1.241, general_education: 16.823, total: 29.870 },
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'TEAS', primary: 61, fp_program: 44, general_education: 2.196, total: 4.921 },
         { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-DENOs', primary: 58, fp_program: 60, general_education: 669, total: 1127 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-no-ocupados-(DENOs)', primary: 1463, fp_program: 1345, general_education: 19687, total: 35918 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-ocupados', primary: 336, fp_program: 412, general_education: 4013, total: 9082 }
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-no-ocupados-(DENOs)', primary: 1.463, fp_program: 1.345, general_education: 19.687, total: 35.918 },
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-ocupados', primary: 336, fp_program: 412, general_education: 4013, total: 9.082 }
 
     ];
 
@@ -148,6 +148,7 @@ module.exports = (app) => {
 
             }
         });
+    
     });
 
     //PUT al recurso
@@ -229,10 +230,10 @@ module.exports = (app) => {
         const gender = req.query.gender;
         const territory = req.params.territory;
         const type = req.query.type;
-        /*const primary = req.query.primary;
+        const primary = req.query.primary;
         const fp_program = req.query.fp_program;
         const general_education = req.query.general_education;
-        const total = req.query.total;*/
+        const total = req.query.total;
 
         db.find({}, function (err, data) {
             if (err) {
@@ -256,7 +257,7 @@ module.exports = (app) => {
 
             } else if (year) {
                 data = data.filter((obj) => {
-                    return (obj.year == year && obj.territory == citerritoryty);
+                    return (obj.year == year && obj.territory == territory);
                 });
                 console.log(`New GET to /jobseekers-studies/${territory}?${year}`);
                 data.forEach((e) => {
@@ -277,6 +278,42 @@ module.exports = (app) => {
                     return (obj.gender == gender && obj.territory == territory);
                 });
                 console.log(`New GET to /jobseekers-studies/${territory}?${gender}`); //console.log en el servidor
+                data.forEach((e) => {
+                    delete e._id;
+                });
+                res.status(200).json(data);
+            } else if (primary) {
+                data = data.filter((obj) => {
+                    return (obj.primary == parseInt(primary) && obj.territory == territory);
+                });
+                console.log(`New GET to /jobseekers-studies/${territory}?${primary}`); //console.log en el servidor
+                data.forEach((e) => {
+                    delete e._id;
+                });
+                res.status(200).json(data);
+            }else if (fp_program) {
+                data = data.filter((obj) => {
+                    return (obj.fp_program == parseInt(fp_program) && obj.territory == territory);
+                });
+                console.log(`New GET to /jobseekers-studies/${territory}?${fp_program}`); //console.log en el servidor
+                data.forEach((e) => {
+                    delete e._id;
+                });
+                res.status(200).json(data);
+            } else if (general_education) {
+                data = data.filter((obj) => {
+                    return (obj.general_education == parseInt(general_education) && obj.territory == territory);
+                });
+                console.log(`New GET to /jobseekers-studies/${territory}?${general_education}`); //console.log en el servidor
+                data.forEach((e) => {
+                    delete e._id;
+                });
+                res.status(200).json(data);
+            } else if (total) {
+                data = data.filter((obj) => {
+                    return (obj.total == parseInt(total) && obj.territory == territory);
+                });
+                console.log(`New GET to /jobseekers-studies/${territory}?${total}`); //console.log en el servidor
                 data.forEach((e) => {
                     delete e._id;
                 });
@@ -349,13 +386,19 @@ module.exports = (app) => {
                 return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type);
             });
             if (data) {
-                data.forEach((e) => {
+                /*data.forEach((e) => {
                     delete e._id;
-                });
+                });*/
                 if (req.query.limit != undefined || req.query.offset != undefined) {
                     data = pagination(req, data);
                 }
-                res.status(200).json(data);
+                if(data.length==1){
+                    data.forEach(element => {
+                        delete element._id;
+                    });
+                    res.status(200).send(JSON.stringify(data[0], null, 2));
+                }
+                //res.status(200).json(data);
             } else {
                 res.status(404).json('La ruta solicitada no existe');
             }
