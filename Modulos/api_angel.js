@@ -262,7 +262,7 @@ module.exports = (app) => {
                     // Si el recurso ya existe, devolver un código de respuesta 409
                     response.status(409).json(`El recurso ya existe.`);
                 } else {
-                    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+                    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201                    
                     db.insert(request.body);
                     //salario_medio.push(request.body);
                     response.sendStatus(201);
