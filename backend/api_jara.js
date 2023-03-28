@@ -7,28 +7,27 @@ const API_DOC = "https://documenter.getpostman.com/view/25974926/2s93RMTuJy";
 module.exports = (app) => {
     //-------------------------------------------------Parte Jara--------------------------------------------------------
     var jobseekers = [
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1.062, fp_program: 1.232, general_education: 16.120, total: 27.469 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'TEAS', primary: 68, fp_program: 51, general_education: 2.394, total: 5.312 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-DENOs', primary: 40, fp_program: 64, general_education: 723, total: 1.177 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-no-ocupados-(DENOs)', primary: 1.170, fp_program: 1.347, general_education: 19.237, total: 33.957 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-ocupados', primary: 279, fp_program: 361, general_education: 3784, total: 7.902 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-demandantes-excluidos-del-paro-registrado', primary: 56, fp_program: 120, general_education: 1.942, total: 2.926 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Total-demandantes-de-empleo', primary: 1.505, fp_program: 1.828, general_education: 24.963, total: 44.785 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Parados-registrados', primary: 2.644, fp_program: 7.560, general_education: 65.454, total: 99.399 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'TEAS', primary: 28, fp_program: 242, general_education: 7.316, total: 13.494 },
-        { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Otros-DENOs', primary: 125, fp_program: 188, general_education: 3.164, total: 4.590 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1.344, fp_program: 1.241, general_education: 16.823, total: 29.870 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'TEAS', primary: 61, fp_program: 44, general_education: 2.196, total: 4.921 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1062, fp_program: 1232, general_education: 16120, total: 27469 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'TEAS', primary: 68, fp_program: 51, general_education: 2394, total: 5312 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-DENOs', primary: 40, fp_program: 64, general_education: 723, total: 1177 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-no-ocupados-(DENOs)', primary: 1170, fp_program: 1347, general_education: 19237, total: 33957 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-ocupados', primary: 279, fp_program: 361, general_education: 3784, total: 7902 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-demandantes-excluidos-del-paro-registrado', primary: 56, fp_program: 120, general_education: 1942, total: 2926 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Total-demandantes-de-empleo', primary: 1505, fp_program: 1828, general_education: 24963, total: 44785 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Parados-registrados', primary: 2644, fp_program: 7560, general_education: 65454, total: 99399 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'TEAS', primary: 28, fp_program: 242, general_education: 7316, total: 13494 },
+        { year: 2006, gender: 'Ambos-sexos', territory: 'Cádiz', type: 'Otros-DENOs', primary: 125, fp_program: 188, general_education: 3164, total: 4590 },
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1344, fp_program: 1241, general_education: 16823, total: 29870 },
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'TEAS', primary: 61, fp_program: 44, general_education: 2196, total: 4921 },
         { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Otros-DENOs', primary: 58, fp_program: 60, general_education: 669, total: 1127 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-no-ocupados-(DENOs)', primary: 1.463, fp_program: 1.345, general_education: 19.687, total: 35.918 },
-        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-ocupados', primary: 336, fp_program: 412, general_education: 4013, total: 9.082 }
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-no-ocupados-(DENOs)', primary: 1463, fp_program: 1345, general_education: 19687, total: 35918 },
+        { year: 2007, gender: 'Ambos-sexos', territory: 'Almería', type: 'Demandantes-ocupados', primary: 336, fp_program: 412, general_education: 4013, total: 9082 }
 
     ];
 
     db.insert(jobseekers);
 
     function pagination(req, lista) {
-
         var res = [];
         const limit = req.query.limit;
         const offset = req.query.offset;
@@ -51,7 +50,6 @@ module.exports = (app) => {
     //GET al recurso
     app.get(recurso_url, (req, res) => {
         console.log("New GET to /jobseekers-studies");
-        // Empezamos viendo los registros de la db y eliminamos el _id.
         db.find({}, { _id: 0 }, (err, data) => {
             if (err) {
                 console.log(`Error getting jobseekers-studies`);
@@ -59,9 +57,9 @@ module.exports = (app) => {
                 // Comprobamos si existen datos:
             } else if (data.length == 0) {
                 console.log(`Ruta /jobseekers-studies Not Found`);
+                res.sendStatus(404);
                 res.send(data);
             } else {
-                // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
                 let i = -1;
                 if (!req.query.offset) {
                     var offset = -1;
@@ -86,7 +84,6 @@ module.exports = (app) => {
                         ((req.query.total_over == undefined) || (parseInt(req.query.total_over) <= x.total)) &&
                         ((req.query.total_under == undefined) || (parseInt(req.query.total_under) >= x.total)));
                 }).filter((x) => {
-                    // La paginación
                     i = i + 1;
                     if (req.query.limit == undefined) {
                         var cond = true;
@@ -99,11 +96,15 @@ module.exports = (app) => {
                 // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                 if (datos.length == 0) {
                     console.log(`jobseekers-studies not found`);
-                    res.sendStatus(400);
-                    // Si por el contrario encontramos datos
-                } else {
-                    console.log(`Datos de jobseekers-studies: ${datos.length}`);
-                    res.json(datos);
+                    res.sendStatus(404);
+                }
+                else {
+                    if (datos.length == 1) {
+                        res.status(200).send(JSON.stringify(datos[0], null, 2));
+                    } else {
+                        console.log(`Datos de jobseekers-studies: ${datos.length}`);
+                        res.json(datos);
+                    }
                 }
             }
         })
@@ -148,12 +149,12 @@ module.exports = (app) => {
 
             }
         });
-    
+
     });
 
     //PUT al recurso
-    app.put(recurso_url, (request, response) => {
-        response.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
+    app.put(recurso_url, (req, res) => {
+        res.sendStatus(405).send('No se permite hacer un PUT en esta ruta');
     });
 
     //DELETE al recurso
@@ -227,26 +228,20 @@ module.exports = (app) => {
         const from = req.query.from;
         const to = req.query.to;
         const year = req.query.year;
-        const gender = req.query.gender;
         const territory = req.params.territory;
-        const type = req.query.type;
-        const primary = req.query.primary;
-        const fp_program = req.query.fp_program;
-        const general_education = req.query.general_education;
-        const total = req.query.total;
 
         db.find({}, function (err, data) {
             if (err) {
                 res.sendStatus(500);
             }
             if (from && to) {
-                // Lógica para devolver los datos de la ciudad para el periodo especificado
+                //Filtrado de los datos de la ciudad para un periodo especificado
                 data = data.filter((obj) => {
                     return (obj.territory == territory && obj.year >= from && obj.year <= to);
                 });
                 //GET de datos del periodo
                 if (from >= to) {
-                    response.status(400).json("El rango es erróneo");
+                    res.status(400).json("El rango es erróneo");
                 } else {
                     console.log(`New GET to /jobseekers-studies/${territory}?from=${from}&to=${to}`);
                     data.forEach((e) => {
@@ -264,63 +259,9 @@ module.exports = (app) => {
                     delete e._id;
                 });
                 res.status(200).json(data);
-            } else if (type) {
-                data = data.filter((obj) => {
-                    return (obj.type == type && obj.territory == territory);
-                });
-                console.log(`New GET to /jobseekers-studies/${territory}?${type}`);
-                data.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(data);
-            } else if (gender) {
-                data = data.filter((obj) => {
-                    return (obj.gender == gender && obj.territory == territory);
-                });
-                console.log(`New GET to /jobseekers-studies/${territory}?${gender}`); //console.log en el servidor
-                data.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(data);
-            } else if (primary) {
-                data = data.filter((obj) => {
-                    return (obj.primary == parseInt(primary) && obj.territory == territory);
-                });
-                console.log(`New GET to /jobseekers-studies/${territory}?${primary}`); //console.log en el servidor
-                data.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(data);
-            }else if (fp_program) {
-                data = data.filter((obj) => {
-                    return (obj.fp_program == parseInt(fp_program) && obj.territory == territory);
-                });
-                console.log(`New GET to /jobseekers-studies/${territory}?${fp_program}`); //console.log en el servidor
-                data.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(data);
-            } else if (general_education) {
-                data = data.filter((obj) => {
-                    return (obj.general_education == parseInt(general_education) && obj.territory == territory);
-                });
-                console.log(`New GET to /jobseekers-studies/${territory}?${general_education}`); //console.log en el servidor
-                data.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(data);
-            } else if (total) {
-                data = data.filter((obj) => {
-                    return (obj.total == parseInt(total) && obj.territory == territory);
-                });
-                console.log(`New GET to /jobseekers-studies/${territory}?${total}`); //console.log en el servidor
-                data.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(data);
             }
             else {
-                // Lógica para devolver los datos de la ciudad
+                // Filtrado para devolver los datos de la ciudad
                 data = data.filter((obj) => {
                     return (obj.territory == territory);
                 });
@@ -386,13 +327,10 @@ module.exports = (app) => {
                 return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type);
             });
             if (data) {
-                /*data.forEach((e) => {
-                    delete e._id;
-                });*/
                 if (req.query.limit != undefined || req.query.offset != undefined) {
                     data = pagination(req, data);
                 }
-                if(data.length==1){
+                if (data.length == 1) {
                     data.forEach(element => {
                         delete element._id;
                     });
@@ -408,8 +346,8 @@ module.exports = (app) => {
 
 
     //No se puede hacer POST a un dato concreto
-    app.post(recurso_url + "/:year/:gender/:territory/:type", (request, response) => {
-        response.sendStatus(405).send('No se permite hacer un POST en esta ruta');
+    app.post(recurso_url + "/:year/:gender/:territory/:type", (req, res) => {
+        res.sendStatus(405).send('No se permite hacer un POST en esta ruta');
     });
 
     //PUT a un dato concreto
