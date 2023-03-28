@@ -136,7 +136,7 @@ module.exports = (app) => {
         if (!req.query.offset) {
           var offset = -1;
         } else {
-          var offset = parseInt(req.query.offset);
+          var offset = parseInt(req.query.offset)-1;
         }
 
         // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
