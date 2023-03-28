@@ -133,11 +133,11 @@ module.exports = (app) => {
 
         // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
         let i = -1;
-        if (!req.query.offset) {
-          var offset = -1;
-        } else {
-          var offset = parseInt(req.query.offset);
-        }
+                if (!req.query.offset || parseInt(req.query.offset) == 0) {
+                    var offset = -1;
+                } else {
+                    var offset = parseInt(req.query.offset)-1; //Le resto 1 para que de bien el resultado al usar offset
+                }
 
         // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
         // y si es un parámetro en la query se comprueba la condicion
@@ -367,7 +367,7 @@ module.exports = (app) => {
         if (req.query.limit != undefined || req.query.offset != undefined) {
           filteredList = pagination(req, filteredList);
         }
-        res.status(200).json(filteredList);
+        res.status(200).json(filteredList[0]);
       } else {
         res.status(404).json('La ruta solicitada no existe');
       }
@@ -396,7 +396,7 @@ module.exports = (app) => {
         if (req.query.limit != undefined || req.query.offset != undefined) {
           filteredList = pagination(req, filteredList);
         }
-        res.status(200).json(filteredList);
+        res.status(200).json(filteredList[0]);
       } else {
         res.status(404).json('La ruta solicitada no existe');
       }
