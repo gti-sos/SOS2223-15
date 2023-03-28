@@ -320,6 +320,48 @@
 			"response": []
 		},
 		{
+			"name": "?territory&total",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?territory=Cádiz&total_under=20000",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "Cádiz"
+						},
+						{
+							"key": "total_under",
+							"value": "20000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/territory?from&to",
 			"event": [
 				{
