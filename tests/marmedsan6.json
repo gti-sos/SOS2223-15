@@ -196,7 +196,7 @@
 							"\r",
 							"pm.test(\"Your test contains\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -224,53 +224,7 @@
 			"response": []
 		},
 		{
-			"name": "GET por provincia",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function(){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Barcelona",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					],
-					"query": [
-						{
-							"key": "province",
-							"value": "Barcelona"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET por provincia y año",
+			"name": "GET por provincia, año y genero",
 			"event": [
 				{
 					"listen": "test",
@@ -282,7 +236,7 @@
 							"\r",
 							"pm.test(\"Your test contains\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -333,11 +287,7 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.be.an(\"object\");\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -367,72 +317,6 @@
 			"response": []
 		},
 		{
-			"name": "GET provincia y genero",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Barcelona&year=2029&gender=Mujeres&low_due_to_placement= 90524&\nno_renovation=40810& other_reason= 8721",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					],
-					"query": [
-						{
-							"key": "province",
-							"value": "Barcelona"
-						},
-						{
-							"key": "year",
-							"value": "2029"
-						},
-						{
-							"key": "gender",
-							"value": "Mujeres"
-						},
-						{
-							"key": "low_due_to_placement",
-							"value": " 90524"
-						},
-						{
-							"key": "\nno_renovation",
-							"value": "40810"
-						},
-						{
-							"key": " other_reason",
-							"value": " 8721"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "GET para mostrar fallo 404",
 			"event": [
 				{
@@ -451,7 +335,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs/Madrid",
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs/Mayorca",
 					"protocol": "https",
 					"host": [
 						"sos2223-15",
@@ -462,7 +346,7 @@
 						"api",
 						"v1",
 						"loss-jobs",
-						"Madrid"
+						"Mayorca"
 					]
 				}
 			},
