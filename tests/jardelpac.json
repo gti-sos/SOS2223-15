@@ -71,7 +71,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Parados-registrados\",\r\n        \"primary\": 1.062,\r\n        \"fp_program\": 1.232,\r\n        \"general_education\": 16.12,\r\n        \"total\": 27.469\r\n    }",
+					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Otros-DENOs\",\r\n        \"primary\": 40,\r\n        \"fp_program\": 64,\r\n        \"general_education\": 723,\r\n        \"total\": 1177\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -112,7 +112,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Parados-registrados\",\r\n        \"primary\": 1.062,\r\n        \"fp_program\": 1.232,\r\n        \"general_education\": 16.12\r\n    }",
+					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Almería\",\r\n        \"type\": \"Parados-registrados\",\r\n        \"primary\": 1062,\r\n        \"fp_program\": 1232,\r\n        \"general_education\": 1612\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -238,44 +238,6 @@
 						"Ambos-sexos",
 						"Almería",
 						"Parados-registrados"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "?type",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?type=Parados-registrados",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobseekers-studies"
-					],
-					"query": [
-						{
-							"key": "type",
-							"value": "Parados-registrados"
-						}
 					]
 				}
 			},
@@ -485,6 +447,182 @@
 			"response": []
 		},
 		{
+			"name": "?type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?type=Parados-registrados",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Parados-registrados"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?type&primary_over",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?type=Parados-registrados&primary_over=1000",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Parados-registrados"
+						},
+						{
+							"key": "primary_over",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?type&primary_over&general_education_under",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?type=Parados-registrados&primary_over=1000&general_education_under=60000",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Parados-registrados"
+						},
+						{
+							"key": "primary_over",
+							"value": "1000"
+						},
+						{
+							"key": "general_education_under",
+							"value": "60000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?type&primary_over&general_education_under&year",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/jobseekers-studies?type=Parados-registrados&primary_over=1000&general_education_under=60000&year=2007",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobseekers-studies"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Parados-registrados"
+						},
+						{
+							"key": "primary_over",
+							"value": "1000"
+						},
+						{
+							"key": "general_education_under",
+							"value": "60000"
+						},
+						{
+							"key": "year",
+							"value": "2007"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/jobseekers-studies",
 			"event": [
 				{
@@ -536,7 +674,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2008,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Cádiz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7.316,\r\n        \"total\": 13.494\r\n    }",
+					"raw": "{\r\n        \"year\": 2008,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Cádiz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7316,\r\n        \"total\": 13494\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -681,7 +819,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2007,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Badajoz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7.316,\r\n        \"total\": 13.494\r\n    }",
+					"raw": "{\r\n        \"year\": 2007,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Badajoz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7316,\r\n        \"total\": 13494\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -722,7 +860,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Badajoz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7.316,\r\n        \"total\": 13.494\r\n    }",
+					"raw": "{\r\n        \"year\": 2006,\r\n        \"gender\": \"Ambos-sexos\",\r\n        \"territory\": \"Badajoz\",\r\n        \"type\": \"TEAS\",\r\n        \"primary\": 28,\r\n        \"fp_program\": 242,\r\n        \"general_education\": 7316,\r\n        \"total\": 13494\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -756,6 +894,9 @@
 							"pm.test(\"The array must contain more than 1 element\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.a.lengthOf.above(0);\r",
+							"});\r",
+							"pm.test(\"This must contains Badajoz\", function() {\r",
+							"\tpm.expect(pm.response.text()).contains(\"Badajoz\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -790,9 +931,8 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"1 element must be returned\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.a.lengthOf(1);\r",
+							"pm.test(\"This must contains 2006, Ambos-sexos, Badajoz and TEAS\", function() {\r",
+							"\tpm.expect(pm.response.text()).contains(2006 && \"Ambos-sexos\" && \"Badajoz\" && \"TEAS\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -875,9 +1015,8 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"1 element must be returned\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.a.lengthOf(1);\r",
+							"pm.test(\"This must contains 2006, Ambos-sexos, Badajoz and TEAS\", function() {\r",
+							"\tpm.expect(pm.response.text()).contains(2006 && \"Ambos-sexos\" && \"Badajoz\" && \"TEAS\");\r",
 							"});"
 						],
 						"type": "text/javascript"
