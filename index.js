@@ -1,9 +1,9 @@
 var express = require("express");
 var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
-var mudulo_jara = require("./Modulos/api_jara");
-var modulo_mario = require("./Modulos/api_mario");
-var modulo_angel = require("./Modulos/api_angel");
+var mudulo_jara = require("./backend/api_jara");
+var modulo_mario = require("./backend/api_mario");
+var modulo_angel = require("./backend/api_angel");
 const Datastore = require('nedb');
 
 

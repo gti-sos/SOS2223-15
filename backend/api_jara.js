@@ -149,7 +149,7 @@ module.exports = (app) => {
 
             }
         });
-    
+
     });
 
     //PUT al recurso
