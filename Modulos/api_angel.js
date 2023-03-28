@@ -144,7 +144,9 @@ module.exports = (app) => {
     //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
     //GET a salary-stats
     app.get('/api/v1/salary-stats', (req, res) => {
-
+        const salaried_behind = req.query.salaried_behind;
+        const average_salary_behind = req.query.average_salary_behind;
+        const standard_deviation_over = req.query.standard_deviation_over;
         console.log("/GET salary-stats");
 
         // Empezamos viendo los registros de la db y eliminamos el _id.
@@ -170,10 +172,10 @@ module.exports = (app) => {
 
                 // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
                 let i = -1;
-                if (!req.query.offset) {
+                if (!req.query.offset || parseInt(req.query.offset) == 0) {
                     var offset = -1;
                 } else {
-                    var offset = parseInt(req.query.offset);
+                    var offset = parseInt(req.query.offset)-1; //Le resto 1 para que de bien el resultado al usar offset
                 }
 
                 // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
@@ -184,15 +186,15 @@ module.exports = (app) => {
                         ((req.query.to == undefined) || (parseInt(req.query.to) >= x.year)) &&
                         ((req.query.province == undefined) || (req.query.province === x.province)) &&
                         ((req.query.gender == undefined) || (req.query.gender === x.gender)) &&
-                        ((req.query.salaried == undefined) || (parseInt(req.query.salaried) <= x.salaried)) &&
-                        ((req.query.average_salary == undefined) || (parseInt(req.query.average_salary) <= x.average_salary)) &&
-                        ((req.query.standard_deviation == undefined) || (parseInt(req.query.standard_deviation) >= x.average_salary)));
+                        ((req.query.salaried == undefined) || (parseInt(req.query.salaried_behind) <= x.salaried)) &&
+                        ((req.query.average_salary == undefined) || (parseInt(req.query.average_salary_behind) <= x.average_salary)) &&
+                        ((req.query.standard_deviation == undefined) || (parseInt(req.query.standard_deviation_over) >= x.average_salary)));
                 }).filter((x) => {
                     // La paginación
                     i = i + 1;
-                    if (req.query.limit == undefined) {
+                    if ((req.query.limit == undefined)) { // Si no se da limit, devuelve todos los datos a partir del offset.
                         var cond = true;
-                    } else {
+                    } else { // Si se da un limit, se devuelven todos los datos a partir del offset y además cumplen la condición cond.
                         var cond = (offset + parseInt(req.query.limit)) >= i;
                     }
                     return (i > offset) && cond;
@@ -201,20 +203,43 @@ module.exports = (app) => {
                 // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                 if (datos.length == 0) {
 
-                    console.log(`salary-stats not found`);
-                    // Estado 404: Not Found
+                    console.log(`salary-stats not found. Data:${datos.length} effeee ${req.query.offset}`);
                     res.sendStatus(404);
 
                     // Si por el contrario encontramos datos
                 } else {
-
-                    console.log(`Datos de salary-stats devueltos: ${datos.length}`);
-                    // Devolvemos dichos datos, estado 200: OK
-                    if(datos.length==1 && offset==0 && limit==0){
-                        res.status(200).json(datos[0]);
-                    }else{
-                    res.status(200).json(datos);
-                    console.log(datos.length)
+                    if(salaried_behind != undefined){
+                        datos = datos.filter((reg) => {
+                            return (reg.salaried <= salaried_behind);
+                        });
+                        res.status(200).json(datos);
+                        console.log("Salaried_behind");
+                        return; // Ponemos el return para que terminen los ifs y no salte al siguiente else
+                    }
+                    if(average_salary_behind != undefined){
+                        datos = datos.filter((reg) => {
+                            return (reg.average_salary <= average_salary_behind);
+                        });
+                        res.status(200).json(datos);
+                        return;
+                    }
+                    if(standard_deviation_over != undefined){
+                        datos = datos.filter((reg) => {
+                            return (reg.standard_deviation >= standard_deviation_over);
+                        });
+                        res.status(200).json(datos);
+                        return;
+                    }
+                    else{
+                        console.log(`Datos de salary-stats devueltos: ${datos.length}`);
+                        // Devolvemos dichos datos, estado 200: OK
+                        if(datos.length==1 && req.query.offset==undefined && req.query.limit==undefined){
+                            res.status(200).json(datos[0]);
+                            return;
+                        }else{
+                            res.status(200).json(datos);
+                            //console.log(datos.length)
+                        }
                     }
                 }
             }
@@ -236,7 +261,8 @@ module.exports = (app) => {
         console.log("New POST to /salary-stats"); //console.log en el servidor
         if (comprobar_tipos( province,gender,year,salaried,average_salary,standard_deviation) ) {
             response.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
-            console.log("INCORRECT PARAMETER TYPE")
+            console.log("INCORRECT PARAMETER TYPE");
+
         } else {
         db.find({}, function (err, filteredList) {
 
@@ -248,7 +274,14 @@ module.exports = (app) => {
             const requiredFields = ['province', 'gender', 'year', 'salaried', 'average_salary', 'standard_deviation'];
             for (const field of requiredFields) {
                 if (!request.body.hasOwnProperty(field)) {
+                    console.log(request.body);
                     return response.status(400).json(`Missing required field: ${field}`);
+                    
+                }
+            }
+            for(var elem of Object.keys(request.body)){ // Con Object.keys(request.body), obtenemos todas las claves del objeto request.body
+                if(!requiredFields.includes(elem)){
+                    return response.status(400).json(`There are fields that does not match the structure, as: ${elem}`);
                 }
             }
             // Verificar que la solicitud se hizo en la ruta correcta
@@ -276,62 +309,6 @@ module.exports = (app) => {
     }
     });
 
-    // Método POST para la ruta base
-
-    /*
-    app.post(rutaBase, (request, response) => {
-        const province = request.body.province;
-        const gender = request.body.gender;
-        const year = request.body.year;
-        const salaried = request.body.salaried;
-        const average_salary = request.body.average_salary;
-        const standard_deviation = request.body.standard_deviation;
-        console.log("New POST to /salary-stats"); //console.log en el servidor 
-        if (comprobar_tipos( province,gender,year,salaried,average_salary,standard_deviation) ) {
-            res.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
-        } else {
-            db.find({}, function (err, filteredList) {
-
-                if (err) {
-                    res.sendStatus(500, "Client Error");
-                }
-                // Validar que se envíen todos los campos necesarios
-                const requiredFields = ['province', , 'gender', 'year', 'salaried', 'average_salary', 'standard_deviation'];
-                for (const field of requiredFields) {
-                    if (!request.body.hasOwnProperty(field)) {
-                        response.status(400).json(`Missing required field: ${field}`);
-                        return;
-                    }
-                }
-                // Verificar que la solicitud se hizo en la ruta correcta
-                if (request.originalUrl !== '/api/v1/salary-stats') {
-                    res.status(405).json('Método no permitido');
-                    return;
-                } else {
-
-                    // Verificar si el recurso ya existe
-                    //const existingObject = salario_medio.find(obj => obj.province === province && obj.year === year);
-                    filteredList = filteredList.filter((obj) => {
-                        return (province == obj.province && gender == obj.gender && year == obj.year)
-                    });
-                    //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
-                    if (filteredList.length != 0) {
-                        // Si el recurso ya existe, devolver un código de respuesta 409
-                        response.status(409).json(`El recurso ya existe.`);
-                        console.log(typeof province);
-                        console.log(typeof year)
-                    } else {
-                        // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
-                        db.insert(request.body);
-                        //salario_medio.push(request.body);
-                        response.sendStatus(201);
-                    }
-                }
-            });
-        }
-    });
-
-    */
 
     // Método PUT para la ruta base
     app.put(rutaBase, (req, res) => {
@@ -345,7 +322,7 @@ module.exports = (app) => {
         res.status(405).json('El método POST no está permitido en esta ruta');
     });
 
-    //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y year CONCRETO.
+    //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y YEAR CONCRETO.
     app.get('/api/v1/salary-stats/:province', (req, res) => {
         const province = req.params.province.toLowerCase();
         const from = req.query.from;
@@ -456,7 +433,6 @@ module.exports = (app) => {
     app.get('/api/v1/salary-stats/:province/:year', (req, res) => {
         const { province, year } = req.params;
         db.find({}, function (err, filteredList) {
-
             if (err) {
                 res.sendStatus(500, "Client Error");
             }
