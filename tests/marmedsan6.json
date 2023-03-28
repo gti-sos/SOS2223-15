@@ -7,44 +7,14 @@
 	},
 	"item": [
 		{
-			"name": "GET loadInitialData",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.ew.r.appspot.com/api/v1/loss-jobs/loadInitialData",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"ew",
-						"r",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs",
-						"loadInitialData"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET global",
+			"name": "POST a coleccion, si lo vuelvo a ejecutar salta el 409",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function(){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"    pm.response.to.have.status(201);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -52,8 +22,17 @@
 				}
 			],
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Barcelona\",\r\n        \"year\": 2029,\r\n        \"gender\": \"Mujeres\",\r\n        \"low_due_to_placement\": 90524,\r\n        \"no_renovation\": 40810,\r\n        \"other_reason\": 8721\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs",
 					"protocol": "https",
@@ -72,283 +51,14 @@
 			"response": []
 		},
 		{
-			"name": "GET por provincia",
+			"name": "409",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function(){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Almeria",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					],
-					"query": [
-						{
-							"key": "province",
-							"value": "Almeria"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET por provincia y año",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Almeria&year=2021",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					],
-					"query": [
-						{
-							"key": "province",
-							"value": "Almeria"
-						},
-						{
-							"key": "year",
-							"value": "2021"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET por provincia y año sin query",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs/Almeria/2021",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs",
-						"Almeria",
-						"2021"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET provincia y genero",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Almeria&gender=Hombres",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					],
-					"query": [
-						{
-							"key": "province",
-							"value": "Almeria"
-						},
-						{
-							"key": "gender",
-							"value": "Hombres"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET para mostrar fallo 404",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs/Madrid",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs",
-						"Madrid"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET from to",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?from=2021&to=2021",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					],
-					"query": [
-						{
-							"key": "from",
-							"value": "2021"
-						},
-						{
-							"key": "to",
-							"value": "2021"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST a coleccion",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function(){\r",
-							"    pm.response.to.have.status(201);\r",
+							"pm.test(\"Status code is 409\", function(){\r",
+							"    pm.response.to.have.status(409);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -430,6 +140,380 @@
 			"response": []
 		},
 		{
+			"name": "POST error 400 missing field",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"gender\": \"Mujeres\",\r\n        \"low_due_to_placement\": 56899,\r\n        \"no_renovation\": 40810,\r\n        \"other_reason\": 8721\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET global",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET por provincia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Barcelona",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Barcelona"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET por provincia y año",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Barcelona&year=2029&gender=Mujeres",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Barcelona"
+						},
+						{
+							"key": "year",
+							"value": "2029"
+						},
+						{
+							"key": "gender",
+							"value": "Mujeres"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET por provincia y año sin query",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs/Barcelona/2029/Mujeres",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs",
+						"Barcelona",
+						"2029",
+						"Mujeres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET provincia y genero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?province=Barcelona&year=2029&gender=Mujeres&low_due_to_placement= 90524&\nno_renovation=40810& other_reason= 8721",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Barcelona"
+						},
+						{
+							"key": "year",
+							"value": "2029"
+						},
+						{
+							"key": "gender",
+							"value": "Mujeres"
+						},
+						{
+							"key": "low_due_to_placement",
+							"value": " 90524"
+						},
+						{
+							"key": "\nno_renovation",
+							"value": "40810"
+						},
+						{
+							"key": " other_reason",
+							"value": " 8721"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET para mostrar fallo 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs/Madrid",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs",
+						"Madrid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET from to",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs?from=2019&to=2029",
+					"protocol": "https",
+					"host": [
+						"sos2223-15",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loss-jobs"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2019"
+						},
+						{
+							"key": "to",
+							"value": "2029"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "PUT por provincia y año",
 			"event": [
 				{
@@ -479,51 +563,7 @@
 			"response": []
 		},
 		{
-			"name": "POST error 400 missing field",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 400\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"gender\": \"Mujeres\",\r\n        \"low_due_to_placement\": 56899,\r\n        \"no_renovation\": 40810,\r\n        \"other_reason\": 8721\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT error bad request",
+			"name": "PUT error bad request 400 (quitar year por ej)",
 			"event": [
 				{
 					"listen": "test",
@@ -572,14 +612,14 @@
 			"response": []
 		},
 		{
-			"name": "DELETE a todo",
+			"name": "PUT error 405",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -587,41 +627,10 @@
 				}
 			],
 			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://sos2223-15.appspot.com/api/v1/loss-jobs",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "lid",
-			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-15.ew.r.appspot.com/api/v1/loss-jobs/loadInitialData",
+					"raw": "https://sos2223-15.ew.r.appspot.com/api/v1/loss-jobs",
 					"protocol": "https",
 					"host": [
 						"sos2223-15",
@@ -633,8 +642,7 @@
 					"path": [
 						"api",
 						"v1",
-						"loss-jobs",
-						"loadInitialData"
+						"loss-jobs"
 					]
 				}
 			},
@@ -659,7 +667,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-15.ew.r.appspot.com/api/v1/loss-jobs/Sevilla/2022/Hombres",
+					"raw": "https://sos2223-15.ew.r.appspot.com/api/v1/loss-jobs/Barcelona/2029/Mujeres",
 					"protocol": "https",
 					"host": [
 						"sos2223-15",
@@ -672,34 +680,9 @@
 						"api",
 						"v1",
 						"loss-jobs",
-						"Sevilla",
-						"2022",
-						"Hombres"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "lid",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sos2223-15.ew.r.appspot.com/api/v1/loss-jobs/loadInitialData",
-					"protocol": "https",
-					"host": [
-						"sos2223-15",
-						"ew",
-						"r",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"loss-jobs",
-						"loadInitialData"
+						"Barcelona",
+						"2029",
+						"Mujeres"
 					]
 				}
 			},
