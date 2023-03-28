@@ -184,9 +184,9 @@ module.exports = (app) => {
                         ((req.query.to == undefined) || (parseInt(req.query.to) >= x.year)) &&
                         ((req.query.province == undefined) || (req.query.province === x.province)) &&
                         ((req.query.gender == undefined) || (req.query.gender === x.gender)) &&
-                        ((req.query.salaried == undefined) || (parseInt(req.query.salaried))) &&
-                        ((req.query.average_salary == undefined) || (parseInt(req.query.average_salary))) &&
-                        ((req.query.standard_deviation == undefined) || (parseInt(req.query.standard_deviation) >= x.man)));
+                        ((req.query.salaried == undefined) || (parseInt(req.query.salaried) <= x.salaried)) &&
+                        ((req.query.average_salary == undefined) || (parseInt(req.query.average_salary) <= x.average_salary)) &&
+                        ((req.query.standard_deviation == undefined) || (parseInt(req.query.standard_deviation) >= x.average_salary)));
                 }).filter((x) => {
                     // La paginación
                     i = i + 1;
@@ -210,8 +210,12 @@ module.exports = (app) => {
 
                     console.log(`Datos de salary-stats devueltos: ${datos.length}`);
                     // Devolvemos dichos datos, estado 200: OK
+                    if(datos.length==1 && offset==0 && limit==0){
+                        res.status(200).json(datos[0]);
+                    }else{
                     res.status(200).json(datos);
-
+                    console.log(datos.length)
+                    }
                 }
             }
         })
@@ -249,7 +253,7 @@ module.exports = (app) => {
             }
             // Verificar que la solicitud se hizo en la ruta correcta
             if (request.originalUrl !== '/api/v1/salary-stats') {
-                res.status(405).json('Método no permitido');
+                response.status(405).json('Método no permitido');
             } else {
 
                 // Verificar si el recurso ya existe
