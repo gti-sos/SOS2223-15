@@ -149,7 +149,7 @@ module.exports = (app) => {
             ((req.query.gender == undefined) || (req.query.gender === x.gender)) &&
             ((req.query.low_due_to_placement == undefined) || (parseInt(req.query.low_due_to_placement))) &&
             ((req.query.no_renovation == undefined) || (parseInt(req.query.no_renovation))) &&
-            ((req.query.other_reason == undefined) || (parseInt(req.query.other_reason) >= x.man)));
+            ((req.query.other_reason == undefined) || (parseInt(req.query.other_reason))));
         }).filter((x) => {
           // La paginación
           i = i + 1;
@@ -173,7 +173,13 @@ module.exports = (app) => {
 
           console.log(`Datos de loss-jobs devueltos: ${datos.length}`);
           // Devolvemos dichos datos, estado 200: OK
-          res.json(datos);
+          if(datos.length==1 && req.query.offset==undefined && req.query.limit==undefined){
+            res.status(200).json(datos[0]);
+            return;
+          }else{
+            res.status(200).json(datos);
+            //console.log(datos.length)
+        }
 
         }
       }
@@ -243,10 +249,10 @@ module.exports = (app) => {
     const province = req.params.province.toLowerCase();
     const from = req.query.from;
     const to = req.query.to;
+    const man = req.query.man;
     //const province = req.query.province;
     const year = req.query.year;
     const gender = req.query.gender;
-    const man = req.query.man;
     const low_due_to_placement = req.query.low_due_to_placement;
     const no_renovation = req.query.no_renovation;
     const other_reason = req.query.other_reason;
@@ -337,14 +343,10 @@ module.exports = (app) => {
           if (req.query.limit != undefined || req.query.offset != undefined) {
             filteredList = pagination(req, filteredList);
           }
-          res.status(200).json(filteredList);
         }
       }
     });
   });
-
-
-
   //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
   app.get('/api/v1/loss-jobs/:province/:year', (req, res) => {
     const { province, year } = req.params;
@@ -356,6 +358,35 @@ module.exports = (app) => {
       // Buscamos las estadísticas para el territorio y el año indicados
       filteredList = filteredList.filter((obj) => {
         return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year));
+      });
+
+      if (filteredList) {
+        filteredList.forEach((e) => {
+          delete e._id;
+        });
+        if (req.query.limit != undefined || req.query.offset != undefined) {
+          filteredList = pagination(req, filteredList);
+        }
+        res.status(200).json(filteredList);
+      } else {
+        res.status(404).json('La ruta solicitada no existe');
+      }
+      console.log("Solicitud /GET")
+    });
+  });
+
+
+  //CODIGO PARA PODER HACER UN GET A UNA CIUDAD,FECHA Y GENERO ESPECÍFICA.
+  app.get('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
+    const { province, year, gender } = req.params;
+    db.find({}, function (err, filteredList) {
+
+      if (err) {
+        res.sendStatus(500, "Client Error");
+      }
+      // Buscamos las estadísticas para el territorio y el año indicados
+      filteredList = filteredList.filter((obj) => {
+        return (obj.province.toLowerCase() == province.toLowerCase() && obj.year === parseInt(year) && obj.gender === gender);
       });
 
       if (filteredList) {
@@ -520,52 +551,6 @@ module.exports = (app) => {
         }
       });
     }); 
-  /*
-    app.use((req, res) => {
-      res.status(405).send('Method Not Allowed');
-  });
-  */
-/*
-  //DELETE PARA UNA RUTA ESPECÍFICA DE UNA PROVINCIA Y AÑO.
-  app.delete('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
-    const province = req.params.province;
-    const gender = req.params.gender;
-    const year = req.params.year;
-    db.find({}, function (err, filteredList) {
-
-      if (err) {
-        res.sendStatus(500, "Client Error");
-      }
-      //const filteredStats = salario_medio.filter(stats => stats.province === province);
-      filteredList = filteredList.filter((obj) => {
-        return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender);
-      });
-      if (filteredList.length === 0) {
-        res.status(404).json(`No se encontraron datos para ${province} y ${year}`);
-      } else {
-        if (filteredList) {
-          db.remove({ province: province, year: year, gender: parseInt(gender) }, {}, (err, numRemoved) => {
-            if (err) {
-              res.sendStatus(500, "ERROR EN CLIENTE");
-              return;
-            } else if (numRemoved === 0) {
-              res.sendStatus(404, "ERROR EN CLIENTE: Documentos no encontrados");
-              return;
-            }
-            else {
-              res.sendStatus(200, "DELETED");
-              return;
-            }
-
-          });
-        } else {
-          res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
-        }
-      }
-    });
-  });
-*/
-
 
   function pagination(req, lista) {
 
@@ -595,30 +580,5 @@ module.exports = (app) => {
       res.status(500).json('Ha ocurrido un error interno en el servidor');
     }
   });
-
-  //VERIFICAR SI METODO POST ES A ESA URL
-
-  /*
-  app.use((req, res, next) => {
-    // Verificar si la solicitud es un POST y si no es en la ruta correcta
-    if (req.method === 'POST' && req.originalUrl !== '/api/v1/loss-jobs') {
-      res.status(405).json('Método no permitido');
-      return;
-    }
-
-    // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
-    res.status(404).json('La ruta solicitada no existe');
-  });
-
-  // Manejador de rutas no encontradas
-
-  
-  app.use((req, res) => {
-    // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
-    res.status(404).json('La ruta solicitada no existe');
-  });
-
-  
-*/
 
 }
