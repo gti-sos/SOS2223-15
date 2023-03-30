@@ -4,7 +4,7 @@ const BASE_API_URL = "/api/v1";
 const recurso_url = BASE_API_URL + "/jobseekers-studies";
 const API_DOC = "https://documenter.getpostman.com/view/25974926/2s93RMTuJy";
 
-module.exports = (app) => {
+function loadBackend_jara (app) {
     //-------------------------------------------------Parte Jara--------------------------------------------------------
     var jobseekers = [
         { year: 2006, gender: 'Ambos-sexos', territory: 'Almería', type: 'Parados-registrados', primary: 1062, fp_program: 1232, general_education: 16120, total: 27469 },
@@ -440,3 +440,5 @@ module.exports = (app) => {
     };
 
 };
+
+export { loadBackend_jara };

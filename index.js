@@ -1,7 +1,7 @@
-var express = require("express");
-var cool = require("cool-ascii-faces");
-var bodyParser = require("body-parser");
-var mudulo_jara = require("./backend/api_jara");
+//var cool = require("cool-ascii-faces");
+//var bodyParser = require("body-parser");
+import express from "express";
+import { loadBackend_jara } from "./backend/api_jara";
 var modulo_mario = require("./backend/api_mario");
 var modulo_angel = require("./backend/api_angel");
 const Datastore = require('nedb');
@@ -15,7 +15,7 @@ var port = process.env.PORT || 12345;
 app.use(bodyParser.json()); //Importante colocar esto antes de los modulo_fff(app) para que funcione bien.
 app.use("/", express.static("./public")); // HTML que se mostrará por defecto en la ruta /
 
-mudulo_jara(app);
+loadBackend_jara(app);
 modulo_mario(app);
 modulo_angel(app);
 
