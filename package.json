@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "modulo sos2223-15",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index",
     "test-jobs" : "npx newman run ./tests/marmedsan6.json",
