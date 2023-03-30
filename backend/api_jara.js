@@ -1,5 +1,6 @@
 
-var Datastore = require('nedb'), db = new Datastore;
+import Datastore from 'nedb'
+var db = new Datastore;
 const BASE_API_URL = "/api/v1";
 const recurso_url = BASE_API_URL + "/jobseekers-studies";
 const API_DOC = "https://documenter.getpostman.com/view/25974926/2s93RMTuJy";
