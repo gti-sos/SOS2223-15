@@ -1,10 +1,11 @@
-var Datastore = require('nedb'), db = new Datastore;
+import Datastore from 'nedb'
+var db = new Datastore;
 //const BASE_API_URL = "/api/v1";
 //const rutaMMS = BASE_API_URL + '/loss-jobs';
 const API_DOC_PORTAL = 'https://documenter.getpostman.com/view/26052697/2s93JzMgDq';
 
 //DATA MARIO
-module.exports = (app) => {
+function loadBackend_mario (app) {
   var población_media = [
     { province: "Almeria", year: 2021, gender: "Ambos sexos", low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827 },
     { province: "Cadiz", year: 2022, gender: "Ambos sexos", low_due_to_placement: 246181, no_renovation: 124697, other_reason: 26756 },
@@ -582,3 +583,5 @@ module.exports = (app) => {
   });
 
 }
+
+export { loadBackend_mario };

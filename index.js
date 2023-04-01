@@ -1,11 +1,13 @@
 //var cool = require("cool-ascii-faces");
-//var bodyParser = require("body-parser"); express ya tiene un bodyparser
+//var bodyParser = require("body-parser"); express ya tiene un bodyparser incluido en su nueva actualización.
 import express from "express";
-import { handler } from "./frontend/build/handler.js";
 import { loadBackend_jara } from "./backend/api_jara.js";
-var modulo_mario = require("./backend/api_mario");
-var modulo_angel = require("./backend/api_angel");
-const Datastore = require('nedb');
+import { loadBackend_mario } from "./backend/api_mario.js";
+import { loadBackend_angel } from "./backend/api_angel.js";
+
+import { handler } from "./frontend/build/handler.js";
+
+//const Datastore = require('nedb');
 
 
 var app = express();
@@ -13,14 +15,14 @@ var port = process.env.PORT || 12345;
 
 // Modularización--------------------
 
-app.use(express.json()); //Importante colocar esto antes de los modulo_fff(app) para que funcione bien.
+app.use(express.json());
 //app.use("/", express.static("./public")); // HTML que se mostrará por defecto en la ruta /
 
 loadBackend_jara(app);
-modulo_mario(app);
-modulo_angel(app);
+loadBackend_mario(app);
+loadBackend_angel(app);
 
-app.use(handler); // esto tiene que ir despues ded la api
+app.use(handler); // esto tiene que ir despues de la api
 
 // ----------------------------------
 

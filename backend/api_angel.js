@@ -1,11 +1,12 @@
-var Datastore = require('nedb'), db = new Datastore;
 
+import Datastore from 'nedb'
+var db = new Datastore;
 
 const BASE_API_URL = "/api/v1";
 const rutaAMR = BASE_API_URL + '/salary-stats';
 const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93JzMgXR";
 
-module.exports = (app) => {
+function loadBackend_angel (app) {
 
     var salario_medio = [
         {
@@ -640,3 +641,5 @@ module.exports = (app) => {
 */
 
 };
+
+export { loadBackend_angel };
