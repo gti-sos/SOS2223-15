@@ -52,21 +52,23 @@
             body: JSON.stringify({
                 province: newProvince,
                 gender: newGender,
-                year: newYear,
-                salaried:newSalaried,
-                average_salary:average_salary,
-                standard_deviation:standard_deviation
-            }),
+                year: parseInt(newYear),
+                salaried: parseInt(newSalaried),
+                average_salary: parseInt(newAverage_salary),
+                standard_deviation: parseInt(newStandard_deviation)
+            })
         });
         const status = await res.status;
         resultStatus = status;
         if (status == 201) {
             getSalary_stats();
+        }else if(status==409){
+            
         }
     }
 </script>
 
-<h1>salary_stats</h1>
+<h1>salary-stats</h1>
 
 <Table>
     <thead>
@@ -111,3 +113,6 @@
 {result}
         </pre>
 {/if}
+
+
+

@@ -262,7 +262,7 @@ function loadBackend_angel (app) {
         console.log("New POST to /salary-stats"); //console.log en el servidor
         if (comprobar_tipos( province,gender,year,salaried,average_salary,standard_deviation) ) {
             response.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
-            console.log("INCORRECT PARAMETER TYPE");
+            console.log(`INCORRECT PARAMETER TYPE`);
 
         } else {
         db.find({}, function (err, filteredList) {
