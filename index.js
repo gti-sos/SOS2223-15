@@ -1,5 +1,5 @@
 //var cool = require("cool-ascii-faces");
-//var bodyParser = require("body-parser"); express ya tiene un bodyparser incluido en su nueva actualización.
+//var bodyParser = require("body-parser"); //express ya tiene un bodyparser incluido en su nueva actualización.
 import express from "express";
 import cors from "cors";
 import { loadBackend_jara } from "./backend/api_jara.js";
