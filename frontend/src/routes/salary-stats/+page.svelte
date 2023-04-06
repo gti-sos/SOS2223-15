@@ -4,6 +4,8 @@
     import { onMount } from "svelte";
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
     import { Button, Table } from "sveltestrap";
+    import { Alert } from 'sveltestrap';
+
     onMount(async () => {
         // Esto carga el getSalary_stats nada mas iniciar la aplicación.
         getSalary_stats();
@@ -25,6 +27,7 @@
 
     let result = "";
     let resultStatus = "";
+    let message = "";
 
     async function getSalary_stats() {
         resultStatus = result = "";
@@ -62,8 +65,13 @@
         resultStatus = status;
         if (status == 201) {
             getSalary_stats();
-        }else if(status==409){
-            
+        }else if(status==400){
+            message = "Faltan campos por rellenar.";
+            console.log("ERROR. Missing one or more fields.")
+        }
+        else if(status==409){
+            message = "Ya existe ese recurso";
+            console.log("ERROR. There is already a resoruce with the given id (province, gender and year) in the data base.")
         }
     }
 </script>
@@ -105,6 +113,14 @@
         {/each}
     </tbody>
 </Table>
+
+{#if message != ""}
+
+    <div class= "container text-center">
+        <Alert color="warning" dismissible>{message}</Alert>
+    </div>
+
+{/if}
 
 {#if resultStatus != ""}
     <p>Result:</p>
