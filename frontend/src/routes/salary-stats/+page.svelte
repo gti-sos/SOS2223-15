@@ -46,7 +46,7 @@
         if(status == 200){
             message = `Obtenidos todos los recursos correctamente.`
         } else if(status==404){
-            message = `No hay datos en la base de datos.`
+            message = `No hay recursos en la base de datos.`
         }
     }
 
@@ -81,13 +81,28 @@
         }
     }
 
+    async function deleteResource(province,gender,year) {
+        resultStatus = result = "";
+        const res = await fetch(API + "/" + province + "/" + gender + "/" + year, {
+            method: "DELETE"
+        });
+        const status = await res.status;
+        resultStatus = status;
+        if(status==200){
+            getSalaryStats();
+            message = `Se ha borrado correctamente el recurso de la base de datos.`;
+            console.log("Resource deleted correctly.");
+        }
+        else if(status==500){
+            message = `Error en el cliente.`;
+            console.log("ERROR. Client error.");
+        }
+    }
+
     async function deleteAllStats() {
         resultStatus = result = "";
         const res = await fetch(API, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            }
+            method: "DELETE"
         });
         const status = await res.status;
         resultStatus = status;
@@ -114,6 +129,7 @@
             <th>Número de asalariados</th>
             <th>Salario medio</th>
             <th>Desviación típica</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -125,6 +141,7 @@
             <td><input bind:value={newAverage_salary} /></td>
             <td><input bind:value={newStandard_deviation} /></td>
             <td><Button on:click={createSalary}>Crear</Button></td>
+            <td><Button on:click={deleteResource(newProvince,newGender,newYear)}>Borrar recurso</Button></td>
             <td><Button on:click={deleteAllStats}>Borrar</Button></td>
         </tr>
 
@@ -136,6 +153,7 @@
                 <td>{salary_stat.salaried}</td>
                 <td>{salary_stat.average_salary}</td>
                 <td>{salary_stat.standard_deviation}</td>
+                <td><Button on:click={deleteResource(salary_stat.province, salary_stat.gender,salary_stat.year)}>Borrar recurso</Button></td>
                 <td>&nbsp</td>
             </tr>
         {/each}

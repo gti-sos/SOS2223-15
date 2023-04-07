@@ -506,6 +506,7 @@ function loadBackend_angel (app) {
                         return;
                     } else {
                         res.sendStatus(200, "DELETED");
+                        console.log("Deleted all data.");
                     }
 
                 });
