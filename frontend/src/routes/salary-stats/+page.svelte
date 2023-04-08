@@ -71,13 +71,46 @@
         if (status == 201) {
             getSalaryStats();
         }else if(status==400){
-            message = `Faltan campos por rellenar: provincia: ${res.body.province}, género: ${res.body.gender}, año: ${res.body.year},
-             número de asalariados: ${res.body.salaried}, salario medio: ${res.body.average_salary}, desviación típica: ${res.body.standard_deviation} `;
-            console.log("ERROR. Missing one or more fields.");
+            message = `Faltan campos por rellenar: provincia: ${newprovince}, género: ${newGender}, año: ${newYear},
+             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation} `;
+            console.log(`ERROR. Missing one or more fields ${newProvince} ${newGender} ${newYear} ${newSalaried} ${newAverage_salary} ${newStandard_deviation}`);
         }
         else if(status==409){
-            message = `Ya existe el recurso que se quiere introducir: ${res.body.province} ${res.body.gender} ${res.body.year}`;
-            console.log("ERROR. There is already a resoruce with the given id (province, gender and year) in the data base.");
+            message = `Ya existe el recurso que se quiere introducir: ${newProvince} ${newGender} ${newYear}`;
+            console.log(`ERROR. There is already a resource with the given id (${newProvince} ${newGender} ${newYear}) in the data base.`);
+        }
+    }
+
+    async function updateSalary(province,gender,year) {
+        resultStatus = result = "";
+        const res = await fetch(API + "/" + province + "/" + gender + "/" + year, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                province: province,
+                gender: gender,
+                year: parseInt(year),
+                salaried: parseInt(newSalaried),
+                average_salary: parseInt(newAverage_salary),
+                standard_deviation: parseInt(newStandard_deviation)
+            })
+        });
+        const status = await res.status;
+        resultStatus = status;
+        if(status==200){
+            getSalaryStats();
+            message = `Se ha actualizado el recurso correctamente.`;
+            console.log("Resource updated correctly.");
+        }
+        else if(status ==400){
+
+
+        }
+        else if(status==500){
+            message = `Error en el cliente.`;
+            console.log("ERROR. Client error.");
         }
     }
 
@@ -141,6 +174,7 @@
             <td><input bind:value={newAverage_salary} /></td>
             <td><input bind:value={newStandard_deviation} /></td>
             <td><Button on:click={createSalary}>Crear</Button></td>
+            <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td>
             <td><Button on:click={deleteResource(newProvince,newGender,newYear)}>Borrar recurso</Button></td>
             <td><Button on:click={deleteAllStats}>Borrar</Button></td>
         </tr>
@@ -168,7 +202,7 @@
 
 {/if}
 
-{#if message != "" && ((resultStatus != 200 || resultStatus != 201 || resultStatus != 500))} <!--Alerta para los códigos 400,404, ...-->
+{#if message != "" && ((resultStatus != 200 || resultStatus != 201 || resultStatus != 500))} <!--Alerta para los códigos 400,404,409, ...-->
 
     <div class= "container text-center">
         <Alert color="warning" dismissible>{message}</Alert>
