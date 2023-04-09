@@ -11,7 +11,7 @@
         getSalaryStats();
     });
 
-    let API = "/api/v1/salary-stats";
+    let API = "/api/v2/salary-stats";
 
     if (dev)
         // Si accedemos en modo normal, accedemos en local a la API y si no, accedemos al servidor de Svelte

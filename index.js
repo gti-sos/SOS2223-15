@@ -5,6 +5,8 @@ import cors from "cors";
 import { loadBackend_jara } from "./backend/api_jara.js";
 import { loadBackend_mario } from "./backend/api_mario.js";
 import { loadBackend_angel } from "./backend/api_angel.js";
+import { loadBackend_angel_2 } from "./backend/v2/api_angel_2.js";
+
 
 import { handler } from "./frontend/build/handler.js";
 
@@ -25,6 +27,7 @@ app.use(express.json());
 loadBackend_jara(app);
 loadBackend_mario(app);
 loadBackend_angel(app);
+loadBackend_angel_2(app);
 
 
 app.use(handler); // esto tiene que ir despues de la api
