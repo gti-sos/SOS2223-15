@@ -9,6 +9,6 @@
 - **Repository**: [gti-sos/SOS2223-15](https://github.com/gti-sos/SOS2223-15)
 - **URL**: [https://sos2223-15.appspot.com/](https://sos2223-15.appspot.com/)
 - **APIs**:
-  - https://sos2223-15.appspot.com/api/v1/salary-stats/docs (developed by Angel Marín Rodriguez)
+  - https://documenter.getpostman.com/view/26059557/2s93XsYRor (developed by Angel Marín Rodriguez)
   - https://sos2223-15.appspot.com/api/v1/jobseekers-studies/docs (developed by Jara Xiao del Viejo Pacheco)
   - https://sos2223-15.appspot.com/api/v1/loss-jobs/docs (developed by Mario Medina Santos)

@@ -57,7 +57,8 @@
         if(status == 200){
             message = `Obtenidos todos los recursos correctamente.`
         } else if(status==404){
-            message = `No hay recursos en la base de datos.`
+            message = `No existe el recurso especificado.`
+            console.log(`There is no resorce with such parameters. `)
         }
     }
 
@@ -79,16 +80,15 @@
         });
         const status = await res.status;
         resultStatus = status;
-        if(status==200){
+        if(status == 200){
             getSalaryStat();
             message = `Se ha actualizado el recurso correctamente.`;
             console.log("Resource updated correctly.");
         }
-        else if(status ==400){
-
-
+        else if(status == 400){
+            message = `Los datos introducidos no son correctos.`;
         }
-        else if(status==500){
+        else if(status == 500){
             message = `Error en el cliente.`;
             console.log("ERROR. Client error.");
         }
@@ -107,7 +107,7 @@
             <th>Número de asalariados</th>
             <th>Salario medio</th>
             <th>Desviación típica</th>
-            <th>Acciones</th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
@@ -133,7 +133,7 @@
 
 {/if}
 
-{#if message != "" && ((resultStatus != 200 || resultStatus != 201 || resultStatus != 500))} <!--Alerta para los códigos 400,404,409, ...-->
+{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404,409, ...-->
 
     <div class= "container text-center">
         <Alert color="warning" dismissible>{message}</Alert>

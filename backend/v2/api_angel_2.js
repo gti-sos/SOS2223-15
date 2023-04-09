@@ -4,7 +4,7 @@ var db = new Datastore;
 
 const BASE_API_URL = "/api/v2";
 const rutaAMR = BASE_API_URL + '/salary-stats';
-const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93JzMgXR";
+const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93XsYRor";
 
 function loadBackend_angel_2 (app) {
 
@@ -204,7 +204,7 @@ function loadBackend_angel_2 (app) {
                 // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                 if (datos.length == 0) {
 
-                    console.log(`salary-stats not found. Data:${datos.length} effeee ${req.query.offset}`);
+                    console.log(`salary-stats not found.`);
                     res.sendStatus(404);
 
                     // Si por el contrario encontramos datos
@@ -442,21 +442,15 @@ function loadBackend_angel_2 (app) {
                 filteredList = filteredList.filter((obj) => {
                     return ( obj.province.toLowerCase() == province && obj.gender == gender && obj.year == year);
                 });
-                console.log(`/GET to /salary-stats/${province}/${gender}/${year}`); //console.log en el servidor
+                console.log(`GET realizado con éxito`); //console.log en el servidor
                 filteredList.forEach((e) => {
                     delete e._id;
                 });
                 if (filteredList.length === 0) {
-                    res.status(404).json('La ruta solicitada no existe');
+                    res.status(404).json('There is no resource with the given id.');
                 } else {
-                    console.log("/GET a una ciudad concreta");
-                    filteredList.forEach((e) => {
-                        delete e._id;
-                    });
-                    if (req.query.limit != undefined || req.query.offset != undefined) {
-                        filteredList = pagination(req, filteredList);
-                    }
-                    res.status(200).json(filteredList);
+                    console.log(`GET to /salary-stats/${province}/${gender}/${year}`);
+                    res.status(200).json(filteredList[0]);
                 }
             }
         });

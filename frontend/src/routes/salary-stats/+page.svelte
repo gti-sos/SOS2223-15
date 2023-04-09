@@ -45,8 +45,10 @@
         resultStatus = status;
         if(status == 200){
             message = `Obtenidos todos los recursos correctamente.`
+            console.log(`GET correctly done`)
         } else if(status==404){
             message = `No hay recursos en la base de datos.`
+            console.log(`There is no data to show with GET method.`)
         }
     }
 
@@ -70,6 +72,8 @@
         resultStatus = status;
         if (status == 201) {
             getSalaryStats();
+            message=`Se ha creado el recurso correctamente. provincia:${newprovince}, género: ${newGender}, año: ${newYear},
+             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}`
         }else if(status==400){
             message = `Faltan campos por rellenar: provincia: ${newprovince}, género: ${newGender}, año: ${newYear},
              número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation} `;
@@ -81,6 +85,7 @@
         }
     }
 
+    /*
     async function updateSalary(province,gender,year) {
         resultStatus = result = "";
         const res = await fetch(API + "/" + province + "/" + gender + "/" + year, {
@@ -114,6 +119,8 @@
         }
     }
 
+    */
+
     async function deleteResource(province,gender,year) {
         resultStatus = result = "";
         const res = await fetch(API + "/" + province + "/" + gender + "/" + year, {
@@ -123,7 +130,7 @@
         resultStatus = status;
         if(status==200){
             getSalaryStats();
-            message = `Se ha borrado correctamente el recurso de la base de datos.`;
+            message = `Se ha borrado correctamente el recurso ${newprovince}, género: ${newGender}, año: ${newYear} de la base de datos`;
             console.log("Resource deleted correctly.");
         }
         else if(status==500){
@@ -140,7 +147,7 @@
         const status = await res.status;
         resultStatus = status;
         if(status==200){
-            getSalaryStats();
+            await getSalaryStats();
             message = `Se han borrado correctamente los datos de la base de datos.`;
             console.log("Deleted all resources correctly.");
         }
@@ -162,7 +169,8 @@
             <th>Número de asalariados</th>
             <th>Salario medio</th>
             <th>Desviación típica</th>
-            <th>Acciones</th>
+            <th>Acción</th>
+            <td>&nbsp</td>
         </tr>
     </thead>
     <tbody>
@@ -174,14 +182,14 @@
             <td><input bind:value={newAverage_salary} /></td>
             <td><input bind:value={newStandard_deviation} /></td>
             <td><Button on:click={createSalary}>Crear</Button></td>
-            <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td>
-            <td><Button on:click={deleteResource(newProvince,newGender,newYear)}>Borrar recurso</Button></td>
-            <td><Button on:click={deleteAllStats}>Borrar</Button></td>
+        <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
+            <td><Button on:click={deleteAllStats}>Borrar Todo</Button></td>
+            
         </tr>
 
         {#each salary_stats as salary_stat}
             <tr>
-                <td>{salary_stat.province}</td>
+                <td><a href = "/salary-stats/{salary_stat.province}/{salary_stat.gender}/{salary_stat.year}">{salary_stat.province}</a></td>
                 <td>{salary_stat.gender}</td>
                 <td>{salary_stat.year}</td>
                 <td>{salary_stat.salaried}</td>
@@ -202,7 +210,7 @@
 
 {/if}
 
-{#if message != "" && ((resultStatus != 200 || resultStatus != 201 || resultStatus != 500))} <!--Alerta para los códigos 400,404,409, ...-->
+{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404,409, ...-->
 
     <div class= "container text-center">
         <Alert color="warning" dismissible>{message}</Alert>
