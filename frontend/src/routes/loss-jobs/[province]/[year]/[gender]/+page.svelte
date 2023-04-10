@@ -54,11 +54,14 @@
         }
         const status = await res.status;
         resultStatus = status;
-        if(status == 200){
-            message = `Obtenidos todos los recursos correctamente.`
-        } else if(status==404){
-            message = `No existe el recurso especificado.`
-            console.log(`There is no resorce with such parameters. `)
+        if(status == 404){
+            message = `No existe ningún recurso para la provincia: ${updatedProvince}, en el año: ${updatedYear}.`;
+            color_alert = "danger";
+        }else{
+            if(status == 400){
+                message = "Ha habido un error en la petición";
+                color_alert = "danger";
+            }
         }
     }
 
@@ -102,8 +105,8 @@
     <thead>
         <tr>
             <th>Provincia</th>
-            <th>Genero</th>
             <th>Año</th>
+            <th>Genero</th>
             <th>Bajas debido a puesto</th>
             <th>Sin renovacion</th>
             <th>Otras razones</th>
