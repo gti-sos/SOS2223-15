@@ -4,7 +4,8 @@ var db = new Datastore;
 
 const BASE_API_URL = "/api/v2";
 const rutaAMR = BASE_API_URL + '/salary-stats';
-const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93XsYRor";
+const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93JzMgXR";
+const API_DOC_PORTAL_2 = "https://documenter.getpostman.com/view/26059557/2s93XsYRor";
 
 function loadBackend_angel_2 (app) {
 
@@ -114,6 +115,9 @@ function loadBackend_angel_2 (app) {
     //Redirect /docs
     app.get(BASE_API_URL + "/salary-stats/docs", (req, res) => {
         res.redirect(API_DOC_PORTAL);
+    });
+    app.get(BASE_API_URL + "/salary-stats/docs2", (req, res) => {
+        res.redirect(API_DOC_PORTAL_2);
     });
 
 

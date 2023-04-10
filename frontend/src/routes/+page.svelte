@@ -26,7 +26,10 @@
     <h2>Documentación POSTMAN</h2>
     <ul>
         <li>
-            <a href="https://sos2223-15.appspot.com/api/v2/salary-stats/docs">/salary-stats/docs</a> Desarrollado por : Ángel Marín Rodríguez
+            <a href="https://sos2223-15.appspot.com/api/v1/salary-stats/docs">/salary-stats/docs L08</a> Desarrollado por : Ángel Marín Rodríguez
+        </li>
+        <li>
+            <a href="https://sos2223-15.appspot.com/api/v2/salary-stats/docs">/salary-stats/docs L08</a> Desarrollado por : Ángel Marín Rodríguez
         </li>
         <li>
             <a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies/docs">/jobseekers-studies/docs</a> Desarrollado por: Jara Xiao del Viejo Pacheco

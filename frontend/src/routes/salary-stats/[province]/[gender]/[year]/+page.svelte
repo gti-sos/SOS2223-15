@@ -147,10 +147,3 @@
 
 {/if}
 
-{#if resultStatus != ""}
-    <p>Result:</p>
-    <pre>
-{resultStatus}
-{result}
-        </pre>
-{/if}

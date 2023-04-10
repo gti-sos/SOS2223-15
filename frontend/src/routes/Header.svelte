@@ -6,7 +6,7 @@
 <Container fluid>
     <nav>
         <Row>
-            <Col xs="auto"><a href="/">Home</a></Col>
+            <Col xs="auto"><a href="/">Inicio</a></Col>
             <Col xs="auto"><a href="/salary-stats">salary-stats</a></Col>
             <Col xs="auto"><a href="/jobseekers-studies">jobseekers-studies</a></Col>
             <Col xs="auto"><a href="/loss-jobs">loss-jobs</a></Col>
