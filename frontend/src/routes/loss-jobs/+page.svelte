@@ -81,38 +81,6 @@
         }
     }
 
-    async function updateJobs(province,year,gender) {
-        resultStatus = result = "";
-        const res = await fetch(API + "/" + province + "/" + year + "/" + gender, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                province: province,
-                year: parseInt(year),
-                gender: gender,
-                low_due_to_placement: parseInt(newLow_due_to_placement),
-                no_renovation: parseInt(newNo_renovation),
-                other_reason: parseInt(newOther_reason)
-            })
-        });
-        const status = await res.status;
-        resultStatus = status;
-        if(status==200){
-            getLossJobs();
-            message = `Se ha actualizado el recurso correctamente.`;
-            console.log("Resource updated correctly.");
-        }
-        else if(status ==400){
-
-
-        }
-        else if(status==500){
-            message = `Error en el cliente.`;
-            console.log("ERROR. Client error.");
-        }
-    }
 
     async function deleteResource(province,year,gender) {
         resultStatus = result = "";
@@ -157,11 +125,11 @@
     <thead>
         <tr>
             <th>Provincia</th>
-            <th>Año</th>
             <th>Genero</th>
-            <th>Número de asalariados</th>
-            <th>Salario medio</th>
-            <th>Desviación típica</th>
+            <th>Año</th>
+            <th>Bajas debido a puesto</th>
+            <th>Sin renovacion</th>
+            <th>Otras razones</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -174,14 +142,13 @@
             <td><input bind:value={newNo_renovation} /></td>
             <td><input bind:value={newOther_reason} /></td>
             <td><Button on:click={createJobs}>Crear</Button></td>
-            <td><Button on:click={updateJobs(newProvince,newYear,newGender)}>Editar</Button></td>
             <td><Button on:click={deleteResource(newProvince,newYear,newGender)}>Borrar recurso</Button></td>
             <td><Button on:click={deleteAllStats}>Borrar</Button></td>
         </tr>
 
         {#each loss_jobs as loss_job}
             <tr>
-                <td>{loss_job.province}</td>
+                <td><a href = "/loss-jobs/{loss_job.province}/{loss_job.year}/{loss_job.gender}">{loss_job.province}</a></td>
                 <td>{loss_job.year}</td>
                 <td>{loss_job.gender}</td>
                 <td>{loss_job.low_due_to_placement}</td>
@@ -202,7 +169,7 @@
 
 {/if}
 
-{#if message != "" && ((resultStatus != 200 || resultStatus != 201 || resultStatus != 500))} <!--Alerta para los códigos 400,404, ...-->
+{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404, ...-->
 
     <div class= "container text-center">
         <Alert color="warning" dismissible>{message}</Alert>

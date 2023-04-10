@@ -8,32 +8,32 @@
     import { page } from "$app/stores";
 
     onMount(async () => {
-        // Esto carga el getSalary_stats nada mas iniciar la aplicación.
-        getSalaryStat();
+        // Esto carga el getloss-jobs nada mas iniciar la aplicación.
+        getLossJobs();
     });
 
     let province = $page.params.province;
     let gender = $page.params.gender;
     let year = $page.params.year;
 
-    let API = "/api/v2/salary-stats/" + province + "/" + gender + "/" + year;
+    let API = "/api/v1/loss-jobs/" + province + "/" + year + "/" + gender;
 
     if (dev)
         // Si accedemos en modo normal, accedemos en local a la API y si no, accedemos al servidor de Svelte
         API = "http://localhost:12345" + API;
 
     let updatedProvince = province;
-    let updatedGender = gender;
     let updatedYear = year;
-    let updatedSalaried = 'salaried';
-    let updatedAverage_salary = 'average_salary';
-    let updatedStandard_deviation = 'standard_deviation';
+    let updatedGender = gender;
+    let updatedLow_due_to_placement = 'low_due_to_placement';
+    let updatedNo_renovation = 'no_renovation';
+    let updatedOther_reason = 'other_reason';
 
     let result = "";
     let resultStatus = "";
     let message = "";
 
-    async function getSalaryStat() {
+    async function getLossJobs() {
         resultStatus = result = "";
         const res = await fetch(API, { // fetch (url)
             method: "GET"
@@ -43,14 +43,14 @@
             result = JSON.stringify(data, null, 2);
             
             updatedProvince = province;
-            updatedGender = gender;
             updatedYear = year;
-            updatedSalaried = data.salaried;
-            updatedAverage_salary = data.average_salary;
-            updatedStandard_deviation = data.standard_deviation;
+            updatedGender = gender;
+            updatedLow_due_to_placement = data.low_due_to_placement;
+            updatedNo_renovation = data.no_renovation;
+            updatedOther_reason = data.other_reason;
         } catch (error) {
             console.log(`Error parsing result: ${error}`);
-            console.log(`Result:${updatedSalaried}`)
+            console.log(`Result:${updatedLow_due_to_placement}`)
         }
         const status = await res.status;
         resultStatus = status;
@@ -62,7 +62,7 @@
         }
     }
 
-    async function updateSalary() {
+    async function updateLossJobs() {
         resultStatus = result = "";
         const res = await fetch(API , {
             method: "PUT",
@@ -71,17 +71,17 @@
             },
             body: JSON.stringify({
                 province: updatedProvince,
-                gender: updatedGender,
                 year: parseInt(updatedYear),
-                salaried: parseInt(updatedSalaried),
-                average_salary: parseInt(updatedAverage_salary),
-                standard_deviation: parseInt(updatedStandard_deviation)
+                gender: updatedGender,
+                low_due_to_placement: parseInt(updatedLow_due_to_placement),
+                no_renovation: parseInt(updatedNo_renovation),
+                other_reason: parseInt(updatedOther_reason)
             })
         });
         const status = await res.status;
         resultStatus = status;
         if(status == 200){
-            getSalaryStat();
+            getLossJobs();
             message = `Se ha actualizado el recurso correctamente.`;
             console.log("Resource updated correctly.");
         }
@@ -96,29 +96,29 @@
 
 </script>
 
-<h1>Detalles del recurso.</h1>
+<h1>loss-jobs update</h1>
 
 <Table>
     <thead>
         <tr>
             <th>Provincia</th>
-            <th>Género</th>
+            <th>Genero</th>
             <th>Año</th>
-            <th>Número de asalariados</th>
-            <th>Salario medio</th>
-            <th>Desviación típica</th>
-            <th>Acción</th>
+            <th>Bajas debido a puesto</th>
+            <th>Sin renovacion</th>
+            <th>Otras razones</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>{updatedProvince}</td>
-            <td>{updatedGender}</td>
             <td>{updatedYear}</td>
-            <td><input bind:value={updatedSalaried} /></td>
-            <td><input bind:value={updatedAverage_salary} /></td>
-            <td><input bind:value={updatedStandard_deviation} /></td>
-            <td><Button on:click={updateSalary}>Editar</Button></td>
+            <td>{updatedGender}</td>
+            <td><input bind:value={updatedLow_due_to_placement} /></td>
+            <td><input bind:value={updatedNo_renovation} /></td>
+            <td><input bind:value={updatedOther_reason} /></td>
+            <td><Button on:click={updateLossJobs}>Editar</Button></td>
         </tr>
     </tbody>
 </Table>
@@ -131,7 +131,7 @@
 
 {/if}
 
-{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404,409, ...-->
+{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404, ...-->
 
     <div class= "container text-center">
         <Alert color="warning" dismissible>{message}</Alert>
@@ -154,3 +154,6 @@
 {result}
         </pre>
 {/if}
+
+
+
