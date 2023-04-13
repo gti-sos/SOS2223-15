@@ -1,41 +1,72 @@
-<section>
+<section class="team">
+  <div class="container">
     <h2>Equipo</h2>
     <ul>
-        <li><a href="https://github.com/AngelUs04">Ángel Marín Rodríguez</a> : salary-stats</li>
-        <li><a href="https://github.com/jardelpac01">Jara Xiao del Viejo Pacheco</a> : jobseekers-studies</li>
-        <li><a href="https://github.com/marmedsan6">Mario Medina Santos</a> : loss-jobs</li>
+      <li>
+        <a href="https://github.com/AngelUs04">Ángel Marín Rodríguez</a>:
+        salary-stats
+      </li>
+      <li>
+        <a href="https://github.com/jardelpac01"
+          >Jara Xiao del Viejo Pacheco</a
+        >:
+        jobseekers-studies
+      </li>
+      <li>
+        <a href="https://github.com/marmedsan6">Mario Medina Santos</a>:
+        loss-jobs
+      </li>
     </ul>
+  </div>
 
+  <div class="container">
     <h2>Front-ends</h2>
     <ul>
-        <li><a href="/salary-stats">/salary-stats</a></li>
-	    <li><a href="/jobseekers-studies">/jobseekers-studies</a></li>
-        <li><a href="/loss-jobs">/loss-jobs</a></li>
+      <li><a href="/salary-stats">/salary-stats</a></li>
+      <li><a href="/jobseekers-studies">/jobseekers-studies</a></li>
+      <li><a href="/loss-jobs">/loss-jobs</a></li>
     </ul>
+  </div>
+
+  <div class="container">
     <h2>APIs</h2>
     <ul>
-        <li><a href="https://sos2223-15.appspot.com/api/v2/salary-stats">/salary-stats</a></li>
-	    <li><a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies">/jobseekers-studies</a></li>
-        <li><a href="https://sos2223-15.appspot.com/api/v1/loss-jobs">/loss-jobs</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v2/salary-stats">/salary-stats</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies">/jobseekers-studies</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v1/loss-jobs">/loss-jobs</a></li>
     </ul>
+  </div>
 
+  <div class="container">
     <h2>Repositorio</h2>
     <ul>
-        <li><a href="https://github.com/gti-sos/SOS2223-15">gti-sos/SOS2223-15</a></li>
+      <li><a href="https://github.com/gti-sos/SOS2223-15">gti-sos/SOS2223-15</a></li>
     </ul>
+  </div>
+
+  <div class="container">
     <h2>Documentación POSTMAN</h2>
     <ul>
-        <li>
-            <a href="https://sos2223-15.appspot.com/api/v2/salary-stats/docs">/salary-stats/docs</a> Desarrollado por : Ángel Marín Rodríguez
-        </li>
-        <li>
-            <a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies/docs">/jobseekers-studies/docs</a> Desarrollado por: Jara Xiao del Viejo Pacheco
-        </li>
-        <li>
-            <a href="https://sos2223-15.appspot.com/api/v1/loss-jobs/docs">/loss-jobs/docs</a> Desarrollado por: Mario Medina Santos
-        </li>
+      <li>
+        <a href="https://sos2223-15.appspot.com/api/v1/salary-stats/docs">/salary-stats/docs L08</a>
+        Desarrollado por: Ángel Marín Rodríguez
+      </li>
+      <li>
+        <a href="https://sos2223-15.appspot.com/api/v2/salary-stats/docs">/salary-stats/docs L08</a>
+        Desarrollado por: Ángel Marín Rodríguez
+      </li>
+      <li>
+        <a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies/docs">/jobseekers-studies/docs</a>
+        Desarrollado por: Jara Xiao del Viejo Pacheco
+      </li>
+      <li>
+        <a href="https://sos2223-15.appspot.com/api/v1/loss-jobs/docs">/loss-jobs/docs</a>
+        Desarrollado por: Mario Medina Santos
+      </li>
     </ul>
+  </div>
 </section>
+
 
 <style>
     h2 {

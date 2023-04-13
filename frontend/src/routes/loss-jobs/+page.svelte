@@ -18,12 +18,12 @@
         API = "http://localhost:12345" + API;
 
     let loss_jobs = [];
-    let newProvince = 'province';
-    let newYear = 'year';
-    let newGender = 'gender';
-    let newLow_due_to_placement = 'low_due_to_placement';
-    let newNo_renovation = 'no_renovation';
-    let newOther_reason = 'other_reason';
+    let newProvince = 'provincia';
+    let newYear = 'año';
+    let newGender = 'genero';
+    let newLow_due_to_placement = 'bajas debido a puesto';
+    let newNo_renovation = 'sin renovacion';
+    let newOther_reason = 'otras razones';
 
     let result = "";
     let resultStatus = "";
@@ -45,8 +45,10 @@
         resultStatus = status;
         if(status == 200){
             message = `Obtenidos todos los recursos correctamente.`
+            console.log(`GET correctly done`)
         } else if(status==404){
             message = `No hay recursos en la base de datos.`
+            console.log(`There is no data to show with GET method.`)
         }
     }
 
@@ -70,14 +72,16 @@
         resultStatus = status;
         if (status == 201) {
             getLossJobs();
+            message=`Se ha creado el recurso correctamente. provincia:${newProvince}, año: ${newYear}, genero: ${newGender},
+             bajas debido a puesto: ${newLow_due_to_placement}, sin renovacion: ${newNo_renovation}, otras razones: ${newOther_reason}`
         }else if(status==400){
-            message = `Faltan campos por rellenar: provincia: ${res.body.province}, año: ${res.body.year}, genero: ${res.body.gender},
-             bajas por colocacion: ${res.body.low_due_to_placement}, sin renovacion: ${res.body.no_renovation}, por otras razones: ${res.body.other_reason} `;
-            console.log("ERROR. Missing one or more fields.");
+            message = `Faltan campos por rellenar: provincia:${newProvince}, año: ${newYear}, genero: ${newGender},
+             bajas debido a puesto: ${newLow_due_to_placement}, sin renovacion: ${newNo_renovation}, otras razones: ${newOther_reason} `;
+            console.log(`ERROR. Missing one or more fields ${newProvince} ${newYear} ${newGender} ${newLow_due_to_placement} ${newNo_renovation} ${newOther_reason}`);
         }
         else if(status==409){
-            message = `Ya existe el recurso que se quiere introducir: ${res.body.province} ${res.body.year} ${res.body.gender}`;
-            console.log("ERROR. There is already a resoruce with the given id (province, year and gender) in the data base.");
+            message = `Ya existe el recurso que se quiere introducir: ${newProvince} ${newYear} ${newGender}`;
+            console.log(`ERROR. There is already a resource with the given id (${newProvince} ${newYear} ${newGender}) in the data base.`);
         }
     }
 
@@ -108,7 +112,7 @@
         const status = await res.status;
         resultStatus = status;
         if(status==200){
-            getLossJobs();
+            await getLossJobs();
             message = `Se han borrado correctamente los datos de la base de datos.`;
             console.log("Deleted all resources correctly.");
         }
@@ -119,14 +123,14 @@
     }
 </script>
 
-<h1>loss-jobs</h1>
+<h1>Causas sobre trabajos perdidos</h1>
 
 <Table>
     <thead>
         <tr>
             <th>Provincia</th>
-            <th>Genero</th>
             <th>Año</th>
+            <th>Genero</th>
             <th>Bajas debido a puesto</th>
             <th>Sin renovacion</th>
             <th>Otras razones</th>
@@ -142,7 +146,7 @@
             <td><input bind:value={newNo_renovation} /></td>
             <td><input bind:value={newOther_reason} /></td>
             <td><Button on:click={createJobs}>Crear</Button></td>
-            <td><Button on:click={deleteResource(newProvince,newYear,newGender)}>Borrar recurso</Button></td>
+            <!--<td><Button on:click={deleteResource(newProvince,newYear,newGender)}>Borrar recurso</Button></td>-->
             <td><Button on:click={deleteAllStats}>Borrar</Button></td>
         </tr>
 
@@ -183,14 +187,6 @@
         <Alert color="danger" dismissible>{message}</Alert>
     </div>
 
-{/if}
-
-{#if resultStatus != ""}
-    <p>Result:</p>
-    <pre>
-{resultStatus}
-{result}
-        </pre>
 {/if}
 
 

@@ -18,12 +18,12 @@
         API = "http://localhost:12345" + API;
 
     let salary_stats = [];
-    let newProvince = 'province';
-    let newGender = 'gender';
-    let newYear = 'year';
-    let newSalaried = 'salaried';
-    let newAverage_salary = 'average_salary';
-    let newStandard_deviation = 'standard_deviation';
+    let newProvince = 'provincia';
+    let newGender = 'género';
+    let newYear = 'año';
+    let newSalaried = 'asalariados';
+    let newAverage_salary = 'salario_medio';
+    let newStandard_deviation = 'desviación_típica';
 
     let result = "";
     let resultStatus = "";
@@ -72,10 +72,10 @@
         resultStatus = status;
         if (status == 201) {
             getSalaryStats();
-            message=`Se ha creado el recurso correctamente. provincia:${newprovince}, género: ${newGender}, año: ${newYear},
+            message=`Se ha creado el recurso correctamente. provincia:${newProvince}, género: ${newGender}, año: ${newYear},
              número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}`
         }else if(status==400){
-            message = `Faltan campos por rellenar: provincia: ${newprovince}, género: ${newGender}, año: ${newYear},
+            message = `Faltan campos por rellenar: provincia: ${newProvince}, género: ${newGender}, año: ${newYear},
              número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation} `;
             console.log(`ERROR. Missing one or more fields ${newProvince} ${newGender} ${newYear} ${newSalaried} ${newAverage_salary} ${newStandard_deviation}`);
         }
@@ -130,7 +130,7 @@
         resultStatus = status;
         if(status==200){
             getSalaryStats();
-            message = `Se ha borrado correctamente el recurso ${newprovince}, género: ${newGender}, año: ${newYear} de la base de datos`;
+            message = `Se ha borrado correctamente el recurso ${newProvince}, género: ${newGender}, año: ${newYear} de la base de datos`;
             console.log("Resource deleted correctly.");
         }
         else if(status==500){
@@ -226,13 +226,6 @@
 
 {/if}
 
-{#if resultStatus != ""}
-    <p>Result:</p>
-    <pre>
-{resultStatus}
-{result}
-        </pre>
-{/if}
 
 
 

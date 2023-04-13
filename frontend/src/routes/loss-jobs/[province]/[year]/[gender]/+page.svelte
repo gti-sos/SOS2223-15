@@ -99,7 +99,7 @@
 
 </script>
 
-<h1>loss-jobs update</h1>
+<h1>Actualiza trabajos perdidos</h1>
 
 <Table>
     <thead>
