@@ -130,7 +130,7 @@
         resultStatus = status;
         if(status==200){
             getSalaryStats();
-            message = `Se ha borrado correctamente el recurso ${newprovince}, género: ${newGender}, año: ${newYear} de la base de datos`;
+            message = `Se ha borrado correctamente el recurso ${newProvince}, género: ${newGender}, año: ${newYear} de la base de datos`;
             console.log("Resource deleted correctly.");
         }
         else if(status==500){
