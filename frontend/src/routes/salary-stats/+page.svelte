@@ -3,8 +3,8 @@
 
     import { onMount } from "svelte";
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
-    import { Button, Table } from "sveltestrap";
-    import { Alert } from 'sveltestrap';
+    import { Button, Table, Container } from "sveltestrap";
+    import { Alert } from "sveltestrap";
 
     onMount(async () => {
         // Esto carga el getSalary_stats nada mas iniciar la aplicación.
@@ -18,21 +18,29 @@
         API = "http://localhost:12345" + API;
 
     let salary_stats = [];
-    let newProvince = 'provincia';
-    let newGender = 'género';
-    let newYear = 'año';
-    let newSalaried = 'asalariados';
-    let newAverage_salary = 'salario_medio';
-    let newStandard_deviation = 'desviación_típica';
+    //let salary_stats2 = []; // Salary_stats auxiliar para paginación.
+    let newProvince = "provincia";
+    let newGender = "género";
+    let newYear = "año";
+    let newSalaried = "asalariados";
+    let newAverage_salary = "salario_medio";
+    let newStandard_deviation = "desviación_típica";
+
+    let offset = 0;
+    let limit = 10;
+    let pagina = 0;
 
     let result = "";
+    //let result2 = ""; // Result auxiliar para usarlo en la paginación.
     let resultStatus = "";
+    //let resultStatus2 = "";
     let message = "";
 
     async function getSalaryStats() {
         resultStatus = result = "";
-        const res = await fetch(API, { // fetch (url)
-            method: "GET"
+        const res = await fetch(API + `?offset=${offset}&limit=${limit}`, {
+            // fetch (url)
+            method: "GET",
         });
         try {
             const data = await res.json();
@@ -41,14 +49,74 @@
         } catch (error) {
             console.log(`Error parsing result: ${error}`);
         }
+
         const status = await res.status;
         resultStatus = status;
-        if(status == 200){
-            message = `Obtenidos todos los recursos correctamente.`
-            console.log(`GET correctly done`)
-        } else if(status==404){
-            message = `No hay recursos en la base de datos.`
-            console.log(`There is no data to show with GET method.`)
+        if (status == 200) {
+            message = `Obtenidos todos los recursos correctamente.`;
+            console.log(
+                `GET correctly done. Hay ${salary_stats.length} datos en la página ${pagina}, con offset ${offset}`
+            );
+        } else if (status == 404) {
+            message = `No hay recursos en la base de datos.`;
+            console.log(`There is no data to show with GET method.`);
+        }
+    }
+
+    //GET A TODOS LOS DATOS PARA OBTENER EL NÚMERO TOTAL DE RECURSOS.
+    /*
+    async function getSalaryStatsPaginacion() {
+        resultStatus2 = result2 = "";
+        const res2 = await fetch(API , {
+            // fetch (url)
+            method: "GET",
+        });
+        try {
+            const data2 = await res2.json();
+            result2 = JSON.stringify(data2, null, 2);
+            salary_stats2 = data2;
+        } catch (error) {
+            console.log(`Error parsing result: ${error}`);
+        }
+
+        const status = await res2.status;
+        resultStatus2 = status;
+        if (status == 200) {
+            message = `Obtenidos todos los recursos correctamente.`;
+            console.log(`GET correctly done.`);
+        } else if (status == 404) {
+            message = `No hay recursos en la base de datos.`;
+            console.log(`There is no data to show with GET method.`);
+        }
+    }
+    */
+
+    //PAGINACIÓN
+
+/*
+    async function irAPagina() {
+        getSalaryStatsPaginacion()
+        paginas_totales = salary_stats2.length % 10;
+        if (pagina * 10 > paginas_totales) { // Si nos pasamos de página, se pondrá la última que haya automáticamente.
+            offset = paginas_totales*10;
+            console.log(`Offset demasiado grande. ${salary_stats2.length}`);
+            getSalaryStats();
+        } else {
+            offset = offset * 10;
+            getSalaryStats();
+        }
+    }
+    */
+    async function getPgSig() {
+        if (offset * 10 < salary_stats.length) {
+            offset = offset + 10;
+            getSalaryStats();
+        }
+    }
+    async function getPgAnt() {
+        if (offset >= 10) {
+            offset = offset - 10;
+            getSalaryStats();
         }
     }
 
@@ -65,23 +133,26 @@
                 year: parseInt(newYear),
                 salaried: parseInt(newSalaried),
                 average_salary: parseInt(newAverage_salary),
-                standard_deviation: parseInt(newStandard_deviation)
-            })
+                standard_deviation: parseInt(newStandard_deviation),
+            }),
         });
         const status = await res.status;
         resultStatus = status;
         if (status == 201) {
             getSalaryStats();
-            message=`Se ha creado el recurso correctamente. provincia:${newProvince}, género: ${newGender}, año: ${newYear},
-             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}`
-        }else if(status==400){
+            message = `Se ha creado el recurso correctamente. provincia:${newProvince}, género: ${newGender}, año: ${newYear},
+             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}.`;
+        } else if (status == 400) {
             message = `Faltan campos por rellenar: provincia: ${newProvince}, género: ${newGender}, año: ${newYear},
              número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation} `;
-            console.log(`ERROR. Missing one or more fields ${newProvince} ${newGender} ${newYear} ${newSalaried} ${newAverage_salary} ${newStandard_deviation}`);
-        }
-        else if(status==409){
+            console.log(
+                `ERROR. Missing one or more fields ${newProvince} ${newGender} ${newYear} ${newSalaried} ${newAverage_salary} ${newStandard_deviation}`
+            );
+        } else if (status == 409) {
             message = `Ya existe el recurso que se quiere introducir: ${newProvince} ${newGender} ${newYear}`;
-            console.log(`ERROR. There is already a resource with the given id (${newProvince} ${newGender} ${newYear}) in the data base.`);
+            console.log(
+                `ERROR. There is already a resource with the given id (${newProvince} ${newGender} ${newYear}) in the data base.`
+            );
         }
     }
 
@@ -121,19 +192,21 @@
 
     */
 
-    async function deleteResource(province,gender,year) {
+    async function deleteResource(province, gender, year) {
         resultStatus = result = "";
-        const res = await fetch(API + "/" + province + "/" + gender + "/" + year, {
-            method: "DELETE"
-        });
+        const res = await fetch(
+            API + "/" + province + "/" + gender + "/" + year,
+            {
+                method: "DELETE",
+            }
+        );
         const status = await res.status;
         resultStatus = status;
-        if(status==200){
+        if (status == 200) {
             getSalaryStats();
             message = `Se ha borrado correctamente el recurso ${newProvince}, género: ${newGender}, año: ${newYear} de la base de datos`;
             console.log("Resource deleted correctly.");
-        }
-        else if(status==500){
+        } else if (status == 500) {
             message = `Error en el cliente.`;
             console.log("ERROR. Client error.");
         }
@@ -142,26 +215,29 @@
     async function deleteAllStats() {
         resultStatus = result = "";
         const res = await fetch(API, {
-            method: "DELETE"
+            method: "DELETE",
         });
         const status = await res.status;
         resultStatus = status;
-        if(status==200){
+        if (status == 200) {
             await getSalaryStats();
             message = `Se han borrado correctamente los datos de la base de datos.`;
             console.log("Deleted all resources correctly.");
-        }
-        else if(status==500){
+        } else if (status == 500) {
             message = `Error en el cliente.`;
             console.log("ERROR. Client error.");
         }
     }
 </script>
 
-<h1>salary-stats</h1>
+<h1 class="display-5" style="font-weight: 400;">Asalariados en las provincias de Andalucía <Button class="ms-3 btn-lg" color="danger" on:click={deleteAllStats}>Borrar Todo</Button></h1>
+<Container class="d-flex justify-content-end">
+    <Button class="ms-auto" color="secondary" on:click={getPgAnt}>Anterior</Button>
+    <Button class="ms-2" color="secondary" on:click={getPgSig}>Siguiente</Button>
+</Container>
 
-<Table>
-    <thead>
+<Table striped>
+    <thead> <!--Cabecera de la tabla de SvelteStrap-->
         <tr>
             <th>Provincia</th>
             <th>Género</th>
@@ -170,6 +246,8 @@
             <th>Salario medio</th>
             <th>Desviación típica</th>
             <th>Acción</th>
+          <!-- <td><Button on:click={irAPagina}>Página:</Button><input bind:value={pagina}/></td>--> 
+
             <td>&nbsp</td>
         </tr>
     </thead>
@@ -181,51 +259,45 @@
             <td><input bind:value={newSalaried} /></td>
             <td><input bind:value={newAverage_salary} /></td>
             <td><input bind:value={newStandard_deviation} /></td>
-            <td><Button on:click={createSalary}>Crear</Button></td>
-        <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
-            <td><Button on:click={deleteAllStats}>Borrar Todo</Button></td>
-            
+            <td><Button color="warning" on:click={createSalary}>Crear</Button></td>
+            <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
         </tr>
 
         {#each salary_stats as salary_stat}
             <tr>
-                <td><a href = "/salary-stats/{salary_stat.province}/{salary_stat.gender}/{salary_stat.year}">{salary_stat.province}</a></td>
+                <td><a href="/salary-stats/{salary_stat.province}/{salary_stat.gender}/{salary_stat.year}">{salary_stat.province}</a></td>
                 <td>{salary_stat.gender}</td>
                 <td>{salary_stat.year}</td>
                 <td>{salary_stat.salaried}</td>
                 <td>{salary_stat.average_salary}</td>
                 <td>{salary_stat.standard_deviation}</td>
-                <td><Button on:click={deleteResource(salary_stat.province, salary_stat.gender,salary_stat.year)}>Borrar recurso</Button></td>
+                <td><Button color="danger" on:click={deleteResource(salary_stat.province,salary_stat.gender,salary_stat.year)}>Borrar recurso</Button></td>
                 <td>&nbsp</td>
             </tr>
         {/each}
     </tbody>
 </Table>
 
-{#if message != "" && (resultStatus == 200 || resultStatus == 201)} <!--Alerta para los códigos 200 y 201-->
+{#if message != "" && (resultStatus == 200 || resultStatus == 201)}
+    <!--Alerta para los códigos 200 y 201-->
 
-    <div class= "container text-center">
+    <div class="container text-center">
         <Alert color="success" dismissible>{message}</Alert>
     </div>
-
 {/if}
 
-{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404,409, ...-->
+{#if message != "" && (resultStatus == 400 || resultStatus == 404 || resultStatus == 409)}
+    <!--Alerta para los códigos 400,404,409, ...-->
 
-    <div class= "container text-center">
+    <div class="container text-center">
         <Alert color="warning" dismissible>{message}</Alert>
     </div>
-
 {/if}
 
-{#if message != "" && resultStatus == 500} <!--Alerta para los códigos 500 (internal server error)-->
+{#if message != "" && resultStatus == 500}
+    <!--Alerta para los códigos 500 (internal server error)-->
 
-    <div class= "container text-center">
+    <div class="container text-center">
         <Alert color="danger" dismissible>{message}</Alert>
     </div>
-
 {/if}
-
-
-
-
