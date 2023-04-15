@@ -207,6 +207,7 @@ function loadBackend_mario (app) {
           response.status(400).json(`Missing required field: ${field}`);
           return;
         }
+        
       }
       // Verificar que la solicitud se hizo en la ruta correcta
       if (request.originalUrl !== '/api/v1/loss-jobs') {
@@ -259,7 +260,6 @@ function loadBackend_mario (app) {
     const other_reason = req.query.other_reason;
 
     db.find({}, function (err, filteredList) {
-
       if (err) {
         res.sendStatus(500, "Client Error");
       }
