@@ -3,7 +3,7 @@
 
     import { onMount } from "svelte";
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
-    import { Button, Table, Container, Row, Col } from "sveltestrap";
+    import { Button, Table, Container, Row, Col, Accordion, AccordionItem} from "sveltestrap";
     import { Alert } from "sveltestrap";
 
     onMount(async () => {
@@ -39,12 +39,14 @@
     let province = "";
     //BÚSQUEDA POR GÉNERO
     let gender = "";
+    //BÚSQUEDA POR AÑO
+    let year = "";
     //BÚSQUEDA POR ASALARIADOS
-    let salaried = "";
+    let salaried_behind = "";
     //BÚSQUEDA POR SALARIO MEDIO
-    let average_salary = "";
+    let average_salary_behind = "";
     //BÚSQUEDA POR DESVIACIÓN TÍPICA
-    let standard_deviation = "";
+    let standard_deviation_over = "";
 
     let result = "";
     //let result2 = ""; // Result auxiliar para usarlo en la paginación.
@@ -56,7 +58,25 @@
     async function getSalaryStats() {
         resultStatus = result = "";
         let ruta = `?offset=${offset}&limit=${limit}`; //Definimos una ruta por defecto.
-        
+        let parametros = [];
+        if(to =="" || from == ""){
+            if (province != "") parametros.push(`province=${province}`);
+            if (gender != "") parametros.push(`gender=${gender}`);
+            if (year != "") parametros.push(`year=${year}`);
+            if (salaried_behind != "") parametros.push(`salaried_behind=${salaried_behind}`);
+            if (average_salary_behind != "") parametros.push(`average_salary_behind=${average_salary_behind}`);
+            if (standard_deviation_over != "") parametros.push(`standard_deviation_over=${standard_deviation_over}`);
+        } else{
+            if (province != "") parametros.push(`province=${province}`);
+            if (gender != "") parametros.push(`gender=${gender}`);
+            if (to != "") parametros.push(`to=${to}`);
+            if (from != "") parametros.push(`from=${from}`);
+            if (salaried_behind != "") parametros.push(`salaried_behind=${salaried_behind}`);
+            if (average_salary_behind != "") parametros.push(`average_salary_behind=${average_salary_behind}`);
+            if (standard_deviation_over != "") parametros.push(`standard_deviation_over=${standard_deviation_over}`);
+        }
+        let URL = `?${parametros.join('&')}`;
+        /*
         if (to !=""){ //  Búsqueda por From y To (búsqueda por rango de año).
             if(from == ""){
                 from = 0;
@@ -64,29 +84,44 @@
             ruta = ruta + `&from=${from}&to=${to}`
             if ( province != ""){ //Búsqueda por provincia (query)
                 ruta = ruta + `&province=${province}`;
-            } else if ( gender != "" ){
+            } else if ( gender != "" ){ //Búsqueda por género.
                 ruta = ruta + `&gender=${gender}`;
-            } else if (salaried != ""){
-                ruta = ruta + `&salaried=${salaried}`;
-            } else if (average_salary != ""){
-                ruta = ruta + `&average_salary=${average_salary}`;
-            } else if ( standard_deviation != "") {
-                ruta = ruta + `&standard_deviation=${standard_deviation}`;
+            } else if (salaried_behind != ""){
+                ruta = ruta + `&salaried_behind=${salaried_behind}`;
+            } else if (average_salary_behind != ""){
+                ruta = ruta + `&average_salary_behind=${average_salary_behind}`;
+            } else if ( standard_deviation_over != "") {
+                ruta = ruta + `&standard_deviation_over=${standard_deviation_over}`;
             }
-            console.log(`Introduced a date range. from = ${from} and to = ${to}. Ruta ${ruta}`);
-
         } else if ( province != ""  ){ //Búsqueda por provincia (query)
             ruta = ruta + `&province=${province}`;
+            if(gender != "" && year != ""){ // Búsqueda por provincia, género y año.
+                ruta = ruta + `&gender=${gender}&year=${year}`
+            } else if(gender != ""){ //Búsqueda por provincia y género.
+                ruta = ruta + `&gender=${gender}`;
+            } else if ( salaried_behind != ""){
+                ruta = ruta + `&salaried_behind=${salaried_behind}`;
+            } else if ( average_salary_behind != ""){
+                ruta = ruta + `&average_salary_behind=${average_salary_behind}`;
+            } else if ( standard_deviation_over !="") {
+                ruta = ruta + `&standard_deviation_over=${standard_deviation_over}`;
+            }
         } else if ( gender != "" ) { // Búsqueda por género.
             ruta = ruta + `&gender=${gender}`;
-        } else if ( salaried != "" ) { // Búsqueda por género.
-            ruta = ruta + `&salaried=${salaried}`;
-        } else if ( average_salary != "" ) { // Búsqueda por género.
-            ruta = ruta + `&average_salary=${average_salary}`;
-        } else if ( standard_deviation != "" ) { // Búsqueda por género.
-            ruta = ruta + `&standard_deviation=${standard_deviation}`;
+        } else if ( year != "" ) { // Búsqueda por año.
+            ruta = ruta + `&year=${year}`;
+        } else if ( salaried_behind != "" ) { // Búsqueda por número de asalariados.
+            ruta = ruta + `&salaried_behind=${salaried_behind}`;
+        } else if ( average_salary_behind != "" ) { // Búsqueda por salario medio.
+            ruta = ruta + `&average_salary_behind=${average_salary_behind}`;
+        } else if ( standard_deviation_over != "" ) { // Búsqueda por desviación típica.
+            ruta = ruta + `&standard_deviation_over=${standard_deviation_over}`;
         }
-        const res = await fetch(API + ruta, {
+        console.log(`Introduced a date range. from = ${from} and to = ${to}. Ruta ${ruta}`);
+        */
+       console.log(` la url es ${API}${URL}`);
+       
+        const res = await fetch(API + URL, {
             // fetch (url)
             method: "GET",
         });
@@ -102,12 +137,7 @@
         resultStatus = status;
         if (status == 200) {
             message = `Obtenidos todos los recursos correctamente.`;
-            if(salary_stats.length == 0 ){
-                message = `Se han borrado correctamente los datos de la base de datos.`;
-            }
-            console.log(
-                `GET correctly done. There is ${salary_stats.length} resources in page ${pagina}, with an offset of ${offset}`
-            );
+            //console.log(`GET correctly done. There is ${salary_stats.length} resources in page ${pagina}, with an offset of ${offset}`);
         } else if (status == 404) {
             message = `No hay recursos en la base de datos.`;
             console.log(`There is no data to show with GET method.`);
@@ -119,6 +149,7 @@
             }
             
         }
+        console.log(`${salary_stats.length}`);
     }
 
     //GET A TODOS LOS DATOS PARA OBTENER EL NÚMERO TOTAL DE RECURSOS.
@@ -322,7 +353,19 @@
 
             <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
         </tr>
-
+        {#if salary_stats.length==undefined }
+        <tr>
+            <td><a href="/salary-stats/{salary_stats.province}/{salary_stats.gender}/{salary_stats.year}">{salary_stats.province}</a></td>
+            <td>{salary_stats.gender}</td>
+            <td>{salary_stats.year}</td>
+            <td>{salary_stats.salaried}</td>
+            <td>{salary_stats.average_salary}</td>
+            <td>{salary_stats.standard_deviation}</td>
+            <td><Button color="danger" on:click={deleteResource(salary_stats.province,salary_stats.gender,salary_stats.year)}>Borrar recurso</Button></td>
+            <td>&nbsp</td>
+        </tr>
+        {/if}
+        {#if salary_stats.length>1}
         {#each salary_stats as salary_stat}
             <tr>
                 <td><a href="/salary-stats/{salary_stat.province}/{salary_stat.gender}/{salary_stat.year}">{salary_stat.province}</a></td>
@@ -335,6 +378,7 @@
                 <td>&nbsp</td>
             </tr>
         {/each}
+        {/if}
     </tbody>
 </Table>
 <Container>
@@ -360,20 +404,26 @@
     </Row>
     <Row>
         <Col>
-            Número de asalariados<input bind:value={salaried} placeholder="Número de asalariados"/>
+            Año<input bind:value={year} placeholder="Ingrese un año concreto"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por año</Button>
+        </Col>
+    </Row>
+    <Row>
+        <Col>
+            Número de asalariados por debajo de: <input bind:value={salaried_behind} placeholder="Número de asalariados"/>
             <Button color="info" on:click={getSalaryStats}>Buscar por asalariados</Button>
         </Col>
     </Row>
     <Row>
         <Col>
-            Salario medio<input bind:value={average_salary} placeholder="Salario Medio"/>
+            Salario medio por debajo de: <input bind:value={average_salary_behind} placeholder="Salario Medio"/>
             <Button color="info" on:click={getSalaryStats}>Buscar por salario medio</Button>
         </Col>
     </Row>
     <Row>
         <Col>
-            Desviación típica<input bind:value={standard_deviation} placeholder="Desviación típica"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por desviación típico</Button>
+            Desviación típica por encima de: <input bind:value={standard_deviation_over} placeholder="Desviación típica"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por desviación típica</Button>
         </Col>
     </Row>
 </Container>

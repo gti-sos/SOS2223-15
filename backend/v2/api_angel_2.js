@@ -217,18 +217,48 @@ function loadBackend_angel_2 (app) {
 
                     // Si por el contrario encontramos datos
                 } else {
-                    if(salaried_behind != undefined){
+                    if(salaried_behind != undefined || average_salary_behind != undefined || standard_deviation_over != undefined){
                         datos = datos.filter((reg) => {
                             return (reg.salaried <= salaried_behind);
                         });
+                        if( average_salary_behind != undefined){ // Si nos dan salaried_behind y average_salary_behind
+                            datos = datos.filter((reg) => {
+                                return (reg.average_salary <= average_salary_behind);
+                            });
+                            if(standard_deviation_over != undefined){ // Si además nos dan un standard_deviation_over además del average_salary_behind
+                                datos = datos.filter((reg) => {
+                                    return (reg.standard_deviation_over >= standard_deviation_over);
+                                });
+                            }
+                        } else if( (average_salary_behind == undefined) && (standard_deviation_over != undefined) ){ // Si nos dan salaried y standard_deviation_over pero no nos dan  average_salary_behind.
+                            datos = datos.filter((reg) => {
+                                return (reg.standard_deviation_over >= standard_deviation_over);
+                            });
+                        }
+                        if(datos.length==1){
+                            console.log(`Showing the one resource`);
+                            res.status(200).json(datos[0]);
+                            return;
+                        }
                         res.status(200).json(datos);
-                        console.log("Salaried_behind");
+                        console.log(`Showing resources behind a specified salaried_behind`);
                         return; // Ponemos el return para que terminen los ifs y no salte al siguiente else
                     }
-                    if(average_salary_behind != undefined){
+                    if(average_salary_behind != undefined){ // Si no nos dan un salaried_behind, pero sí un average_salary_behind, entonces....
                         datos = datos.filter((reg) => {
                             return (reg.average_salary <= average_salary_behind);
                         });
+                        if( standard_deviation_over != undefined){
+                            datos = datos.filter((reg) => {
+                                return (reg.standard_deviation_over >= standard_deviation_over);
+                            });
+                        }
+                        if(datos.length==1){
+                            console.log(`Showing the only resource returned with a average_salary_behind behind the one given.`);
+                            res.status(200).json(datos[0]);
+                            return;
+                        }
+                        console.log(`Showing resources behind a specified average_salary_behind`);
                         res.status(200).json(datos);
                         return;
                     }
@@ -236,6 +266,12 @@ function loadBackend_angel_2 (app) {
                         datos = datos.filter((reg) => {
                             return (reg.standard_deviation >= standard_deviation_over);
                         });
+                        if(datos.length==1){
+                            console.log(`Showing the only resource returned with a standard_deviation over the one given.`);
+                            res.status(200).json(datos[0]);
+                            return;
+                        }
+                        console.log(`Showing resources over a specified standard_deviation`);
                         res.status(200).json(datos);
                         return;
                     }
@@ -243,6 +279,7 @@ function loadBackend_angel_2 (app) {
                         console.log(`Datos de salary-stats devueltos: ${datos.length}`);
                         // Devolvemos dichos datos, estado 200: OK
                         if(datos.length==1 && req.query.offset==undefined && req.query.limit==undefined){
+                            console.log(`Showing one resource with a specified salaried, average_salary and standard_deviation`);
                             res.status(200).json(datos[0]);
                             return;
                         }else{
