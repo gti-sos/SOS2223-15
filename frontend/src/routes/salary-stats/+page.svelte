@@ -149,7 +149,7 @@
             }
             
         }
-        console.log(`${salary_stats.length}`);
+        console.log(` Número de datos devueltos: ${salary_stats.length}`);
     }
 
     //GET A TODOS LOS DATOS PARA OBTENER EL NÚMERO TOTAL DE RECURSOS.
@@ -353,7 +353,7 @@
 
             <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
         </tr>
-        {#if salary_stats.length==undefined }
+        {#if salary_stats.length==undefined}
         <tr>
             <td><a href="/salary-stats/{salary_stats.province}/{salary_stats.gender}/{salary_stats.year}">{salary_stats.province}</a></td>
             <td>{salary_stats.gender}</td>

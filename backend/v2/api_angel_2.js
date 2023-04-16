@@ -217,7 +217,7 @@ function loadBackend_angel_2 (app) {
 
                     // Si por el contrario encontramos datos
                 } else {
-                    if(salaried_behind != undefined || average_salary_behind != undefined || standard_deviation_over != undefined){
+                    if(salaried_behind != undefined){
                         datos = datos.filter((reg) => {
                             return (reg.salaried <= salaried_behind);
                         });
@@ -227,22 +227,23 @@ function loadBackend_angel_2 (app) {
                             });
                             if(standard_deviation_over != undefined){ // Si además nos dan un standard_deviation_over además del average_salary_behind
                                 datos = datos.filter((reg) => {
-                                    return (reg.standard_deviation_over >= standard_deviation_over);
+                                    return (reg.standard_deviation >= standard_deviation_over);
                                 });
                             }
                         } else if( (average_salary_behind == undefined) && (standard_deviation_over != undefined) ){ // Si nos dan salaried y standard_deviation_over pero no nos dan  average_salary_behind.
                             datos = datos.filter((reg) => {
-                                return (reg.standard_deviation_over >= standard_deviation_over);
+                                return (reg.standard_deviation >= standard_deviation_over);
                             });
                         }
                         if(datos.length==1){
                             console.log(`Showing the one resource`);
                             res.status(200).json(datos[0]);
                             return;
+                        }else{
+                            res.status(200).json(datos);
+                            console.log(`Showing resources behind a specified salaried_behind`);
+                            return; // Ponemos el return para que terminen los ifs y no salte al siguiente else
                         }
-                        res.status(200).json(datos);
-                        console.log(`Showing resources behind a specified salaried_behind`);
-                        return; // Ponemos el return para que terminen los ifs y no salte al siguiente else
                     }
                     if(average_salary_behind != undefined){ // Si no nos dan un salaried_behind, pero sí un average_salary_behind, entonces....
                         datos = datos.filter((reg) => {
@@ -250,7 +251,7 @@ function loadBackend_angel_2 (app) {
                         });
                         if( standard_deviation_over != undefined){
                             datos = datos.filter((reg) => {
-                                return (reg.standard_deviation_over >= standard_deviation_over);
+                                return (reg.standard_deviation >= standard_deviation_over);
                             });
                         }
                         if(datos.length==1){
