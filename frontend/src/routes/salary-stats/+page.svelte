@@ -3,7 +3,7 @@
 
     import { onMount } from "svelte";
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
-    import { Button, Table, Container } from "sveltestrap";
+    import { Button, Table, Container, Row, Col } from "sveltestrap";
     import { Alert } from "sveltestrap";
 
     onMount(async () => {
@@ -40,10 +40,11 @@
     //BÚSQUEDA POR GÉNERO
     let gender = "";
     //BÚSQUEDA POR ASALARIADOS
-
+    let salaried = "";
+    //BÚSQUEDA POR SALARIO MEDIO
+    let average_salary = "";
     //BÚSQUEDA POR DESVIACIÓN TÍPICA
-
-    //BÚSQUEDA POR SALARIO MEDIO.
+    let standard_deviation = "";
 
     let result = "";
     //let result2 = ""; // Result auxiliar para usarlo en la paginación.
@@ -65,6 +66,12 @@
                 ruta = ruta + `&province=${province}`;
             } else if ( gender != "" ){
                 ruta = ruta + `&gender=${gender}`;
+            } else if (salaried != ""){
+                ruta = ruta + `&salaried=${salaried}`;
+            } else if (average_salary != ""){
+                ruta = ruta + `&average_salary=${average_salary}`;
+            } else if ( standard_deviation != "") {
+                ruta = ruta + `&standard_deviation=${standard_deviation}`;
             }
             console.log(`Introduced a date range. from = ${from} and to = ${to}. Ruta ${ruta}`);
 
@@ -72,6 +79,12 @@
             ruta = ruta + `&province=${province}`;
         } else if ( gender != "" ) { // Búsqueda por género.
             ruta = ruta + `&gender=${gender}`;
+        } else if ( salaried != "" ) { // Búsqueda por género.
+            ruta = ruta + `&salaried=${salaried}`;
+        } else if ( average_salary != "" ) { // Búsqueda por género.
+            ruta = ruta + `&average_salary=${average_salary}`;
+        } else if ( standard_deviation != "" ) { // Búsqueda por género.
+            ruta = ruta + `&standard_deviation=${standard_deviation}`;
         }
         const res = await fetch(API + ruta, {
             // fetch (url)
@@ -326,14 +339,43 @@
 </Table>
 <Container>
     <h2>Búsquedas:</h2>
-    Desde<input bind:value={from}/>
-    Hasta<input bind:value={to}/>
-    <Button color="info" on:click={getSalaryStats}>Buscar por rango de fecha</Button>
-    Provincia<input bind:value={province}/>
-    <Button color="info" on:click={getSalaryStats}>Buscar por provincia</Button>
-    Género<input bind:value={gender}/>
-    <Button color="info" on:click={getSalaryStats}>Buscar por género</Button>
-
+    <Row>
+        <Col>
+            Desde<input bind:value={from} placeholder="Año de inicio"/>
+            Hasta<input bind:value={to} placeholder="Año final"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por rango de fecha</Button>
+        </Col>
+    </Row>
+    <Row>
+        <Col>
+            Provincia<input bind:value={province} placeholder="Ingrese una provincia"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por provincia</Button>
+        </Col>
+    </Row>
+    <Row>
+        <Col>
+            Género<input bind:value={gender} placeholder="Ingrese un género"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por género</Button>
+        </Col>
+    </Row>
+    <Row>
+        <Col>
+            Número de asalariados<input bind:value={salaried} placeholder="Número de asalariados"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por asalariados</Button>
+        </Col>
+    </Row>
+    <Row>
+        <Col>
+            Salario medio<input bind:value={average_salary} placeholder="Salario Medio"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por salario medio</Button>
+        </Col>
+    </Row>
+    <Row>
+        <Col>
+            Desviación típica<input bind:value={standard_deviation} placeholder="Desviación típica"/>
+            <Button color="info" on:click={getSalaryStats}>Buscar por desviación típico</Button>
+        </Col>
+    </Row>
 </Container>
 
 {#if message != "" && (resultStatus == 200 || resultStatus == 201)}
