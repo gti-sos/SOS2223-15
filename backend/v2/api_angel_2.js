@@ -147,7 +147,8 @@ function loadBackend_angel_2 (app) {
 
 
     //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
-    //GET a salary-stats
+
+    //GET a salary-stats por cada uno de los distintos campos individualmente por query (excepto from y to, que puede ir juntos).
     app.get('/api/v2/salary-stats', (req, res) => {
         const salaried_behind = req.query.salaried_behind;
         const average_salary_behind = req.query.average_salary_behind;
@@ -208,8 +209,11 @@ function loadBackend_angel_2 (app) {
                 // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                 if (datos.length == 0) {
 
+                    
                     console.log(`salary-stats not found.`);
-                    res.sendStatus(404);
+                    res.status(404).json(datos);
+                    return;
+                    
 
                     // Si por el contrario encontramos datos
                 } else {
@@ -327,7 +331,7 @@ function loadBackend_angel_2 (app) {
         res.status(405).json('El método POST no está permitido en esta ruta');
     });
 
-    //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y YEAR CONCRETO.
+    //Código para hacer búsquedas dada una provincia y luego un año o un género o un número de asalariados, ... así con todos los campos.
     app.get('/api/v2/salary-stats/:province', (req, res) => {
         const province = req.params.province.toLowerCase();
         const from = req.query.from;
@@ -335,7 +339,6 @@ function loadBackend_angel_2 (app) {
         //const province = req.query.province;
         const year = req.query.year;
         const gender = req.query.gender;
-        const man = req.query.man;
         const salaried = req.query.salaried;
         const average_salary = req.query.average_salary;
         const standard_deviation = req.query.standard_deviation;
@@ -374,15 +377,6 @@ function loadBackend_angel_2 (app) {
                 });
                 res.status(200).json(filteredList);
 
-            } else if (man) {
-                filteredList = filteredList.filter((obj) => {
-                    return (obj.man == man && obj.province.toLowerCase() == province);
-                });
-                console.log(`/GET to /salary-stats/${province}?${gender}`); //console.log en el servidor
-                filteredList.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(filteredList);
             } else if (salaried) {
                 filteredList = filteredList.filter((obj) => {
                     return (obj.salaried == salaried && obj.province.toLowerCase() == province);
@@ -432,7 +426,9 @@ function loadBackend_angel_2 (app) {
         });
     });
 
-    //Nuevo GET para poder buscar recursos por un id especificado.
+
+
+    //Nuevo GET para poder buscar recursos por un id especificado por parámetros.
     app.get('/api/v2/salary-stats/:province/:gender/:year', (req, res) => {
         const province = req.params.province.toLowerCase();
         const gender = req.params.gender.toLowerCase();

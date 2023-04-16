@@ -20,7 +20,7 @@
   </div>
 
   <div class="container">
-    <h2>Front-ends</h2>
+    <h2>Interfaces (Front-ends)</h2>
     <ul>
       <li><a href="/salary-stats">/salary-stats</a></li>
       <li><a href="/jobseekers-studies">/jobseekers-studies</a></li>

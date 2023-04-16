@@ -11,11 +11,13 @@
         getSalaryStats();
     });
 
-    let API = "/api/v2/salary-stats";
 
+    let API = "/api/v2/salary-stats";
+    
     if (dev)
         // Si accedemos en modo normal, accedemos en local a la API y si no, accedemos al servidor de Svelte
         API = "http://localhost:12345" + API;
+
 
     let salary_stats = [];
     //let salary_stats2 = []; // Salary_stats auxiliar para paginación.
@@ -26,9 +28,22 @@
     let newAverage_salary = "salario_medio";
     let newStandard_deviation = "desviación_típica";
 
+    //PAGINACIÓN
     let offset = 0;
     let limit = 10;
     let pagina = 0;
+    //BÚSQUEDA CON FROM Y TO (CAMPO YEAR)
+    let from = "";
+    let to = "";
+    //BÚSQUEDA POR PROVINCIA
+    let province = "";
+    //BÚSQUEDA POR GÉNERO
+    let gender = "";
+    //BÚSQUEDA POR ASALARIADOS
+
+    //BÚSQUEDA POR DESVIACIÓN TÍPICA
+
+    //BÚSQUEDA POR SALARIO MEDIO.
 
     let result = "";
     //let result2 = ""; // Result auxiliar para usarlo en la paginación.
@@ -36,9 +51,29 @@
     //let resultStatus2 = "";
     let message = "";
 
+
     async function getSalaryStats() {
         resultStatus = result = "";
-        const res = await fetch(API + `?offset=${offset}&limit=${limit}`, {
+        let ruta = `?offset=${offset}&limit=${limit}`; //Definimos una ruta por defecto.
+        
+        if (to !=""){ //  Búsqueda por From y To (búsqueda por rango de año).
+            if(from == ""){
+                from = 0;
+            }
+            ruta = ruta + `&from=${from}&to=${to}`
+            if ( province != ""){ //Búsqueda por provincia (query)
+                ruta = ruta + `&province=${province}`;
+            } else if ( gender != "" ){
+                ruta = ruta + `&gender=${gender}`;
+            }
+            console.log(`Introduced a date range. from = ${from} and to = ${to}. Ruta ${ruta}`);
+
+        } else if ( province != ""  ){ //Búsqueda por provincia (query)
+            ruta = ruta + `&province=${province}`;
+        } else if ( gender != "" ) { // Búsqueda por género.
+            ruta = ruta + `&gender=${gender}`;
+        }
+        const res = await fetch(API + ruta, {
             // fetch (url)
             method: "GET",
         });
@@ -54,12 +89,22 @@
         resultStatus = status;
         if (status == 200) {
             message = `Obtenidos todos los recursos correctamente.`;
+            if(salary_stats.length == 0 ){
+                message = `Se han borrado correctamente los datos de la base de datos.`;
+            }
             console.log(
-                `GET correctly done. Hay ${salary_stats.length} datos en la página ${pagina}, con offset ${offset}`
+                `GET correctly done. There is ${salary_stats.length} resources in page ${pagina}, with an offset of ${offset}`
             );
         } else if (status == 404) {
             message = `No hay recursos en la base de datos.`;
             console.log(`There is no data to show with GET method.`);
+            if(res == "Not Found"){ // Mensaje para el delete a todo.
+                message = `Se han borrado correctamente los datos de la base de datos.`;
+            } if(province){ //Mensaje para fallo al buscar por provincia.
+                message = `No existe un recurso con la provincia ${province}.`
+                console.log(`There is resource with province ${province}`);
+            }
+            
         }
     }
 
@@ -221,6 +266,7 @@
         resultStatus = status;
         if (status == 200) {
             await getSalaryStats();
+            location.reload();
             message = `Se han borrado correctamente los datos de la base de datos.`;
             console.log("Deleted all resources correctly.");
         } else if (status == 500) {
@@ -260,6 +306,7 @@
             <td><input bind:value={newAverage_salary} /></td>
             <td><input bind:value={newStandard_deviation} /></td>
             <td><Button color="warning" on:click={createSalary}>Crear</Button></td>
+
             <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
         </tr>
 
@@ -277,6 +324,17 @@
         {/each}
     </tbody>
 </Table>
+<Container>
+    <h2>Búsquedas:</h2>
+    Desde<input bind:value={from}/>
+    Hasta<input bind:value={to}/>
+    <Button color="info" on:click={getSalaryStats}>Buscar por rango de fecha</Button>
+    Provincia<input bind:value={province}/>
+    <Button color="info" on:click={getSalaryStats}>Buscar por provincia</Button>
+    Género<input bind:value={gender}/>
+    <Button color="info" on:click={getSalaryStats}>Buscar por género</Button>
+
+</Container>
 
 {#if message != "" && (resultStatus == 200 || resultStatus == 201)}
     <!--Alerta para los códigos 200 y 201-->
