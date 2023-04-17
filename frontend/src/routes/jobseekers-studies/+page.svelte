@@ -60,6 +60,7 @@
         resultStatus = status;
         if (status == 200) {
             message = "Se han insertado los datos de nuevo";
+            location.reload();
             //getJobseekersStudies();
         } else {
             message = "No se han podido insertar los datos de nuevo";
@@ -526,34 +527,65 @@
             >
         </tr>
 
+        {#if jobseekers.length==1}
+        <tr>
+            <td>{jobseekers.year}</td>
+            <td>{jobseekers.gender}</td>
+            <td
+                ><a
+                    href="/jobseekers-studies/{jobseekers.year}/{jobseekers.gender}/{jobseekers.territory}/{jobseekers.type}"
+                    >{jobseekers.territory}</a
+                ></td
+            >
+            <td>{jobseekers.type}</td>
+            <td>{jobseekers.primary}</td>
+            <td>{jobseekers.fp_program}</td>
+            <td>{jobseekers.general_education}</td>
+            <td>{jobseekers.total}</td>
+            <td
+                ><Button
+                    color="danger"
+                    on:click={deleteResource(
+                        jobseekers.year,
+                        jobseekers.gender,
+                        jobseekers.territory,
+                        jobseekers.type
+                    )}>Borrar</Button
+                ></td
+            >
+        </tr>
+        {/if}
+        
+        {#if jobseekers.length > 1}
         {#each jobseekers as jobseekers}
-            <tr>
-                <td>{jobseekers.year}</td>
-                <td>{jobseekers.gender}</td>
-                <td
-                    ><a
-                        href="/jobseekers-studies/{jobseekers.year}/{jobseekers.gender}/{jobseekers.territory}/{jobseekers.type}"
-                        >{jobseekers.territory}</a
-                    ></td
-                >
-                <td>{jobseekers.type}</td>
-                <td>{jobseekers.primary}</td>
-                <td>{jobseekers.fp_program}</td>
-                <td>{jobseekers.general_education}</td>
-                <td>{jobseekers.total}</td>
-                <td
-                    ><Button
-                        color="danger"
-                        on:click={deleteResource(
-                            jobseekers.year,
-                            jobseekers.gender,
-                            jobseekers.territory,
-                            jobseekers.type
-                        )}>Borrar</Button
-                    ></td
-                >
-            </tr>
-        {/each}
+        <tr>
+            <td>{jobseekers.year}</td>
+            <td>{jobseekers.gender}</td>
+            <td
+                ><a
+                    href="/jobseekers-studies/{jobseekers.year}/{jobseekers.gender}/{jobseekers.territory}/{jobseekers.type}"
+                    >{jobseekers.territory}</a
+                ></td
+            >
+            <td>{jobseekers.type}</td>
+            <td>{jobseekers.primary}</td>
+            <td>{jobseekers.fp_program}</td>
+            <td>{jobseekers.general_education}</td>
+            <td>{jobseekers.total}</td>
+            <td
+                ><Button
+                    color="danger"
+                    on:click={deleteResource(
+                        jobseekers.year,
+                        jobseekers.gender,
+                        jobseekers.territory,
+                        jobseekers.type
+                    )}>Borrar</Button
+                ></td
+            >
+        </tr>
+    {/each}
+        {/if}
     </tbody>
 </Table>
 
