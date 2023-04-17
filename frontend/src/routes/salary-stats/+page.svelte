@@ -132,9 +132,11 @@
             console.log(`There is no data to show with GET method.`);
             if(res == "Not Found"){ // Mensaje para el delete a todo.
                 message = `Se han borrado correctamente los datos de la base de datos.`;
-            } if(province){ //Mensaje para fallo al buscar por provincia.
-                message = `No existe un recurso con la provincia ${province}.`
-                console.log(`There is no resource with province ${province}`);
+            } if(province || gender || year || salaried_behind || average_salary_behind || standard_deviation_over){ //Mensaje para fallo al buscar por provincia.
+                message = `No existen recursos con los datos introduidos en la búsqueda. provincia:${newProvince}, género: ${newGender}, año: ${newYear},
+             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}.`
+                console.log(`There is no resource with such filtering parameters. provincia:${newProvince}, género: ${newGender}, año: ${newYear},
+             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}.`);
             }
             
         }
