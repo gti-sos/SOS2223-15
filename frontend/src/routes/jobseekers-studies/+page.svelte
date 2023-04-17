@@ -184,8 +184,8 @@
             if (total_under != "")
                 parametros.push(`total_under=${total_under}`);
         } else {
-            if (to != "") parametros.push(`to=${to}`);
             if (from != "") parametros.push(`from=${from}`);
+            if (to != "") parametros.push(`to=${to}`);
             if (year != "") parametros.push(`year=${year}`);
             if (gender != "") parametros.push(`gender=${gender}`);
             if (territory != "") parametros.push(`territory=${territory}`);
