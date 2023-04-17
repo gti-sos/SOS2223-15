@@ -32,6 +32,9 @@
     let result = "";
     let resultStatus = "";
     let message = "";
+    let message2 ="";
+    let message3 ="";
+
 
     async function getSalaryStat() {
         resultStatus = result = "";
@@ -83,6 +86,13 @@
         if(status == 200){
             getSalaryStat();
             message = `Se ha actualizado el recurso correctamente.`;
+            /*
+            if (salaried == "" || average_salary=="" || standard_deviation==""){
+                message3= "Faltan campos"
+            }
+            */
+            message2 ="Se ha actualizado el recurso correctamente.";
+
             console.log("Resource updated correctly.");
         }
         else if(status == 400){
@@ -125,6 +135,13 @@
 
 {#if message != "" && (resultStatus == 200 || resultStatus == 201)} <!--Alerta para los códigos 200 y 201-->
 
+    {#if message2 !=""}
+    <div class= "container text-center">
+        <Alert color="success" dismissible>{message2}</Alert>
+    </div>
+
+    {/if}
+    
     <div class= "container text-center">
         <Alert color="success" dismissible>{message}</Alert>
     </div>
