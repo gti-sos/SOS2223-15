@@ -54,14 +54,11 @@
         }
         const status = await res.status;
         resultStatus = status;
-        if(status == 404){
-            message = `No existe ningún recurso para la provincia: ${updatedProvince}, en el año: ${updatedYear}.`;
-            color_alert = "danger";
-        }else{
-            if(status == 400){
-                message = "Ha habido un error en la petición";
-                color_alert = "danger";
-            }
+        if(status == 200){
+            message = `Obtenidos todos los recursos correctamente.`
+        } else if(status==404){
+            message = `No existe el recurso especificado.`
+            console.log(`There is no resorce with such parameters. `)
         }
     }
 
@@ -148,14 +145,6 @@
         <Alert color="danger" dismissible>{message}</Alert>
     </div>
 
-{/if}
-
-{#if resultStatus != ""}
-    <p>Result:</p>
-    <pre>
-{resultStatus}
-{result}
-        </pre>
 {/if}
 
 

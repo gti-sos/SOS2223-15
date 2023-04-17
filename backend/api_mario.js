@@ -5,7 +5,7 @@ var db = new Datastore;
 const API_DOC_PORTAL = 'https://documenter.getpostman.com/view/26052697/2s93JzMgDq';
 
 //DATA MARIO
-function loadBackend_mario (app) {
+function loadBackend_mario(app) {
   var población_media = [
     { province: "Almeria", year: 2021, gender: "Ambos sexos", low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827 },
     { province: "Cadiz", year: 2022, gender: "Ambos sexos", low_due_to_placement: 246181, no_renovation: 124697, other_reason: 26756 },
@@ -108,6 +108,9 @@ function loadBackend_mario (app) {
   //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
   //GET a loss-jobs
   app.get('/api/v1/loss-jobs', (req, res) => {
+    const low_due_to_placement_behind = req.query.low_due_to_placement_behind;
+    const no_renovation_behind = req.query.no_renovation_behind;
+    const other_reason_over = req.query.other_reason_over;
 
     console.log("/GET loss-jobs");
 
@@ -137,7 +140,7 @@ function loadBackend_mario (app) {
         if (!req.query.offset) {
           var offset = -1;
         } else {
-          var offset = parseInt(req.query.offset)-1;
+          var offset = parseInt(req.query.offset) - 1;
         }
 
         // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
@@ -171,18 +174,83 @@ function loadBackend_mario (app) {
 
           // Si por el contrario encontramos datos
         } else {
+          if(low_due_to_placement_behind != undefined){
+            datos = datos.filter((reg) => {
+                return (reg.low_due_to_placement <= low_due_to_placement_behind);
+            });
+            if( no_renovation_behind != undefined){ // Si nos dan salaried_behind y average_salary_behind
+                datos = datos.filter((reg) => {
+                    return (reg.no_renovation <= no_renovation_behind);
+                });
+                if(other_reason_over != undefined){ // Si además nos dan un standard_deviation_over además del average_salary_behind
+                    datos = datos.filter((reg) => {
+                        return (reg.other_reason >= other_reason_over);
+                    });
+                }
+            } else if( (no_renovation_behind == undefined) && (other_reason_over != undefined) ){ // Si nos dan salaried y standard_deviation_over pero no nos dan  average_salary_behind.
+                datos = datos.filter((reg) => {
+                    return (reg.other_reason >= other_reason_over);
+                });
+            }
+            if(datos.length==1){
+                console.log(`Showing the one resource`);
+                res.status(200).json(datos[0]);
+                return;
+            }else{
+                res.status(200).json(datos);
+                console.log(`Showing resources behind a specified low_due_to_placement_behind`);
+                return; // Ponemos el return para que terminen los ifs y no salte al siguiente else
+            }
+        }
+        if(no_renovation_behind != undefined){ // Si no nos dan un low_due_to_placement_behind, pero sí un no_renovation_behind, entonces....
+            datos = datos.filter((reg) => {
+                return (reg.no_renovation <= no_renovation_behind);
+            });
+            if( other_reason_over != undefined){
+                datos = datos.filter((reg) => {
+                    return (reg.other_reason >= other_reason_over);
+                });
+            }
+            if(datos.length==1){
+                console.log(`Showing the only resource returned with a no_renovation_behind behind the one given.`);
+                res.status(200).json(datos[0]);
+                return;
+            }
+            console.log(`Showing resources behind a specified no_renovation_behind`);
+            res.status(200).json(datos);
+            return;
+        }
+        if(other_reason_over != undefined){
+            datos = datos.filter((reg) => {
+                return (reg.other_reason >= other_reason_over);
+            });
+            if(datos.length==1){
+                console.log(`Showing the only resource returned with a other_reason over the one given.`);
+                res.status(200).json(datos[0]);
+                return;
+            }
+            console.log(`Showing resources over a specified other_reason`);
+            res.status(200).json(datos);
+            return;
+        }
+        else{
 
           console.log(`Datos de loss-jobs devueltos: ${datos.length}`);
+
           // Devolvemos dichos datos, estado 200: OK
-          if(datos.length==1 && req.query.offset==undefined && req.query.limit==undefined){
+          if (datos.length == 1 && req.query.offset == undefined && req.query.limit == undefined) {
             res.status(200).json(datos[0]);
             return;
+          } else if(datos.length==1) {
+            res.status(200).json(datos[0]);
+            //console.log(datos.length)
           }else{
             res.status(200).json(datos);
-            //console.log(datos.length)
-        }
+            return;
+          }
 
         }
+      }
       }
     })
   });
@@ -194,21 +262,35 @@ function loadBackend_mario (app) {
   app.post(rutaBase, (request, response) => {
     const province = request.body.province;
     const year = request.body.year;
+    const gender = request.body.gender;
+    const low_due_to_placement = request.body.low_due_to_placement;
+    const no_renovation = request.body.no_renovation;
+    const other_reason = request.body.other_reason;
     console.log("New POST to /loss-jobs"); //console.log en el servidor  
-    db.find({}, function (err, filteredList) {
+    if (comprobar_tipos( province,year,gender,low_due_to_placement,no_renovation,other_reason) ) {
+      response.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
+      console.log(`INCORRECT PARAMETER TYPE`);
+
+  } else {
+  db.find({}, function (err, filteredList) {
 
       if (err) {
-        res.sendStatus(500, "Client Error");
+          response.sendStatus(500, "CLIENT ERROR");
       }
       // Validar que se envíen todos los campos necesarios
       const requiredFields = ['province', 'year', 'gender', 'low_due_to_placement', 'no_renovation', 'other_reason'];
       for (const field of requiredFields) {
         if (!request.body.hasOwnProperty(field)) {
-          response.status(400).json(`Missing required field: ${field}`);
-          return;
+            console.log(request.body);
+            return response.status(400).json(`Missing required field: ${field}`);
+            
         }
-        
-      }
+    }
+      for(var elem of Object.keys(request.body)){ // Con Object.keys(request.body), obtenemos todas las claves del objeto request.body
+        if(!requiredFields.includes(elem)){
+            return response.status(400).json(`There are fields that does not match the structure, as: ${elem}`);
+        }
+    }
       // Verificar que la solicitud se hizo en la ruta correcta
       if (request.originalUrl !== '/api/v1/loss-jobs') {
         res.status(405).json('Método no permitido');
@@ -218,7 +300,7 @@ function loadBackend_mario (app) {
         // Verificar si el recurso ya existe
         //const existingObject = población_media.find(obj => obj.province === province && obj.year === year);
         filteredList = filteredList.filter((obj) => {
-          return (province == obj.province && year == obj.year)
+          return (province == obj.province && year == obj.year && gender == obj.gender)
         });
         //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
         if (filteredList.length != 0) {
@@ -232,6 +314,7 @@ function loadBackend_mario (app) {
         }
       }
     });
+  }
   });
 
   // Método PUT para la ruta base
@@ -514,44 +597,44 @@ function loadBackend_mario (app) {
 
     });
   });
-  
-    //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
-    app.delete('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
-      const province = req.params.province;
-      const year = req.params.year;
-      const gender = req.params.gender;
-      db.find({}, function (err, filteredList) {
-  
-        if (err) {
-          res.sendStatus(500, "Client Error");
-        }
-        //const filteredStats = población_media.filter(stats => stats.province === province);
-        filteredList = filteredList.filter((obj) => {
-          return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender);
-        });
-        if (filteredList.length === 0) {
-          res.status(404).json(`No se encontraron datos para ${province}`);
-        } else {
-          filteredList = filteredList.filter((obj) => { return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender); });
-  
-          if (filteredList) {
-            db.remove({ province: province, year : parseInt(year), gender: gender }, { multi: true }, (err, numRemoved) => {
-              if (err) {
-                res.sendStatus(500, "ERROR EN CLIENTE");
-                return;
-              }
-              else {
-                res.sendStatus(200, "DELETED");
-                return;
-              }
-  
-            });
-          } else {
-            res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
-          }
-        }
+
+  //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
+  app.delete('/api/v1/loss-jobs/:province/:year/:gender', (req, res) => {
+    const province = req.params.province;
+    const year = req.params.year;
+    const gender = req.params.gender;
+    db.find({}, function (err, filteredList) {
+
+      if (err) {
+        res.sendStatus(500, "Client Error");
+      }
+      //const filteredStats = población_media.filter(stats => stats.province === province);
+      filteredList = filteredList.filter((obj) => {
+        return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender);
       });
-    }); 
+      if (filteredList.length === 0) {
+        res.status(404).json(`No se encontraron datos para ${province}`);
+      } else {
+        filteredList = filteredList.filter((obj) => { return (obj.province === province && obj.year === parseInt(year) && obj.gender === gender); });
+
+        if (filteredList) {
+          db.remove({ province: province, year: parseInt(year), gender: gender }, { multi: true }, (err, numRemoved) => {
+            if (err) {
+              res.sendStatus(500, "ERROR EN CLIENTE");
+              return;
+            }
+            else {
+              res.sendStatus(200, "DELETED");
+              return;
+            }
+
+          });
+        } else {
+          res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
+        }
+      }
+    });
+  });
 
   function pagination(req, lista) {
 
@@ -567,6 +650,14 @@ function loadBackend_mario (app) {
     return res;
 
   };
+  function comprobar_tipos(province, year, gender, low_due_to_placement, no_renovation, other_reason) { //Esta función es para comprobar que los datos introducidos en el POST son correctos.
+    return ( typeof province !== "string" ||
+        typeof year !== "number" ||
+        typeof gender !== "string" ||
+        typeof low_due_to_placement !== "number" ||
+        typeof no_renovation !== "number" ||
+        typeof other_reason !== "number");
+}
 
   // Manejador de errores
   app.use((err, req, res, next) => {
