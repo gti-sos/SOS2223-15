@@ -75,7 +75,7 @@
             if (average_salary_behind != "") parametros.push(`average_salary_behind=${average_salary_behind}`);
             if (standard_deviation_over != "") parametros.push(`standard_deviation_over=${standard_deviation_over}`);
         }
-        let URL = `?${parametros.join('&')}`;
+        ruta = `${ruta}&${parametros.join('&')}`;
         /*
         if (to !=""){ //  Búsqueda por From y To (búsqueda por rango de año).
             if(from == ""){
@@ -119,9 +119,9 @@
         }
         console.log(`Introduced a date range. from = ${from} and to = ${to}. Ruta ${ruta}`);
         */
-       console.log(` la url es ${API}${URL}`);
+       console.log(` la url es ${API}${ruta}`);
        
-        const res = await fetch(API + URL, {
+        const res = await fetch(API + ruta, {
             // fetch (url)
             method: "GET",
         });
@@ -145,7 +145,7 @@
                 message = `Se han borrado correctamente los datos de la base de datos.`;
             } if(province){ //Mensaje para fallo al buscar por provincia.
                 message = `No existe un recurso con la provincia ${province}.`
-                console.log(`There is resource with province ${province}`);
+                console.log(`There is no resource with province ${province}`);
             }
             
         }
@@ -197,7 +197,8 @@
     }
     */
     async function getPgSig() {
-        if (offset * 10 < salary_stats.length) {
+        if (offset * 10 < salary_stats.length && salary_stats.length>(limit-1)) {
+            //console.log(`salary_stats.length ${salary_stats.length}`);
             offset = offset + 10;
             getSalaryStats();
         }
@@ -293,6 +294,9 @@
         resultStatus = status;
         if (status == 200) {
             getSalaryStats();
+            if(salary_stats.length==undefined){
+                location.reload();
+            }
             message = `Se ha borrado correctamente el recurso ${newProvince}, género: ${newGender}, año: ${newYear} de la base de datos`;
             console.log("Resource deleted correctly.");
         } else if (status == 500) {
@@ -353,17 +357,24 @@
 
             <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
         </tr>
-        {#if salary_stats.length==undefined}
+ 
+        {#if salary_stats.length<1}
         <tr>
-            <td><a href="/salary-stats/{salary_stats.province}/{salary_stats.gender}/{salary_stats.year}">{salary_stats.province}</a></td>
-            <td>{salary_stats.gender}</td>
-            <td>{salary_stats.year}</td>
-            <td>{salary_stats.salaried}</td>
-            <td>{salary_stats.average_salary}</td>
-            <td>{salary_stats.standard_deviation}</td>
-            <td><Button color="danger" on:click={deleteResource(salary_stats.province,salary_stats.gender,salary_stats.year)}>Borrar recurso</Button></td>
-            <td>&nbsp</td>
+            <td></td>
         </tr>
+        {/if}
+
+        {#if salary_stats.length==undefined}
+                <tr>
+                    <td><a href="/salary-stats/{salary_stats.province}/{salary_stats.gender}/{salary_stats.year}">{salary_stats.province}</a></td>
+                    <td>{salary_stats.gender}</td>
+                    <td>{salary_stats.year}</td>
+                    <td>{salary_stats.salaried}</td>
+                    <td>{salary_stats.average_salary}</td>
+                    <td>{salary_stats.standard_deviation}</td>
+                    <td><Button color="danger" on:click={deleteResource(salary_stats.province,salary_stats.gender,salary_stats.year)}>Borrar recurso</Button></td>
+                    <td>&nbsp</td>
+                </tr>
         {/if}
         {#if salary_stats.length>1}
         {#each salary_stats as salary_stat}
