@@ -29,9 +29,9 @@
     <nav>
         <Row>
             <Col xs="auto"><a href="/">Inicio</a></Col>
-            <Col xs="auto"><a href="/salary-stats">salary-stats</a></Col>
-            <Col xs="auto"><a href="/jobseekers-studies">jobseekers-studies</a></Col>
-            <Col xs="auto"><a href="/loss-jobs">loss-jobs</a></Col>
+            <Col xs="auto"><a href="/salary-stats">Estadísticas de asalariados</a></Col>
+            <Col xs="auto"><a href="/jobseekers-studies">Estudio de buscadores de empleo</a></Col>
+            <Col xs="auto"><a href="/loss-jobs">Causas de pérdidas de trabajo</a></Col>
         </Row>
     </nav>
 </Container>

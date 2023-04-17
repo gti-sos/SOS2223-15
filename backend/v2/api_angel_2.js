@@ -283,9 +283,13 @@ function loadBackend_angel_2 (app) {
                             console.log(`Showing one resource with a specified salaried, average_salary and standard_deviation`);
                             res.status(200).json(datos[0]);
                             return;
-                        }else{
-                            res.status(200).json(datos);
+                        }else if (datos.length==1){ // Este caso es para cuando se especifican parámetros que no son ni salaried_behind ni average_salary_behind ni standard_deviation_over por query y sólo se devuelve 1 dato.
+                            res.status(200).json(datos[0]);
+                            return;
                             //console.log(datos.length)
+                        } else{
+                            res.status(200).json(datos);
+                            return;
                         }
                     }
                 }
@@ -396,15 +400,6 @@ function loadBackend_angel_2 (app) {
                     delete e._id;
                 });
                 res.status(200).json(filteredList);
-            } else if (year) { // Filtrando por provincia y año.
-                filteredList = filteredList.filter((obj) => {
-                    return (obj.year == year && obj.province.toLowerCase() == province);
-                });
-                console.log(`/GET to /salary-stats/${province}?${year}`); //console.log en el servidor
-                filteredList.forEach((e) => {
-                    delete e._id;
-                });
-                res.status(200).json(filteredList);
             } else if (gender) { // Filtrando por provincia y género.
                 filteredList = filteredList.filter((obj) => {
                     return (obj.gender == gender && obj.province.toLowerCase() == province);
@@ -415,6 +410,15 @@ function loadBackend_angel_2 (app) {
                 });
                 res.status(200).json(filteredList);
 
+            } else if (year) { // Filtrando por provincia y año.
+                filteredList = filteredList.filter((obj) => {
+                    return (obj.year == year && obj.province.toLowerCase() == province);
+                });
+                console.log(`/GET to /salary-stats/${province}?${year}`); //console.log en el servidor
+                filteredList.forEach((e) => {
+                    delete e._id;
+                });
+                res.status(200).json(filteredList);
             } else if (salaried) {
                 filteredList = filteredList.filter((obj) => {
                     return (obj.salaried == salaried && obj.province.toLowerCase() == province);

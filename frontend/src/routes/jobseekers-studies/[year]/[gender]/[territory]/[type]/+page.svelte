@@ -58,30 +58,33 @@
         }
         const status = await res.status;
         resultStatus = status;
-        if(status == 200){
-            message = `Obtenidos todos los recursos correctamente.`
-        } else if(status==404){
-            message = `No existe el recurso especificado.`
-            console.log(`There is no resorce with such parameters. `)
+        if(status == 404){
+            message = `No existe ningún recurso para la provincia: ${updatedProvince}, en el año: ${updatedYear}.`;
+            color_alert = "danger";
+        }else{
+            if(status == 400){
+                message = "Ha habido un error en la petición";
+                color_alert = "danger";
+            }
         }
     }
 
     async function updateJobseeker(year,gender,territory,type) {
         resultStatus = result = "";
-        const res = await fetch(API + "/" + year + "/" + gender + "/" + territory + "/" + type, {
+        const res = await fetch(API , {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                year: parseInt(newYear),
-                gender: newGender,
-                territory: newTerritory,
-                type: newType,
-                primary: parseInt(newPrimary),
-                fp_program: parseInt(newFp_program),
-                general_education: parseInt(newGeneral_education),
-                total: parseInt(newTotal)
+                year: parseInt(updatedYear),
+                gender: updatedGender,
+                territory: updatedTerritory,
+                type: updatedType,
+                primary: parseInt(updatedPrimary),
+                fp_program: parseInt(updatedFp_program),
+                general_education: parseInt(updatedGeneral_education),
+                total: parseInt(updatedTotal)
             })
         });
         const status = await res.status;
@@ -104,6 +107,30 @@
 </script>
 
 <h1>Detalles del recurso.</h1>
+
+{#if message != "" && (resultStatus == 200 || resultStatus == 201)} <!--Alerta para los códigos 200 y 201-->
+
+    <div class= "container text-center">
+        <Alert color="success" dismissible>{message}</Alert>
+    </div>
+
+{/if}
+
+{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404,409, ...-->
+
+    <div class= "container text-center">
+        <Alert color="warning" dismissible>{message}</Alert>
+    </div>
+
+{/if}
+
+{#if message != "" && resultStatus == 500} <!--Alerta para los códigos 500 (internal server error)-->
+
+    <div class= "container text-center">
+        <Alert color="danger" dismissible>{message}</Alert>
+    </div>
+
+{/if}
 
 <Table>
     <thead>
@@ -131,38 +158,26 @@
             <td><Button on:click={updateJobseeker}>Editar</Button></td>
         </tr>
 
-        
+        <tr>
+            <td>{updatedYear}</td>
+            <td>{updatedGender}</td>
+            <td>{updatedTerritory}</td>
+            <td>{updatedType}</td>
+            <td>{updatedPrimary}</td>
+            <td>{updatedFp_program}</td>
+            <td>{updatedGeneral_education}</td>
+            <td>{updatedTotal}</td>
+        </tr>
     </tbody>
 </Table>
 
-{#if message != "" && (resultStatus == 200 || resultStatus == 201)} <!--Alerta para los códigos 200 y 201-->
 
-    <div class= "container text-center">
-        <Alert color="success" dismissible>{message}</Alert>
-    </div>
-
-{/if}
-
-{#if message != "" && ((resultStatus == 400 || resultStatus == 404 || resultStatus == 409))} <!--Alerta para los códigos 400,404,409, ...-->
-
-    <div class= "container text-center">
-        <Alert color="warning" dismissible>{message}</Alert>
-    </div>
-
-{/if}
-
-{#if message != "" && resultStatus == 500} <!--Alerta para los códigos 500 (internal server error)-->
-
-    <div class= "container text-center">
-        <Alert color="danger" dismissible>{message}</Alert>
-    </div>
-
-{/if}
-
-{#if resultStatus != ""}
-    <p>Result:</p>
-    <pre>
-{resultStatus}
-{result}
-        </pre>
-{/if}
+<!--
+    {#if resultStatus != ""}
+        <p>Result:</p>
+        <pre>
+    {resultStatus}
+    {result}
+            </pre>
+    {/if}
+-->
