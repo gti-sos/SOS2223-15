@@ -396,45 +396,46 @@
     <h2>Búsquedas:</h2>
     <Row>
         <Col>
-            Desde<input bind:value={from} placeholder="Año de inicio"/>
-            Hasta<input bind:value={to} placeholder="Año final"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por rango de fecha</Button>
+            <Row>
+            <Col>
+                Desde<input bind:value={from} placeholder="Año de inicio"/>
+                Hasta<input bind:value={to} placeholder="Año final"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Provincia<input bind:value={province} placeholder="Ingrese una provincia"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Género<input bind:value={gender} placeholder="Ingrese un género"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Año<input bind:value={year} placeholder="Ingrese un año concreto"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Número de asalariados por debajo de: <input bind:value={salaried_behind} placeholder="Número de asalariados"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Salario medio por debajo de: <input bind:value={average_salary_behind} placeholder="Salario Medio"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Desviación típica por encima de: <input bind:value={standard_deviation_over} placeholder="Desviación típica"/>
+            </Col>
+        </Row>
+        
         </Col>
-    </Row>
-    <Row>
         <Col>
-            Provincia<input bind:value={province} placeholder="Ingrese una provincia"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por provincia</Button>
-        </Col>
-    </Row>
-    <Row>
-        <Col>
-            Género<input bind:value={gender} placeholder="Ingrese un género"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por género</Button>
-        </Col>
-    </Row>
-    <Row>
-        <Col>
-            Año<input bind:value={year} placeholder="Ingrese un año concreto"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por año</Button>
-        </Col>
-    </Row>
-    <Row>
-        <Col>
-            Número de asalariados por debajo de: <input bind:value={salaried_behind} placeholder="Número de asalariados"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por asalariados</Button>
-        </Col>
-    </Row>
-    <Row>
-        <Col>
-            Salario medio por debajo de: <input bind:value={average_salary_behind} placeholder="Salario Medio"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por salario medio</Button>
-        </Col>
-    </Row>
-    <Row>
-        <Col>
-            Desviación típica por encima de: <input bind:value={standard_deviation_over} placeholder="Desviación típica"/>
-            <Button color="info" on:click={getSalaryStats}>Buscar por desviación típica</Button>
+            <Button color="info" on:click={getSalaryStats}>Filtrar</Button>
         </Col>
     </Row>
 </Container>
