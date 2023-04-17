@@ -179,7 +179,7 @@ function loadBackend_jara (app) {
                     if (err) {
                         res.sendStatus(500);
                     }
-                    // Buscar el objeto en la matriz evolution_stats
+                    // Buscar el objeto en la matriz
                     data = data.filter((obj) => {
                         return (year == obj.year && gender == obj.gender && territory == obj.territory && type == obj.type);
                     });

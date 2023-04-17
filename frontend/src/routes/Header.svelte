@@ -29,9 +29,15 @@
     <nav>
         <Row>
             <Col xs="auto"><a href="/">Inicio</a></Col>
+<<<<<<< HEAD
             <Col xs="auto"><a href="/salary-stats">Estadísticas de asalariados</a></Col>
             <Col xs="auto"><a href="/jobseekers-studies">Estudio de buscadores de empleo</a></Col>
             <Col xs="auto"><a href="/loss-jobs">Causas de pérdidas de trabajo</a></Col>
+=======
+            <Col xs="auto"><a href="/salary-stats">Salarios</a></Col>
+            <Col xs="auto"><a href="/jobseekers-studies">Demandantes de empleo</a></Col>
+            <Col xs="auto"><a href="/loss-jobs">Baja de demandantes</a></Col>
+>>>>>>> 0d166cc5897bb37c5a395ac20803b5071e10c63b
         </Row>
     </nav>
 </Container>
