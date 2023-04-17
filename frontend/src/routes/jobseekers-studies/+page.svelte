@@ -256,8 +256,8 @@
         }
     }
     async function getPgAnt() {
-        if (offset >= 10) {
-            offset = offset - 10;
+        if (offset >= 9) {
+            offset = offset - 9;
             getJobseekersStudies();
         }
     }
