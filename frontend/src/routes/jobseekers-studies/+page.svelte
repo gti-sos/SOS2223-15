@@ -5,7 +5,12 @@
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
     import { Button, Row, Table } from "sveltestrap";
     import { Alert } from "sveltestrap";
-    import { Pagination, PaginationItem, PaginationLink } from "sveltestrap";
+    import {
+        Pagination,
+        PaginationItem,
+        PaginationLink,
+        Container,
+    } from "sveltestrap";
 
     onMount(async () => {
         // Esto carga el getjobseekers-studies nada mas iniciar la aplicación.
@@ -28,8 +33,10 @@
     let newGeneral_education = "";
     let newTotal = "";
 
-    let offsetFiltro = "";
-    let limitFiltro = "";
+    //PAGINACIÓN
+    let offset = 0;
+    let limit = 10;
+    let pagina = 0;
     let from = "";
     let to = "";
     let year = "";
@@ -49,23 +56,22 @@
     let resultStatus = "";
     let message = "";
 
-    async function getLoadInitialData(){
-            resultStatus = result = "";
-            const res = await fetch(API+'/loadInitialData', {
-                method: 'GET'
-            });
-            const status = await res.status;
-            resultStatus = status;
-            if(status==200){
-                message = "Se han insertado los datos de nuevo";
-                //getJobseekersStudies();
-                location.reload();
-            }else{
-                message = "No se han podido insertar los datos de nuevo";
-            }
+    async function getLoadInitialData() {
+        resultStatus = result = "";
+        const res = await fetch(API + "/loadInitialData", {
+            method: "GET",
+        });
+        const status = await res.status;
+        resultStatus = status;
+        if (status == 200) {
+            message = "Se han insertado los datos de nuevo";
+            //getJobseekersStudies();
+        } else {
+            message = "No se han podido insertar los datos de nuevo";
         }
+    }
 
-    async function getJobseekersStudies() {
+    /*async function getJobseekersStudies() {
         resultStatus = result = "";
         const res = await fetch(API, {
             // fetch (url)
@@ -87,30 +93,9 @@
             message = `No hay datos en la base de datos.`;
             console.log(`There is no data to show with GET method.`);
         }
-    }
+    } */
 
-    async function getPaginacion(offsetFiltro, limitFiltro) {
-        //
-        resultStatus = result = "";
-        const res = await fetch(
-            API + "?offset=" + offsetFiltro + "&limit=" + limitFiltro,
-            {
-                method: "GET",
-            }
-        );
-        console.log(API + "?offset=" + offsetFiltro + "&limit=" + limitFiltro);
-        try {
-            const data = await res.json();
-            result = JSON.stringify(data, null, 2);
-            jobseekers = data;
-        } catch (error) {
-            console.log(`Error parseando el resultado: ${error}`);
-        }
-        const status = await res.status;
-        resultStatus = status;
-    }
-
-    async function getJobseekersFiltrado(){
+    /* async function getJobseekersFiltrado(){
             const consulta = {}; // crea un objeto vacío para los otros campo
             if (year) { 
                 consulta.year = year; 
@@ -154,6 +139,7 @@
             if (total_under) { 
                 consulta.total_under = total_under; 
             }
+            //Realiza la solicitud GET al endpoint /api/v2/evolution con la consulta creada
             
             const res = await fetch(API+`?${new URLSearchParams(consulta).toString()}`, {
                 method: "GET"
@@ -172,12 +158,128 @@
             }else{
                 message = "No se han podido encontrar los datos: ";
             }
-        }
+    } */
 
+    async function getJobseekersStudies() {
+        resultStatus = result = "";
+        let ruta = `?offset=${offset}&limit=${limit}`; //Definimos una ruta por defecto.
+        let parametros = [];
+        if (to == "" || from == "") {
+            if (year != "") parametros.push(`year=${year}`);
+            if (gender != "") parametros.push(`gender=${gender}`);
+            if (territory != "") parametros.push(`province=${territory}`);
+            if (type != "") parametros.push(`type=${type}`);
+            if (primary_over != "")
+                parametros.push(`primary_over=${primary_over}`);
+            if (primary_under != "")
+                parametros.push(`primary_under=${primary_under}`);
+            if (fp_program_over != "")
+                parametros.push(`fp_program_over=${fp_program_over}`);
+            if (fp_program_under != "")
+                parametros.push(`fp_program_under=${fp_program_under}`);
+            if (general_education_over != "")
+                parametros.push(
+                    `general_education_over=${general_education_over}`
+                );
+            if (general_education_under != "")
+                parametros.push(
+                    `general_education_under=${general_education_under}`
+                );
+            if (total_over != "") parametros.push(`total_over=${total_over}`);
+            if (total_under != "")
+                parametros.push(`total_under=${total_under}`);
+        } else {
+            if (year != "") parametros.push(`year=${year}`);
+            if (gender != "") parametros.push(`gender=${gender}`);
+            if (territory != "") parametros.push(`province=${territory}`);
+            if (type != "") parametros.push(`type=${type}`);
+            if (primary_over != "")
+                parametros.push(`primary_over=${primary_over}`);
+            if (primary_under != "")
+                parametros.push(`primary_under=${primary_under}`);
+            if (fp_program_over != "")
+                parametros.push(`fp_program_over=${fp_program_over}`);
+            if (fp_program_under != "")
+                parametros.push(`fp_program_under=${fp_program_under}`);
+            if (general_education_over != "")
+                parametros.push(
+                    `general_education_over=${general_education_over}`
+                );
+            if (general_education_under != "")
+                parametros.push(
+                    `general_education_under=${general_education_under}`
+                );
+            if (total_over != "") parametros.push(`total_over=${total_over}`);
+            if (total_under != "")
+                parametros.push(`total_under=${total_under}`);
+        }
+        ruta = `${ruta}&${parametros.join("&")}`;
+        console.log(` la url es ${API}${ruta}`);
+        console.log(` res tiene un tamaño de ${jobseekers}`);
+        const res = await fetch(API + ruta, {
+            // fetch (url)
+            method: "GET",
+        });
+        try {
+            const data = await res.json();
+            result = JSON.stringify(data, null, 2);
+            jobseekers = data;
+        } catch (error) {
+            console.log(`Error parsing result: ${error}`);
+        }
+        const status = await res.status;
+        resultStatus = status;
+        if (status == 200) {
+            message = `Obtenidos todos los recursos correctamente.`;
+            console.log(
+                `GET correctly done. Hay ${jobseekers.length} datos en la página ${pagina}, con offset ${offset}`
+            );
+        } else if (status == 404) {
+            message = `No hay recursos en la base de datos.`;
+            console.log(`There is no data to show with GET method.`);
+            if (res == "Not Found") {
+                // Mensaje para el delete a todo.
+                message = `Se han borrado correctamente los datos de la base de datos.`;
+            }
+            if (territory) {
+                //Mensaje para fallo al buscar por provincia.
+                message = `No existe un recurso con la provincia ${territory}.`;
+                console.log(`There is resource with province ${territory}`);
+            }
+        }
+    }
+
+    async function getPgSig() {
+        if (offset * 10 < jobseekers.length) {
+            offset = offset + 10;
+            getJobseekersStudies();
+        }
+    }
+    async function getPgAnt() {
+        if (offset >= 10) {
+            offset = offset - 10;
+            getJobseekersStudies();
+        }
+    }
 
     async function getLimpiarFiltros() {
         resultStatus = result = "";
-        if (from != "" || to != "" || year != "" || gender != "" || territory != "" || type != "" || primary_over != "" || primary_under != "" || fp_program_over != "" || fp_program_under != ""  || general_education_over != "" || general_education_under != "" || total_over != ""  || total_under != "") {
+        if (
+            from != "" ||
+            to != "" ||
+            year != "" ||
+            gender != "" ||
+            territory != "" ||
+            type != "" ||
+            primary_over != "" ||
+            primary_under != "" ||
+            fp_program_over != "" ||
+            fp_program_under != "" ||
+            general_education_over != "" ||
+            general_education_under != "" ||
+            total_over != "" ||
+            total_under != ""
+        ) {
             from = "";
             to = "";
             year = "";
@@ -235,7 +337,7 @@
             getJobseekersStudies();
             message = `Se ha creado el recurso correctamente.`;
         } else if (status == 409) {
-            message = `Ya existe el recurso que se quiere introducir ${res.body.year} ${res.body.gender} ${res.body.territory} ${res.body.type}`;
+            message = `Ya existe el recurso que se quiere introducir`;
             console.log(
                 `ERROR. There is already a resoruce with the given id ${res.body.year} ${res.body.gender} ${res.body.territory} ${res.body.type} in the data base.`
             );
@@ -309,78 +411,80 @@
 <div class="camposFiltros">
     <label class="columna">
         Desde el año:
-        <input bind:value={from} type="text"/>
+        <input bind:value={from} type="text" />
     </label>
     <label class="columna">
         Hasta el año:
-        <input bind:value={to} type="text"/>
+        <input bind:value={to} type="text" />
     </label>
     <label class="columna">
         Año:
-        <input bind:value={year} type="text"/>
+        <input bind:value={year} type="text" />
     </label>
     <label class="columna">
         Género:
-        <input bind:value={gender} type="text"/>
+        <input bind:value={gender} type="text" />
     </label>
     <label class="columna">
         Territorio:
-        <input bind:value={territory} type="text"/>
+        <input bind:value={territory} type="text" />
     </label>
     <label class="columna">
         Tipo demandante:
-        <input bind:value={type} type="text"/>
+        <input bind:value={type} type="text" />
     </label>
 </div>
 
 <div class="camposFiltros">
     <label class="columna">
         Estudios primarios mayor o igual que:
-        <input bind:value={primary_over} type="text"/>
+        <input bind:value={primary_over} type="text" />
     </label>
     <label class="columna">
-        Estudios primarios menor o igual que: 
-        <input bind:value={primary_under} type="text"/>
+        Estudios primarios menor o igual que:
+        <input bind:value={primary_under} type="text" />
     </label>
 </div>
 
 <div class="camposFiltros">
     <label class="columna">
         Programa fp mayor o igual que:
-        <input bind:value={fp_program_over} type="text"/>
+        <input bind:value={fp_program_over} type="text" />
     </label>
     <label class="columna">
         Programa fp menor o igual que:
-        <input bind:value={fp_program_under} type="text"/>
+        <input bind:value={fp_program_under} type="text" />
     </label>
 </div>
 
 <div class="camposFiltros">
     <label class="columna">
         Educación general mayor o igual que:
-        <input bind:value={general_education_over} type="text"/>
+        <input bind:value={general_education_over} type="text" />
     </label>
     <label class="columna">
         Educación general menor o igual que:
-        <input bind:value={general_education_under} type="text"/>
+        <input bind:value={general_education_under} type="text" />
     </label>
 </div>
 
 <div class="camposFiltros">
     <label class="columna">
         Total mayor o igual que:
-        <input bind:value={general_education_over} type="text"/>
+        <input bind:value={general_education_over} type="text" />
     </label>
     <label class="columna">
         Total menor o igual que:
-        <input bind:value={general_education_under} type="text"/>
+        <input bind:value={general_education_under} type="text" />
     </label>
 </div>
-<p></p>
+<p />
 <div style="text-align: center; word-spacing: 15px;">
-    <Button color = "primary" on:click={getJobseekersFiltrado}>Filtrar</Button>
+    <Button color="primary" on:click={getJobseekersStudies}>Filtrar</Button>
 
-    <Button color="secondary" on:click={getLimpiarFiltros}>Limpiar Filtros</Button>
+    <Button color="secondary" on:click={getLimpiarFiltros}
+        >Limpiar Filtros</Button
+    >
 </div>
 
 <Table hover>
@@ -466,31 +570,13 @@
     <Button color="success" on:click={getLoadInitialData}>Cargar Datos</Button>
 </div>
 
-<div class="pagination-container">
-    <Pagination ariaLabel="Page navigation example">
-        <PaginationItem>
-          <PaginationLink on:click={() => getPaginacion(0,5)} first href="/jobseekers-studies"/>
-        </PaginationItem>
-        <!--<PaginationItem disabled>
-          <PaginationLink previous href="#" />
-        </PaginationItem> -->
-        <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(0,5)} href="/jobseekers-studies">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(4,5)} href="/jobseekers-studies?offset=5&limit=5">2</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(9,5)} href="/jobseekers-studies?offset=10&limit=5">3</PaginationLink>
-        </PaginationItem>
-        <!-- <PaginationItem>
-          <PaginationLink next href="#" />
-        </PaginationItem> -->
-        <PaginationItem>
-          <PaginationLink on:click={() => getPaginacion(9,5)} last href="/jobseekers-studies?offset=10&limit=5" />
-        </PaginationItem>
-      </Pagination>
-</div>
+<Container class="d-flex justify-content-end">
+    <Button class="ms-auto" color="secondary" on:click={getPgAnt}
+        >Anterior</Button
+    >
+    <Button class="ms-2" color="secondary" on:click={getPgSig}>Siguiente</Button
+    >
+</Container>
 
 <!-- 
     {#if resultStatus != ""}
@@ -503,21 +589,20 @@
 -->
 
 <style>
-    .camposFiltros{
-            display: flex;
-            justify-content: center;
-        }
+    .camposFiltros {
+        display: flex;
+        justify-content: center;
+    }
     input {
         max-width: 150px;
     }
     .pagination-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-.columna{
-            padding: 5px;
-            margin: 5px;
-        }
-    
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .columna {
+        padding: 5px;
+        margin: 5px;
+    }
 </style>
