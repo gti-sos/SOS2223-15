@@ -31,9 +31,11 @@
   <div class="container">
     <h2>APIs</h2>
     <ul>
-      <li><a href="https://sos2223-15.appspot.com/api/v2/salary-stats">/salary-stats</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v1/salary-stats">api/v1/salary-stats</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v2/salary-stats">api/v2/salary-stats</a></li>
       <li><a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies">/jobseekers-studies</a></li>
-      <li><a href="https://sos2223-15.appspot.com/api/v1/loss-jobs">/loss-jobs</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v1/loss-jobs">api/v1/loss-jobs</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v2/loss-jobs">api/v2/loss-jobs</a></li>
     </ul>
   </div>
 
@@ -60,7 +62,11 @@
         Desarrollado por: Jara Xiao del Viejo Pacheco
       </li>
       <li>
-        <a href="https://sos2223-15.appspot.com/api/v1/loss-jobs/docs">/loss-jobs/docs</a>
+        <a href="https://sos2223-15.appspot.com/api/v1/loss-jobs/docs">api/v1/loss-jobs/docs</a>
+        Desarrollado por: Mario Medina Santos
+      </li>
+      <li>
+        <a href="https://sos2223-15.appspot.com/api/v2/loss-jobs/docs">api/v2/loss-jobs/docs</a>
         Desarrollado por: Mario Medina Santos
       </li>
     </ul>
