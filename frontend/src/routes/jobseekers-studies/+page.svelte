@@ -5,12 +5,7 @@
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
     import { Button, Row, Table } from "sveltestrap";
     import { Alert } from "sveltestrap";
-    import {
-        Pagination,
-        PaginationItem,
-        PaginationLink,
-        Container,
-    } from "sveltestrap";
+    import { Container } from "sveltestrap";
 
     onMount(async () => {
         // Esto carga el getjobseekers-studies nada mas iniciar la aplicación.
@@ -189,6 +184,8 @@
             if (total_under != "")
                 parametros.push(`total_under=${total_under}`);
         } else {
+            if (to != "") parametros.push(`to=${to}`);
+            if (from != "") parametros.push(`from=${from}`);
             if (year != "") parametros.push(`year=${year}`);
             if (gender != "") parametros.push(`gender=${gender}`);
             if (territory != "") parametros.push(`territory=${territory}`);
