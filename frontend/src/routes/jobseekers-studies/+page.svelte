@@ -251,7 +251,7 @@
 
     async function getPgSig() {
         if (offset * 10 < jobseekers.length) {
-            offset = offset + 10;
+            offset = offset + 9;
             getJobseekersStudies();
         }
     }
@@ -471,11 +471,11 @@
 <div class="camposFiltros">
     <label class="columna">
         Total mayor o igual que:
-        <input bind:value={general_education_over} type="text" />
+        <input bind:value={total_over} type="text" />
     </label>
     <label class="columna">
         Total menor o igual que:
-        <input bind:value={general_education_under} type="text" />
+        <input bind:value={total_under} type="text" />
     </label>
 </div>
 <p />
@@ -595,11 +595,6 @@
     }
     input {
         max-width: 150px;
-    }
-    .pagination-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
     }
     .columna {
         padding: 5px;
