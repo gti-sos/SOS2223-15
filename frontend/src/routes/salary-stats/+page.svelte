@@ -1,24 +1,18 @@
 <script>
     // @ts-nocheck
-
     import { onMount } from "svelte";
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
     import { Button, Table, Container, Row, Col, Accordion, AccordionItem} from "sveltestrap";
     import { Alert } from "sveltestrap";
-
     onMount(async () => {
         // Esto carga el getSalary_stats nada mas iniciar la aplicación.
         getSalaryStats();
     });
-
-
     let API = "/api/v2/salary-stats";
     
     if (dev)
         // Si accedemos en modo normal, accedemos en local a la API y si no, accedemos al servidor de Svelte
         API = "http://localhost:12345" + API;
-
-
     let salary_stats = [];
     //let salary_stats2 = []; // Salary_stats auxiliar para paginación.
     let newProvince = "provincia";
@@ -27,7 +21,6 @@
     let newSalaried = "asalariados";
     let newAverage_salary = "salario_medio";
     let newStandard_deviation = "desviación_típica";
-
     //PAGINACIÓN
     let offset = 0;
     let limit = 10;
@@ -47,14 +40,11 @@
     let average_salary_behind = "";
     //BÚSQUEDA POR DESVIACIÓN TÍPICA
     let standard_deviation_over = "";
-
     let result = "";
     //let result2 = ""; // Result auxiliar para usarlo en la paginación.
     let resultStatus = "";
     //let resultStatus2 = "";
     let message = "";
-
-
     async function getSalaryStats() {
         resultStatus = result = "";
         let ruta = `?offset=${offset}&limit=${limit}`; //Definimos una ruta por defecto.
@@ -132,7 +122,6 @@
         } catch (error) {
             console.log(`Error parsing result: ${error}`);
         }
-
         const status = await res.status;
         resultStatus = status;
         if (status == 200) {
@@ -143,15 +132,16 @@
             console.log(`There is no data to show with GET method.`);
             if(res == "Not Found"){ // Mensaje para el delete a todo.
                 message = `Se han borrado correctamente los datos de la base de datos.`;
-            } if(province){ //Mensaje para fallo al buscar por provincia.
-                message = `No existe un recurso con la provincia ${province}.`
-                console.log(`There is no resource with province ${province}`);
+            } if(province || gender || year || salaried_behind || average_salary_behind || standard_deviation_over){ //Mensaje para fallo al buscar por provincia.
+                message = `No existen recursos con los datos introduidos en la búsqueda. provincia:${newProvince}, género: ${newGender}, año: ${newYear},
+             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}.`
+                console.log(`There is no resource with such filtering parameters. provincia:${newProvince}, género: ${newGender}, año: ${newYear},
+             número de asalariados: ${newSalaried}, salario medio: ${newAverage_salary}, desviación típica: ${newStandard_deviation}.`);
             }
             
         }
         console.log(` Número de datos devueltos: ${salary_stats.length}`);
     }
-
     //GET A TODOS LOS DATOS PARA OBTENER EL NÚMERO TOTAL DE RECURSOS.
     /*
     async function getSalaryStatsPaginacion() {
@@ -167,7 +157,6 @@
         } catch (error) {
             console.log(`Error parsing result: ${error}`);
         }
-
         const status = await res2.status;
         resultStatus2 = status;
         if (status == 200) {
@@ -179,9 +168,7 @@
         }
     }
     */
-
     //PAGINACIÓN
-
 /*
     async function irAPagina() {
         getSalaryStatsPaginacion()
@@ -209,7 +196,6 @@
             getSalaryStats();
         }
     }
-
     async function createSalary() {
         resultStatus = result = "";
         const res = await fetch(API, {
@@ -245,7 +231,6 @@
             );
         }
     }
-
     /*
     async function updateSalary(province,gender,year) {
         resultStatus = result = "";
@@ -271,17 +256,13 @@
             console.log("Resource updated correctly.");
         }
         else if(status ==400){
-
-
         }
         else if(status==500){
             message = `Error en el cliente.`;
             console.log("ERROR. Client error.");
         }
     }
-
     */
-
     async function deleteResource(province, gender, year) {
         resultStatus = result = "";
         const res = await fetch(
@@ -304,7 +285,6 @@
             console.log("ERROR. Client error.");
         }
     }
-
     async function deleteAllStats() {
         resultStatus = result = "";
         const res = await fetch(API, {
