@@ -110,8 +110,9 @@
     }
 
     async function createJobs() {
+    console.log("CreateJobs invoked!");
     resultStatus = result = "";
-    if (!newProvince || !newYear || !newGender) {
+    if (!newProvince || !newYear || !newGender && status==400) {
         message = `Faltan campos por rellenar: provincia:${newProvince}, año: ${newYear}, genero: ${newGender}, bajas debido a puesto: ${newLow_due_to_placement}, sin renovacion: ${newNo_renovation}, otras razones: ${newOther_reason} `;
         console.log(`ERROR. Missing one or more fields ${newProvince} ${newYear} ${newGender} ${newLow_due_to_placement} ${newNo_renovation} ${newOther_reason}`);
         return;
@@ -307,7 +308,7 @@
     </div>
 {/if}
 
-{#if message != "" && (resultStatus == 400 || resultStatus == 404 || resultStatus == 409)}
+{#if message != "" || (resultStatus == 400 || resultStatus == 404 || resultStatus == 409)}
     <!--Alerta para los códigos 400,404, ...-->
 
     <div class="container text-center">

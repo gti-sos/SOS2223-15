@@ -258,64 +258,64 @@ function loadBackend_mario(app) {
   //MÉTODOS TABLA AZUL.
   const rutaBase = '/api/v1/loss-jobs';
 
-  // Método POST para la ruta base
   app.post(rutaBase, (request, response) => {
+    //var NewEvolution = request.body;
     const province = request.body.province;
     const year = request.body.year;
     const gender = request.body.gender;
     const low_due_to_placement = request.body.low_due_to_placement;
     const no_renovation = request.body.no_renovation;
     const other_reason = request.body.other_reason;
-    console.log("New POST to /loss-jobs"); //console.log en el servidor  
-    if (comprobar_tipos( province,year,gender,low_due_to_placement,no_renovation,other_reason) ) {
-      response.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
-      console.log(`INCORRECT PARAMETER TYPE`);
+    console.log("New POST to /loss-jobs"); //console.log en el servidor
+    if (comprobar_tipos( province,gender,year,low_due_to_placement,no_renovation,other_reason) ) {
+        response.sendStatus(400, "BAD REQUEST - INCORRECT PARAMETERS");
+        console.log(`INCORRECT PARAMETER TYPE`);
 
-  } else {
-  db.find({}, function (err, filteredList) {
+    } else {
+    db.find({}, function (err, filteredList) {
 
-      if (err) {
-          response.sendStatus(500, "CLIENT ERROR");
-      }
-      // Validar que se envíen todos los campos necesarios
-      const requiredFields = ['province', 'year', 'gender', 'low_due_to_placement', 'no_renovation', 'other_reason'];
-      for (const field of requiredFields) {
-        if (!request.body.hasOwnProperty(field)) {
-            console.log(request.body);
-            return response.status(400).json(`Missing required field: ${field}`);
-            
+        if (err) {
+            response.sendStatus(500, "CLIENT ERROR");
         }
-    }
-      for(var elem of Object.keys(request.body)){ // Con Object.keys(request.body), obtenemos todas las claves del objeto request.body
-        if(!requiredFields.includes(elem)){
-            return response.status(400).json(`There are fields that does not match the structure, as: ${elem}`);
-        }
-    }
-      // Verificar que la solicitud se hizo en la ruta correcta
-      if (request.originalUrl !== '/api/v1/loss-jobs') {
-        res.status(405).json('Método no permitido');
-        return;
-      } else {
 
-        // Verificar si el recurso ya existe
-        //const existingObject = población_media.find(obj => obj.province === province && obj.year === year);
-        filteredList = filteredList.filter((obj) => {
-          return (province == obj.province && year == obj.year && gender == obj.gender)
-        });
-        //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
-        if (filteredList.length != 0) {
-          // Si el recurso ya existe, devolver un código de respuesta 409
-          response.status(409).json(`El recurso ya existe.`);
+        // Validar que se envíen todos los campos necesarios
+        const requiredFields = ['province', 'year', 'gender', 'low_due_to_placement', 'no_renovation', 'other_reason'];
+        for (const field of requiredFields) {
+            if (!request.body.hasOwnProperty(field)) {
+                console.log(request.body);
+                return response.status(400).json(`Missing required field: ${field}`);
+                
+            }
+        }
+        for(var elem of Object.keys(request.body)){ // Con Object.keys(request.body), obtenemos todas las claves del objeto request.body
+            if(!requiredFields.includes(elem)){
+                return response.status(400).json(`There are fields that does not match the structure, as: ${elem}`);
+            }
+        }
+        // Verificar que la solicitud se hizo en la ruta correcta
+        if (request.originalUrl !== '/api/v1/loss-jobs') {
+            response.status(405).json('Método no permitido');
         } else {
-          // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
-          db.insert(request.body);
-          //población_media.push(request.body);
-          response.sendStatus(201);
+
+            // Verificar si el recurso ya existe
+            //const existingObject = salario_medio.find(obj => obj.province === province && obj.year === year);
+            filteredList = filteredList.filter((obj) => {
+                return (province == obj.province && year == obj.year && gender == obj.gender)
+            });
+            //const existingObject = db.find({province : NewEvolution.province, year : NewEvolution.year});
+            if (filteredList.length != 0) {
+                // Si el recurso ya existe, devolver un código de respuesta 409
+                response.status(409).json(`El recurso ya existe.`);
+            } else {
+                // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201                    
+                db.insert(request.body);
+                //salario_medio.push(request.body);
+                response.sendStatus(201);
+            }
         }
-      }
     });
-  }
-  });
+}
+});
 
   // Método PUT para la ruta base
   app.put(rutaBase, (req, res) => {
