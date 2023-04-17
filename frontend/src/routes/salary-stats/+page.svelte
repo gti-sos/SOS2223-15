@@ -1,24 +1,18 @@
 <script>
     // @ts-nocheck
-
     import { onMount } from "svelte";
     import { dev } from "$app/environment"; // Esta variable de entorno nos indica si se está ejecutando en modo desarrollo (npm run dev --) o en modo de producción (npm start)
     import { Button, Table, Container, Row, Col, Accordion, AccordionItem} from "sveltestrap";
     import { Alert } from "sveltestrap";
-
     onMount(async () => {
         // Esto carga el getSalary_stats nada mas iniciar la aplicación.
         getSalaryStats();
     });
-
-
     let API = "/api/v2/salary-stats";
     
     if (dev)
         // Si accedemos en modo normal, accedemos en local a la API y si no, accedemos al servidor de Svelte
         API = "http://localhost:12345" + API;
-
-
     let salary_stats = [];
     //let salary_stats2 = []; // Salary_stats auxiliar para paginación.
     let newProvince = "provincia";
@@ -27,7 +21,6 @@
     let newSalaried = "asalariados";
     let newAverage_salary = "salario_medio";
     let newStandard_deviation = "desviación_típica";
-
     //PAGINACIÓN
     let offset = 0;
     let limit = 10;
@@ -47,14 +40,11 @@
     let average_salary_behind = "";
     //BÚSQUEDA POR DESVIACIÓN TÍPICA
     let standard_deviation_over = "";
-
     let result = "";
     //let result2 = ""; // Result auxiliar para usarlo en la paginación.
     let resultStatus = "";
     //let resultStatus2 = "";
     let message = "";
-
-
     async function getSalaryStats() {
         resultStatus = result = "";
         let ruta = `?offset=${offset}&limit=${limit}`; //Definimos una ruta por defecto.
@@ -132,7 +122,6 @@
         } catch (error) {
             console.log(`Error parsing result: ${error}`);
         }
-
         const status = await res.status;
         resultStatus = status;
         if (status == 200) {
@@ -151,7 +140,6 @@
         }
         console.log(` Número de datos devueltos: ${salary_stats.length}`);
     }
-
     //GET A TODOS LOS DATOS PARA OBTENER EL NÚMERO TOTAL DE RECURSOS.
     /*
     async function getSalaryStatsPaginacion() {
@@ -167,7 +155,6 @@
         } catch (error) {
             console.log(`Error parsing result: ${error}`);
         }
-
         const status = await res2.status;
         resultStatus2 = status;
         if (status == 200) {
@@ -179,9 +166,7 @@
         }
     }
     */
-
     //PAGINACIÓN
-
 /*
     async function irAPagina() {
         getSalaryStatsPaginacion()
@@ -209,7 +194,6 @@
             getSalaryStats();
         }
     }
-
     async function createSalary() {
         resultStatus = result = "";
         const res = await fetch(API, {
@@ -245,7 +229,6 @@
             );
         }
     }
-
     /*
     async function updateSalary(province,gender,year) {
         resultStatus = result = "";
@@ -271,17 +254,13 @@
             console.log("Resource updated correctly.");
         }
         else if(status ==400){
-
-
         }
         else if(status==500){
             message = `Error en el cliente.`;
             console.log("ERROR. Client error.");
         }
     }
-
     */
-
     async function deleteResource(province, gender, year) {
         resultStatus = result = "";
         const res = await fetch(
@@ -304,7 +283,6 @@
             console.log("ERROR. Client error.");
         }
     }
-
     async function deleteAllStats() {
         resultStatus = result = "";
         const res = await fetch(API, {
@@ -392,56 +370,53 @@
         {/if}
     </tbody>
 </Table>
-
-<!--
-    <Container>
-        <h2>Búsquedas:</h2>
-        <Row>
+<Container>
+    <h2>Búsquedas:</h2>
+    <Row>
+        <Col>
+            <Row>
             <Col>
-                <Row>
-                <Col>
-                    Desde<input bind:value={from} placeholder="Año de inicio"/>
-                    Hasta<input bind:value={to} placeholder="Año final"/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    Provincia<input bind:value={province} placeholder="Ingrese una provincia"/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    Género<input bind:value={gender} placeholder="Ingrese un género"/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    Año<input bind:value={year} placeholder="Ingrese un año concreto"/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    Número de asalariados por debajo de: <input bind:value={salaried_behind} placeholder="Número de asalariados"/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    Salario medio por debajo de: <input bind:value={average_salary_behind} placeholder="Salario Medio"/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    Desviación típica por encima de: <input bind:value={standard_deviation_over} placeholder="Desviación típica"/>
-                </Col>
-            </Row>
-            
-            </Col>
-            <Col>
-                <Button color="info" on:click={getSalaryStats}>Filtrar</Button>
+                Desde<input bind:value={from} placeholder="Año de inicio"/>
+                Hasta<input bind:value={to} placeholder="Año final"/>
             </Col>
         </Row>
-    </Container>
--->
+        <Row>
+            <Col>
+                Provincia<input bind:value={province} placeholder="Ingrese una provincia"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Género<input bind:value={gender} placeholder="Ingrese un género"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Año<input bind:value={year} placeholder="Ingrese un año concreto"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Número de asalariados por debajo de: <input bind:value={salaried_behind} placeholder="Número de asalariados"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Salario medio por debajo de: <input bind:value={average_salary_behind} placeholder="Salario Medio"/>
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+                Desviación típica por encima de: <input bind:value={standard_deviation_over} placeholder="Desviación típica"/>
+            </Col>
+        </Row>
+        
+        </Col>
+        <Col>
+            <Button color="info" on:click={getSalaryStats}>Filtrar</Button>
+        </Col>
+    </Row>
+</Container>
 
 {#if message != "" && (resultStatus == 200 || resultStatus == 201)}
     <!--Alerta para los códigos 200 y 201-->
