@@ -167,7 +167,7 @@
         if (to == "" || from == "") {
             if (year != "") parametros.push(`year=${year}`);
             if (gender != "") parametros.push(`gender=${gender}`);
-            if (territory != "") parametros.push(`province=${territory}`);
+            if (territory != "") parametros.push(`territory=${territory}`);
             if (type != "") parametros.push(`type=${type}`);
             if (primary_over != "")
                 parametros.push(`primary_over=${primary_over}`);
@@ -191,7 +191,7 @@
         } else {
             if (year != "") parametros.push(`year=${year}`);
             if (gender != "") parametros.push(`gender=${gender}`);
-            if (territory != "") parametros.push(`province=${territory}`);
+            if (territory != "") parametros.push(`territory=${territory}`);
             if (type != "") parametros.push(`type=${type}`);
             if (primary_over != "")
                 parametros.push(`primary_over=${primary_over}`);
@@ -213,9 +213,9 @@
             if (total_under != "")
                 parametros.push(`total_under=${total_under}`);
         }
-        ruta = `${ruta}&${parametros.join("&")}`;
+        ruta = `${ruta}&${parametros.join('&')}`;
         console.log(` la url es ${API}${ruta}`);
-        console.log(` res tiene un tamaño de ${jobseekers}`);
+        console.log(` res tiene un tamaño de ${jobseekers.length}`);
         const res = await fetch(API + ruta, {
             // fetch (url)
             method: "GET",
@@ -231,20 +231,15 @@
         resultStatus = status;
         if (status == 200) {
             message = `Obtenidos todos los recursos correctamente.`;
-            console.log(
-                `GET correctly done. Hay ${jobseekers.length} datos en la página ${pagina}, con offset ${offset}`
-            );
+            console.log(`GET correctly done. Hay ${jobseekers.length} datos en la página ${pagina}, con offset ${offset}`);
         } else if (status == 404) {
             message = `No hay recursos en la base de datos.`;
             console.log(`There is no data to show with GET method.`);
-            if (res == "Not Found") {
-                // Mensaje para el delete a todo.
+            if(res == "Not Found"){ // Mensaje para el delete a todo.
                 message = `Se han borrado correctamente los datos de la base de datos.`;
-            }
-            if (territory) {
-                //Mensaje para fallo al buscar por provincia.
-                message = `No existe un recurso con la provincia ${territory}.`;
-                console.log(`There is resource with province ${territory}`);
+            } if(territory){ //Mensaje para fallo al buscar por provincia.
+                message = `No existe un recurso con la territorio ${territory}.`
+                console.log(`There is resource with territorio ${territory}`);
             }
         }
     }
