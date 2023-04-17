@@ -59,6 +59,7 @@
             if(status==200){
                 message = "Se han insertado los datos de nuevo";
                 //getJobseekersStudies();
+                location.reload();
             }else{
                 message = "No se han podido insertar los datos de nuevo";
             }
@@ -153,7 +154,6 @@
             if (total_under) { 
                 consulta.total_under = total_under; 
             }
-            //Realiza la solicitud GET al endpoint /api/v2/evolution con la consulta creada
             
             const res = await fetch(API+`?${new URLSearchParams(consulta).toString()}`, {
                 method: "GET"
@@ -339,7 +339,7 @@
         <input bind:value={primary_over} type="text"/>
     </label>
     <label class="columna">
-        Estudios primarios mayor o igual que: 
+        Estudios primarios menor o igual que: 
         <input bind:value={primary_under} type="text"/>
     </label>
 </div>
