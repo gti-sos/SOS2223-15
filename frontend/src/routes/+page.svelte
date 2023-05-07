@@ -1,3 +1,6 @@
+<svelte:head>
+  <title>Esto es un Title</title>
+</svelte:head>
 <section class="team">
   <div class="container">
     <h2>Equipo</h2>

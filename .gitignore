@@ -105,3 +105,6 @@ dist
 
 # Credenciales del Oauth
 .env
+/test-results/
+/playwright-report/
+/playwright/.cache/
