@@ -32,6 +32,8 @@
             <Col xs="auto"><a href="/salary-stats">Estadísticas de asalariados</a></Col>
             <Col xs="auto"><a href="/jobseekers-studies">Estudio de buscadores de empleo</a></Col>
             <Col xs="auto"><a href="/loss-jobs">Causas de pérdidas de trabajo</a></Col>
+            <Col xs="auto"><a href="/integrations">Integraciones/Usos</a></Col>
+            <Col xs="auto"><a href="/graficas">Gráficas</a></Col>
         </Row>
     </nav>
 </Container>

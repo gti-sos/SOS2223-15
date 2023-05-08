@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>Servicios SOS</title>
+  <title>Esto es un Title</title>
 </svelte:head>
 <section class="team">
   <div class="container">

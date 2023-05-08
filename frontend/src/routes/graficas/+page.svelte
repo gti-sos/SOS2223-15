@@ -3,34 +3,28 @@
 </svelte:head>
 <section class="team">
   <div class="container">
-    <h2>Integraciones/Usos Ángel</h2>
+    <h2>Gráficas Ángel</h2>
     <ul>
         <ul>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Uso 1</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso2">Uso 2</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion1">Integración 1</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion2">Integración 2</a></li>
+            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Gráfica</a></li>
+        </ul>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h2>Gráficas Jara</h2>
+    <ul>
+        <ul>
+            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Gráfica</a></li>
           </ul>
     </ul>
   </div>
 
   <div class="container">
-    <h2>Integraciones/Usos Jara</h2>
+    <h2>Gráficas Mario</h2>
     <ul>
         <ul>
-            <li><a href="/integrations/jobseekers-studies">Uso 1</a></li>
-          </ul>
-    </ul>
-  </div>
-
-  <div class="container">
-    <h2>Integraciones/Usos Mario</h2>
-    <ul>
-        <ul>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Uso 1</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso2">Uso 2</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion1">Integración 1</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion2">Integración 2</a></li>
+            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Gráfica</a></li>
           </ul>
     </ul>
   </div>
