@@ -24,7 +24,7 @@
     <h2>Gráficas Mario</h2>
     <ul>
         <ul>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Gráfica</a></li>
+            <li><a href="/graficas/loss-jobs-graph">Gráfica</a></li>
           </ul>
     </ul>
   </div>
