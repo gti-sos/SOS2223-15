@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>SOS2223-15</title>
+  <title>Esto es un Title</title>
 </svelte:head>
 <section class="team">
   <hr>
