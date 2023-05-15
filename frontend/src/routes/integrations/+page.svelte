@@ -19,9 +19,14 @@
     <h2>Integraciones/Usos Jara</h2>
     <ul>
         <ul>
-            <li><a href="/integrations/jobseekers-studies">Usos</a></li>
+            <li><a href="/integrations/int-jobseekers-studies">Integraciones</a></li>
           </ul>
     </ul>
+    <ul>
+      <ul>
+          <li><a href="/integrations/usos-jobseekers-studies">Usos</a></li>
+        </ul>
+  </ul>
   </div>
 
   <div class="container">

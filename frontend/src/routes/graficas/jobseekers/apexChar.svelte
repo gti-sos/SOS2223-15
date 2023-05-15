@@ -1,7 +1,6 @@
 <script>
   // @ts-nocheck
   import { onMount } from "svelte";
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   import { dev } from "$app/environment";
 
   let API = "/api/v1/jobseekers-studies";
@@ -32,16 +31,15 @@
       const data = await res.json();
       jobseekers = data;
       console.log("Estadísticas recibidas: " + jobseekers.length);
-      //inicializamos los arrays para mostrar los datos
+      jobseekers.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
       jobseekers.forEach((stat) => {
         console.log(stat);
         territorio_año.push(stat.territory + "-" + stat.year);
-        primario.push(stat.primary);
-        fp.push(stat.fp_program);
-        general.push(stat.general_education);
-        total.push(stat.total);
+        primario.push(stat["primary"]);
+        fp.push(stat["fp_program"]);
+        general.push(stat["general_education"]);
+        total.push(stat["total"]);
       });
-      console.log(primario);
       loadGraph();
     } else {
       console.log("Error cargando los datos");

@@ -9,7 +9,6 @@
     //@ts-nocheck
     import {onMount} from 'svelte';
     import {dev} from '$app/environment';
-    //import {Navbar, Nav, NavItem, NavLink, NavbarBrand, Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Button} from 'sveltestrap';
     
     let API = "/api/v1/jobseekers-studies";
 
@@ -31,13 +30,14 @@
           jobseekers = data;
           console.log("Estadísticas recibidas: "+jobseekers.length);
           //inicializamos los arrays para mostrar los datos
+      jobseekers.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
           jobseekers.forEach((stat) => {
                 console.log(stat);
                 territorio_año.push(stat.territory+"-"+stat.year);
-                primario.push(stat.primary);
-                fp.push(stat.fp_program);
-                general.push(stat.general_education);
-                total.push(stat.total);           
+                primario.push(stat["primary"]);
+                fp.push(stat["fp_program"]);
+                general.push(stat["general_education"]);
+                total.push(stat["total"]);           
           });
           console.log(primario);
           loadGraph();
@@ -110,7 +110,7 @@
 
 <main>
     <div id='chart'></div>
-    <figure class="highcharts-figure">
+    <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
         <div id="container"></div>
       </figure>
 </main>
