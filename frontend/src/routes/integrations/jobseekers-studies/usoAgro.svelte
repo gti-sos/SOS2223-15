@@ -12,25 +12,34 @@
     import { Button, Table } from "sveltestrap";
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment"; 
-    let API = "https://sos2223-12.appspot.com/api/v2/agroclimatic";
+
+
+    let API = "https://sos2223-12.ew.r.appspot.com/api/v2/agroclimatic";
     let API2 = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
+
     let grafica = [];
     let grafica2 = [];
+
     let temp_max = [];
     let temp_min = [];
     let temp_med = [];
+
     let provincia_año = [];
+
     let primaria = [];
     let fp = [];
     let educ = [];
     let tot = [];
+
     let result = "";
     let resultStatus = "";
     let result2 = "";
     let resultStatus2 = "";
+
     onMount(async () =>{
         getGraphOtro()
     });
+
     async function getGraphOtro(){
         resultStatus2 = result2 = "";
             const res2 = await fetch(API2, {
@@ -53,10 +62,10 @@
                         educ.push(grafica2["general_education"]); 
                         tot.push(grafica2["total"]); 
                         
-                        temp_max.push(0);
+                        /*temp_max.push(0);
                         temp_min.push(0);
                         temp_med.push(0);
-                                       
+                        */             
                     });
                     
                 }catch(error){
@@ -68,7 +77,7 @@
                 console.log("Error al cargar la gráfica"); 
             }
         
-        resultStatus = result = "";
+        /*resultStatus = result = "";
             const res = await fetch(API, {
                 method: "GET"
             });
@@ -104,12 +113,13 @@
                 
             }else{
                 console.log("Error al cargar la gráfica");
-            }
+            }*/
             
             await delay(500);
             //loadChartOtro();
             //loadChart2();
     }
+
     /*async function loadChartOtro(){  
         
         Highcharts.chart('container2', {
@@ -171,21 +181,27 @@
         series: [{
             name: 'Temperatura Máxima',
             data: temp_max 
+
         }, {
             name: 'Temperatura Mínima',
             data: temp_min 
+
         }, {
             name: 'Temperatura Media',
             data: temp_med 
+
         },{
             name: 'Primaria',
             data: primaria
+
         }, {
             name: 'FP',
             data: fp
+
         }, {
             name: 'Educación',
             data: educ
+
         }, {
             name: 'Total',
             data: tot
@@ -206,6 +222,7 @@
             }
         });
     }*/
+
     /*async function loadChart2() {
         const ctx = document.getElementById('myChart2').getContext('2d');
         const myChart2 = new Chart(ctx, {

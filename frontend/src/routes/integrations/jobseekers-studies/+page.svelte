@@ -6,7 +6,7 @@
     <h2>Usos</h2>
     <ul>
         <ul>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Uso 1</a></li>
+            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/usoAgro">Uso 1</a></li>
             <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso2">Uso 2</a></li>
             <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion1">Integración 1</a></li>
             <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion2">Integración 2</a></li>
