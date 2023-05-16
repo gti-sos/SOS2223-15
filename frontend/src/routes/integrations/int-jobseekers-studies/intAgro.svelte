@@ -13,7 +13,7 @@
     //import { dev } from "$app/environment"; 
     let API = "http://localhost:12345/agro"; 
     
-    let API2 = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
+    let API2 = "http://localhost:12345/api/v1/jobseekers-studies";
 
     let agro = [];
     let jobseeker = [];
