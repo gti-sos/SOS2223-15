@@ -121,8 +121,8 @@ function loadBackend_angel_2 (app) {
         var url = apiServerHost + req.url;
         req.pipe(request(url)).pipe(res);
     });
-
     */
+    
     ////// PROXY ///////
 
     db.insert(salario_medio);

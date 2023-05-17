@@ -52,7 +52,7 @@
     async function loadGraph(){
         var chart = c3.generate({
             title: {
-                text: 'Gráfica de estadísticas de asalariados: https://ourworldindata.org/cancer#deaths-from-cancer',
+                text: 'Gráfica de estadísticas de asalariados: https://www.juntadeandalucia.es/institutodeestadisticaycartografia/badea/operaciones/consulta/anual/20537?CodOper=b3_2034&codConsulta=20537',
                 
             },
             data: {
