@@ -22,9 +22,9 @@
 
     let stats = [];
     let province_gender_year =[]
-    let salaried = [];
-    let average_salary = [];
-    let standard_deviation = []; 
+    let salaried = ["Asalariados"];
+    let average_salary = ["Salario medio"];
+    let standard_deviation = ["Desviación típica"]; 
 
     async function getStats(){
       console.log("Fetching stats....");

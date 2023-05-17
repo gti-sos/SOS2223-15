@@ -108,6 +108,18 @@ function loadBackend_angel_2 (app) {
         }
     ];
 
+
+    //////// PROXY //////
+
+    var paths = "/localentities";
+    var apiServerHost = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
+    app.use(paths, function(req, res) {
+        var url = apiServerHost + req.url;
+        req.pipe(request(url)).pipe(res);
+    });
+
+    ////// PROXY ///////
+
     db.insert(salario_medio);
     //console.log("Insertados datos al comenzar");
 
