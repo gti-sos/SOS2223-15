@@ -6,13 +6,15 @@
 </svelte:head>
 <script>
     // @ts-nocheck
+    
     import {onMount} from "svelte";
+    //import { CLAVE_COMIDAS } from "config.js";
     //import { dev } from "$app/environment"; 
     let API = "http://localhost:12345/api/v2/salary-stats";
     
     let API2 = "https://planets-by-api-ninjas.p.rapidapi.com/v1/planets?name=Mars";
 
-
+    const key = CLAVE_COMIDAS;
 
 
     
@@ -79,7 +81,7 @@
         const options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': 'b72bf7a6a9mshc58f9ea15845135p17ac66jsne782008c78e3',
+                'X-RapidAPI-Key': key,
 		        'X-RapidAPI-Host': 'the-mexican-food-db.p.rapidapi.com'
             }
         };
