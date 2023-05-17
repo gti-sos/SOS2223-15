@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>Esto es un Title</title>
+  <title>SOS2223-15</title>
 </svelte:head>
 <section class="team">
   <hr>
@@ -37,7 +37,7 @@
     <ul>
       <li><a href="https://sos2223-15.appspot.com/api/v1/salary-stats">api/v1/salary-stats</a></li>
       <li><a href="https://sos2223-15.appspot.com/api/v2/salary-stats">api/v2/salary-stats</a></li>
-      <li><a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies">/jobseekers-studies</a></li>
+      <li><a href="https://sos2223-15.appspot.com/api/v1/jobseekers-studies">api/v1/jobseekers-studies</a></li>
       <li><a href="https://sos2223-15.appspot.com/api/v1/loss-jobs">api/v1/loss-jobs</a></li>
       <li><a href="https://sos2223-15.appspot.com/api/v2/loss-jobs">api/v2/loss-jobs</a></li>
     </ul>
@@ -101,7 +101,7 @@
     margin: 0 auto;
     text-align: center;
     padding: 15px;
-    background-color: rgb(218, 218, 218);
+    background-color: rgb(236, 235, 235);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     margin-bottom: 20px;
@@ -129,7 +129,7 @@
   }
 
   .team {
-    background-color: #305465;
+    background-color: #cbd3d6fa;
   }
 
 </style>

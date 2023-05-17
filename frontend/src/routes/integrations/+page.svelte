@@ -2,6 +2,7 @@
   <title>SOS2223-15</title>
 </svelte:head>
 <section class="team">
+  <hr>
   <div class="container">
     <h2>Integraciones/Usos Ángel</h2>
     <ul>
@@ -13,14 +14,19 @@
           </ul>
     </ul>
   </div>
-
+  
   <div class="container">
     <h2>Integraciones/Usos Jara</h2>
     <ul>
         <ul>
-            <li><a href="/integrations/jobseekers-studies">Uso 1</a></li>
+            <li><a href="/integrations/int-jobseekers-studies">Integraciones</a></li>
           </ul>
     </ul>
+    <ul>
+      <ul>
+          <li><a href="/integrations/usos-jobseekers-studies">Usos</a></li>
+        </ul>
+  </ul>
   </div>
 
   <div class="container">
@@ -34,42 +40,61 @@
           </ul>
     </ul>
   </div>
+  <hr>
 </section>
 
 
 <style>
-    h2 {
-        font-size: 24px;
-        font-weight: normal;
-        margin-top: 15px;
-        margin-left: 2%;
-        color: #15297c;
-        list-style-type: circle;
-    }
-    ul {
-        margin: 0;
-        margin-left: 2%;
-        padding: 0;
-        list-style: none;
-    }
-    li {
-        margin: 10px 0;
-        list-style-type: circle;
-    }
-    a {
-        color: #1e90ff;
-        text-decoration: none;
-        font-weight: bold;
-        list-style-type: circle;
-    }
-    section {
-        padding: 20px;
-        max-width: 800px;
-        margin: 0 auto;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1%;
-        margin-top: 1.5%;
-    }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .team {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.5;
+  
+  }
+
+  .container h2 {
+    font-size: 35px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 15px;
+    background-color: rgb(236, 235, 235);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .team {
+    background-color: #cbd3d6fa;
+  }
+
 </style>

@@ -13,9 +13,9 @@
     let lossJobs = [];
     let province_gender = [];
     let gender = [];
-    let low_due_to_placement = [];
-    let no_renovation = [];
-    let other_reason = [];
+    let low_due_to_placement = ["Bajas debido a puesto"];
+    let no_renovation = ["Sin renovación"];
+    let other_reason = ["Otras razones"];
     let dicc = {};
 
     async function getStats() {
@@ -43,7 +43,7 @@
     async function loadGraph(){
         bb.generate({
             title: {
-                text: 'Gráfica de estadísticas de asalariados: https://ourworldindata.org/cancer#deaths-from-cancer',
+                text: 'Gráfica de Billboard sobre perdida de puestos de trabajo',
                 
             },
             data: {
@@ -52,7 +52,12 @@
                     no_renovation,
                     other_reason,
                 ],
-                
+                names: {
+                    156725: 'Asalariados', // Usamos esto para cambiar el nombre de las columnas que aparecen dibujadas de colores, pues por defecto cogen el primer elemento de salaried en columns, de average_salary y de standard_deviation respectivamente para cada una de las columnas
+                    21163: 'Salario medio',
+                    11718: 'Desviación típica',
+
+                },
                 type: bar()
             },
             bar: {
@@ -83,9 +88,7 @@
     
     
     <main>
-        <br>
-        <h1 align="center">Causas de perdida de trabajo</h1>
-        <br>
+        
         <div id="barChart" align="center"></div>
         <br><br>
     </main>

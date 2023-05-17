@@ -2,6 +2,7 @@
 //var bodyParser = require("body-parser"); //express ya tiene un bodyparser incluido en su nueva actualización.
 import express from "express";
 import cors from "cors";
+import request from "request";
 import { loadBackend_jara } from "./backend/api_jara.js";
 import { loadBackend_mario } from "./backend/api_mario.js";
 import { loadBackend_angel } from "./backend/api_angel.js";
@@ -24,6 +25,16 @@ var port = process.env.PORT || 12345;
 
 app.use(express.json());
 //app.use("/", express.static("./public")); // HTML que se mostrará por defecto en la ruta /
+
+//Proxy Jara
+var paths = "/agro";
+var apiServerHost = "https://sos2223-12.appspot.com/api/v2/agroclimatic";
+
+app.use(paths, function(req, res) {
+    var url = apiServerHost + req.url;
+    req.pipe(request(url)).pipe(res);
+});
+
 
 loadBackend_jara(app);
 loadBackend_mario(app);
