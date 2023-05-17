@@ -3,6 +3,6 @@
 </script>
 
 <main>
-    <slot></slot>
     <ApexChart></ApexChart>
+    <slot></slot>
 </main>

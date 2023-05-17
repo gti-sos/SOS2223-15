@@ -1,11 +1,8 @@
 <script>
   // @ts-nocheck
   import { onMount } from "svelte";
-  import { dev } from "$app/environment";
 
-  let API = "/api/v1/jobseekers-studies";
-
-  if (dev) API = "http://localhost:12345" + API;
+  let API = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
 
   let jobseekers = [];
   let territorio_año = [];
@@ -28,22 +25,28 @@
       method: "GET",
     });
     if (res.ok) {
-      const data = await res.json();
-      jobseekers = data;
-      console.log("Estadísticas recibidas: " + jobseekers.length);
-      jobseekers.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
-      jobseekers.forEach((stat) => {
-        console.log(stat);
-        territorio_año.push(stat.territory + "-" + stat.year);
-        primario.push(stat["primary"]);
-        fp.push(stat["fp_program"]);
-        general.push(stat["general_education"]);
-        total.push(stat["total"]);
-      });
-      loadGraph();
+      try{
+        const data = await res.json();
+        jobseekers = data;
+        jobseekers.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
+        jobseekers.forEach((stat) => {
+          console.log(stat);
+          territorio_año.push(stat.territory + "-" + stat.year);
+          primario.push(stat["primary"]);
+          fp.push(stat["fp_program"]);
+          general.push(stat["general_education"]);
+          total.push(stat["total"]);
+        });
+                    
+      }catch(error){
+          console.log(`Error devolviendo la gráfica: ${error}`);
+      }
+      const status = await res.status;
+      resultStatus = status;
     } else {
       console.log("Error cargando los datos");
     }
+    loadGraph();
   }
 
   function loadGraph() {
@@ -128,11 +131,8 @@
 </svelte:head>
 
 <main>
-  <figure
-    class="highcharts-figure"
-    style="margin-left: 25px; margin-right:25px"
-  >
+  <figure class="highcharts-figure" style="margin-right:25px">
     <div id="chart" />
   </figure>
+  <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
 </main>
-<div id="chartContainer" style="height: 370px; width: 100%;" />
