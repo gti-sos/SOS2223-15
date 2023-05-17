@@ -2,6 +2,9 @@
 import Datastore from 'nedb'
 var db = new Datastore;
 
+//import request from "request";
+
+
 const BASE_API_URL = "/api/v2";
 const rutaAMR = BASE_API_URL + '/salary-stats';
 const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26059557/2s93JzMgXR";
@@ -111,6 +114,7 @@ function loadBackend_angel_2 (app) {
 
     //////// PROXY //////
 
+    /*
     var paths = "/localentities";
     var apiServerHost = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
     app.use(paths, function(req, res) {
@@ -118,6 +122,7 @@ function loadBackend_angel_2 (app) {
         req.pipe(request(url)).pipe(res);
     });
 
+    */
     ////// PROXY ///////
 
     db.insert(salario_medio);
