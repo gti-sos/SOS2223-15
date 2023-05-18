@@ -239,7 +239,7 @@
         {/if}
         {#if loss_jobs.length>1}
         {#each loss_jobs as loss_job}
-            <tr>
+            <tr class="soS">
                 <td><a href="/loss-jobs/{loss_job.province}/{loss_job.year}/{loss_job.gender}">{loss_job.province}</a></td>
                 <td>{loss_job.year}</td>
                 <td>{loss_job.gender}</td>

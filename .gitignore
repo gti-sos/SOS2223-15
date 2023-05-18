@@ -111,3 +111,6 @@ dist
 /playwright/.cache/
 =======
 >>>>>>> 6fb1cdfb285ca2e24bc572d993d18a8e4db16235
+/test-results/
+/playwright-report/
+/playwright/.cache/

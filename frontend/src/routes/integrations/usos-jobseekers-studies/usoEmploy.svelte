@@ -127,7 +127,12 @@
 </svelte:head>
 
 <main>
+    <br><div style="text-align:center;">
+        <strong >Número de datos: {employ.length}</strong>
+    </div>
+    <br>
     <figure class="highcharts-figure">
         <div id="container" />
     </figure>
+    <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
 </main>
