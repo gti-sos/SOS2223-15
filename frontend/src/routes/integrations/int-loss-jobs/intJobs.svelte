@@ -1,8 +1,6 @@
 <svelte:head>
     <script src="https://naver.github.io/billboard.js/release/latest/dist/billboard.min.js"></script>
     <link rel="stylesheet" href="https://naver.github.io/billboard.js/release/latest/dist/billboard.min.css">
-    <script type="text/javascript" src="https://d3js.org/d3.v6.min.js">
-    </script>
 </svelte:head>
 
 <script>
@@ -15,7 +13,7 @@
         getData();
     });
 
-    let API = "http://localhost:12345/api/v2/loss-jobs";
+    let API = "http://localhost:12345/api/v2/loss-jobs"; 
 
 
     let stats = [];
