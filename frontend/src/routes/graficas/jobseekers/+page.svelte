@@ -1,3 +1,4 @@
+
 <script>
   //@ts-nocheck
   import {onMount} from 'svelte';
@@ -111,6 +112,8 @@ series: [{
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
   <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+  <title>SOS2223-15 Graficas-Demandantes-Empleo</title>
 </svelte:head>
 
 <main>

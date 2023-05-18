@@ -1,3 +1,6 @@
+<svelte:head>
+    <title>SOS2223-12 Datos-Demandantes-Empleo</title>
+</svelte:head>
 <script>
     // @ts-nocheck
 

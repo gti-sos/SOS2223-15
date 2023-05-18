@@ -19,12 +19,12 @@
     <h2>Integraciones/Usos Jara</h2>
     <ul>
         <ul>
-            <li><a href="/integrations/int-jobseekers-studies">Integraciones</a></li>
+            <li><a href="/integrations/int-jobseekers-studies">Integraciones jobseekers</a></li>
           </ul>
     </ul>
     <ul>
       <ul>
-          <li><a href="/integrations/usos-jobseekers-studies">Usos</a></li>
+          <li><a href="/integrations/usos-jobseekers-studies">Usos jobseekers</a></li>
         </ul>
   </ul>
   </div>
