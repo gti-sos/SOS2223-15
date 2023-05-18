@@ -1,10 +1,11 @@
 <script>
-    import IntAgro from "./intLocalEntities.svelte";
+    import IntLocalEntities from "./intLocalEntities.svelte";
+    import IntApiExt from "./intApiExt.svelte";
 </script>
 
 
 <main>
     <slot></slot>
-    <IntAgro></IntAgro>
-    
+    <!--<IntLocalEntities></IntLocalEntities>-->
+    <IntApiExt></IntApiExt>
 </main>

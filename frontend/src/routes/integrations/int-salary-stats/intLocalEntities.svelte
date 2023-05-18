@@ -40,13 +40,21 @@
     let difficulty = [];
     let images = [];
 
+    let virus=[];
+    let country_name = [];
+    let cases = [];
+    let deaths = [];
+    let region = [];
+    let total_recovered = [];
+
 
 
 
     onMount(async () =>{
         //getStats();
         //getPlanets();
-        getMexican();
+        //getMexican();
+        getVirus();
     });
 
     async function getStats(){
@@ -147,6 +155,44 @@
         }
     }
 
+    async function getVirus(){
+        console.log("Fetching stats....");
+        const url = 'https://corona-virus-world-and-india-data.p.rapidapi.com/api';
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'b72bf7a6a9mshc58f9ea15845135p17ac66jsne782008c78e3',
+                'X-RapidAPI-Host': 'corona-virus-world-and-india-data.p.rapidapi.com'
+            }
+        };
+
+        try {
+            const response = await fetch(url, options);
+            
+            if(response.ok){
+                const data = await response.json();
+                virus = data;
+                console.log("Planetas recibidos: "+planets.length);
+                //inicializamos los arrays para mostrar los datos
+               // planets.sort((a,b) => a.year-b.year); // Ordena los datos por año (Resta el año a al b, y si es menor, lo pone antes que el mayor) de menor a mayor.
+                virus.forEach((viru) => {
+                        console.log(viru);
+                        country_name.push(viru.country_name);
+                        cases.push(viru.cases);
+                        deaths.push(viru.deaths);
+                        region.push(viru.region);
+                        total_recovered.push(viru.total_recovered);
+                });
+                console.log(min_mass);
+                //loadGraph();
+            }else{
+                console.log("Error cargando los datos");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async function loadGraph(){
         Highcharts.chart('container', {
         chart: {
@@ -189,8 +235,13 @@
         },
         series: [{
                 name: 'Desviación típica',
-                data: id
-                }]
+                data: country_name
+                },
+                {
+                name: 'Desviación típica',
+                data: deaths
+                }
+            ]
         });
     }
 
