@@ -16,7 +16,7 @@
     let low_due_to_placement = ["Bajas debido a puesto"];
     let no_renovation = ["Sin renovación"];
     let other_reason = ["Otras razones"];
-    let dicc = {};
+    let year = [];
 
     async function getStats() {
         console.log("Fetching stats....");
@@ -28,7 +28,7 @@
             //inicializamos los arrays para mostrar los datos
             lossJobs.forEach((stat) => {
                 console.log(stat);
-                province_gender.push(stat.province + "-" + stat.gender);
+                province_gender.push(stat.province + "-" + stat.gender + "-" + stat.year);
                 low_due_to_placement.push(stat.low_due_to_placement);
                 no_renovation.push(stat.no_renovation);
                 other_reason.push(stat.other_reason);

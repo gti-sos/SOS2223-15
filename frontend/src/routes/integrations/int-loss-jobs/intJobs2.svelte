@@ -23,7 +23,7 @@
     let other_reason = ["Otras razones"]; 
 
 
-    let id = ["id"];
+    let id = ["numero aviones"];
     let stats2 = [];
     let city = ["city"];
 
