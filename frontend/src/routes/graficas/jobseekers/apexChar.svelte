@@ -27,7 +27,8 @@
     if (res.ok) {
       try{
         const data = await res.json();
-        jobseekers = data;
+        const filtrado = data.filter((x) => x.territory == "Almería");
+        jobseekers = filtrado;
         jobseekers.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
         jobseekers.forEach((stat) => {
           console.log(stat);
@@ -84,7 +85,7 @@
       },
 
       title: {
-        text: "Estudio de demandantes de empleo",
+        text: "Estudio de demandantes de empleo en Almería",
         align: "center",
         style: {
           fontSize: "30px",
