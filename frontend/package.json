@@ -20,6 +20,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"axios": "^1.4.0",
+		"billboard": "^1.0.0",
 		"c3": "^0.7.20",
 		"cors": "^2.8.5",
 		"sveltestrap": "^5.10.0"
