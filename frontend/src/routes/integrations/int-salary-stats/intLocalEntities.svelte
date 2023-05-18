@@ -9,14 +9,12 @@
     
     import {onMount} from "svelte";
     //import { CLAVE_COMIDAS } from "config.js";
-    //import { dev } from "$app/environment"; 
+    //import { dev } from "$app/environment";
     let API = "http://localhost:12345/api/v2/salary-stats";
     
     let API2 = "https://planets-by-api-ninjas.p.rapidapi.com/v1/planets?name=Mars";
 
-    const key = CLAVE_COMIDAS;
-
-
+    //const key = CLAVE_COMIDAS; comentario
     
     let stats = [];
     let province_gender_year =[]
