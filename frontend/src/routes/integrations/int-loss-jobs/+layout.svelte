@@ -1,11 +1,11 @@
 <script>
-    import IntAgro from "./intJobs.svelte";
-    import IntAgro from "./tontito.svelte";
+    import IntJobs from "./intJobs.svelte";
+    import IntJobs2 from "./intJobs2.svelte"
 </script>
 
 
 <main>
     <slot></slot>
-    <IntAgro></IntAgro>
-    
+    <IntJobs></IntJobs>
+    <IntJobs2></IntJobs2>
 </main>

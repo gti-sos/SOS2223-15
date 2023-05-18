@@ -52,12 +52,6 @@
                     no_renovation,
                     other_reason,
                 ],
-                names: {
-                    156725: 'Asalariados', // Usamos esto para cambiar el nombre de las columnas que aparecen dibujadas de colores, pues por defecto cogen el primer elemento de salaried en columns, de average_salary y de standard_deviation respectivamente para cada una de las columnas
-                    21163: 'Salario medio',
-                    11718: 'Desviación típica',
-
-                },
                 type: bar()
             },
             bar: {

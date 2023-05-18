@@ -31,7 +31,7 @@
     <h2>Integraciones/Usos Mario</h2>
     <ul>
       <ul>
-          <li><a href="/integrations/uses-salary-stats">Usos</a></li>
+          <li><a href="/integrations/usos-loss-jobs">Usos</a></li>
           <li><a href="/integrations/int-loss-jobs">Integraciones</a></li>
       </ul>
   </ul>
