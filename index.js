@@ -26,7 +26,7 @@ var port = process.env.PORT || 12345;
 app.use(express.json());
 //app.use("/", express.static("./public")); // HTML que se mostrará por defecto en la ruta /
 
-//Proxy Jara
+//////// PROXY JARA ////////
 var paths = "/agro";
 var apiServerHost = "https://sos2223-12.appspot.com/api/v2/agroclimatic";
 
@@ -34,6 +34,34 @@ app.use(paths, function(req, res) {
     var url = apiServerHost + req.url;
     req.pipe(request(url)).pipe(res);
 });
+
+//////// PROXY JARA ////////
+
+//////// PROXY ANGEL ////////
+
+/*
+var paths = "/games";
+var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
+app.use(paths, function(req, res) {
+    var url = apiServerHost + req.url;
+    req.pipe(request(url)).pipe(res);
+});
+*/
+
+var paths = "/games";
+var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
+app.use(paths, function(req, res) {
+    var url = apiServerHost + req.url;
+    req.pipe(request(url)).pipe(res);
+});
+
+//////// PROXY ANGEL ////////
+
+//////// PROXY MARIO ////////
+
+
+
+//////// PROXY MARIO ////////
 
 
 loadBackend_jara(app);

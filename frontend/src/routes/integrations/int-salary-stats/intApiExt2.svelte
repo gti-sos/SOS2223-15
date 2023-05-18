@@ -44,7 +44,8 @@
         console.log("Fetching salary-stats....");
         const res = await fetch(API);
         console.log("Fetching Games stats....");
-        const res2 = await fetch('https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4', options);
+        //const res2 = await fetch('https://sos2223-15.appspot.com/games', options);
+        const res2 = await fetch('http://localhost:5173/games', options);
         if (res.ok && res2.ok) {
             const data = await res.json();
             stats = data;
