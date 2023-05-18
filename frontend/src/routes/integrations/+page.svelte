@@ -7,11 +7,9 @@
     <h2>Integraciones/Usos Ángel</h2>
     <ul>
         <ul>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso1">Uso 1</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/uso2">Uso 2</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion1">Integración 1</a></li>
-            <li><a href="https://sos2223-15.appspot.com/api/v2/integrations/integracion2">Integración 2</a></li>
-          </ul>
+            <li><a href="/integrations/uses-salary-stats">Usos</a></li>
+            <li><a href="/integrations/int-salary-stats">Integraciones</a></li>
+        </ul>
     </ul>
   </div>
   

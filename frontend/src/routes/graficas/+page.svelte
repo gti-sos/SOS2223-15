@@ -7,7 +7,7 @@
     <h2>Gráficas </h2>
     <ul>
         <ul>
-            <li><a href="/graficas/">Gráficas Ángel</a></li>
+            <li><a href="/graficas/salary-stats">Gráficas Ángel</a></li>
         </ul>
     </ul>
     <ul>
@@ -17,7 +17,7 @@
     </ul>
     <ul>
       <ul>
-          <li><a href="/graficas/">Gráficas Mario</a></li>
+          <li><a href="/graficas/loss-jobs-graph">Gráficas Mario</a></li>
         </ul>
     </ul>
   </div>
