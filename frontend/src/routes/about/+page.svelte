@@ -4,20 +4,20 @@
 <section class="team">
   <hr>
   <div class="container">
-    <h2>Gráficas </h2>
+    <h2>Videos Explicativos</h2>
     <ul>
         <ul>
-            <li><a href="/graficas/salary-stats">Gráficas Ángel</a></li>
+            <li><a href="/graficas/salary-stats">Vídeo Ángel</a></li>
         </ul>
     </ul>
     <ul>
       <ul>
-          <li><a href="/graficas/jobseekers">Gráficas Demandantes-Empleo</a></li>
+          <li><a href="a">Vídeo Demandantes-Empleo</a></li>
       </ul>
     </ul>
     <ul>
       <ul>
-          <li><a href="/graficas/loss-jobs-graph">Gráficas Mario</a></li>
+          <li><a href="/graficas/loss-jobs-graph">Vídeo Mario</a></li>
         </ul>
     </ul>
   </div>

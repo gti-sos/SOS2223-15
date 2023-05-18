@@ -71,7 +71,6 @@ title: {
   },
 xAxis: {
   title:{
-              text: "Provincia-Año",
               style: {
                   fontWeight: 'bold'
               }

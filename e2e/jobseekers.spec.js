@@ -9,31 +9,31 @@ test('has title', async ({ page }) => {
     await expect(page).toHaveTitle(/SOS2223-15/);
   });
 
-/*test('get analytics', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/');
-
-    // Click the get started link.
-    await page.getByRole('link', { name: 'Gráfica conjunta' }).click();
-
-    // Expects the URL to contain intro.
-    await expect(page).toHaveURL(/.*analytics/);
-});*/
-
 // Vídeos
-/*test('get about', async ({ page }) => {
-    await page.goto('https://sos2223-14.appspot.com/');
+test('get about', async ({ page }) => {
+    await page.goto('http://localhost:5173/about');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Vídeos' }).click();
+    await page.getByRole('link', { name: 'Vídeo Demandantes-Empleo' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*about/);
-});*/
+});
 
+//Gráfica conjunta
+test('get analytics', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    // Click the get started link.
+    await page.getByRole('link', { name: 'Gráfica Conjunta' }).click();
+
+    // Expects the URL to contain intro.
+    await expect(page).toHaveURL(/.*analytics/);
+});
 
 //Datos api
 test('get jobseekers-studies', async ({ page }) => {
-    await page.goto('http://localhost:5173/jobseekers-studies');
+    await page.goto('http://localhost:5173/');
 
     // Click the get started link.
     await page.getByRole('link', { name: 'Estudio de demandantes de empleo' }).click();
@@ -47,7 +47,7 @@ test('get graph jobseekers-studies', async ({ page }) => {
     await page.goto('http://localhost:5173/graficas/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Gráficas Jara' }).click();
+    await page.getByRole('link', { name: 'Gráficas Demandantes-Empleo' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*jobseekers/);
@@ -58,7 +58,7 @@ test('get uses', async ({ page }) => {
     await page.goto('http://localhost:5173/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Usos jobseekers' }).click();
+    await page.getByRole('link', { name: 'Usos Demandantes-Empleo' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*usos-jobseekers-studies/);
@@ -69,7 +69,7 @@ test('get integrations', async ({ page }) => {
     await page.goto('http://localhost:5173/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Integraciones jobseekers' }).click();
+    await page.getByRole('link', { name: 'Integraciones Demandantes-Empleo' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*int-jobseekers-studies/);

@@ -100,7 +100,6 @@
 
       xaxis: {
         title: {
-          text: "Provincia-Año",
           style: {
             fontWeight: "bold",
           },
