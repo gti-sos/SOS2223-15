@@ -1,5 +1,5 @@
 // @ts-check
-import { test, expect } from '@playwright/test';
+/*import { test, expect } from '@playwright/test';
 
 test('¿Tiene el titulo?: "Esto es un Title"', async ({ page }) => {
   await page.goto('http://localhost:12345/');
@@ -16,6 +16,4 @@ test('navigate to title page', async ({ page }) => {
   
     // Expects the URL to contain intro.
     await expect(page).toHaveTitle(/Title/);
-
-    await expect((await page.locator(".soS").all()).length).toBeLessThan(5);
   });

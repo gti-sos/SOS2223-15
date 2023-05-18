@@ -11,9 +11,9 @@
     // @ts-nocheck
     import {onMount} from "svelte";
     //import { dev } from "$app/environment"; 
-    let API = "http://localhost:12345/agro"; 
+    let API = "http://sos2223-15.appspot.com/agro"; 
     
-    let API2 = "http://localhost:12345/api/v1/jobseekers-studies";
+    let API2 = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
 
     let agro = [];
     let jobseeker = [];
@@ -24,38 +24,38 @@
     
     let provincia_año = [];
 
-    let primaria = [];
+    let primario = [];
     let fp = [];
-    let educ = [];
-    let tot = [];
+    let general = [];
+    let total = [];
 
     let result = "";
     let resultStatus = "";
     let result2 = "";
     let resultStatus2 = "";
     onMount(async () =>{
-        getGraphOtro()
+        getGraph()
     });
-    async function getGraphOtro(){
-        resultStatus2 = result2 = "";
-            const res2 = await fetch(API2, {
+    async function getGraph(){
+        resultStatus = result = "";
+            const res = await fetch(API2, {
             method: "GET"
                 
             });
             
-            if(res2.ok){
+            if(res.ok){
                 try{
-                    const valores2 = await res2.json();
-                    result2 = JSON.stringify(valores2, null, 2);
-                    jobseeker = valores2;
+                    const data = await res.json();
+                    result = JSON.stringify(data, null, 2);
+                    jobseeker = data;
                     jobseeker.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
                     jobseeker.forEach(stat =>{
                         console.log(stat);
                         provincia_año.push(stat.territory+"-"+stat.year); 
-                        primaria.push(stat["primary"]); 
+                        primario.push(stat["primary"]); 
                         fp.push(stat["fp_program"]); 
-                        educ.push(stat["general_education"]); 
-                        tot.push(stat["total"]); 
+                        general.push(stat["general_education"]); 
+                        total.push(stat["total"]); 
                         
                         temp_max.push(0);
                         temp_min.push(0);
@@ -66,23 +66,23 @@
                 }catch(error){
                     console.log(`Error devolviendo la gráfica: ${error}`);
                 }
-                const status2 = await res2.status;
-                resultStatus2 = status2;
+                const status = await res.status;
+                resultStatus = status;
             }else{
                 console.log("Error al cargar la gráfica"); 
             }
         
-        resultStatus = result = "";
-            const res = await fetch(API, {
+        resultStatus2 = result2 = "";
+            const res2 = await fetch(API, {
                 method: "GET"
             });
             
-            if(res.ok){
+            if(res2.ok){
                 try{
-                    const valores = await res.json();
-                    result = JSON.stringify(valores, null, 2);
+                    const data2 = await res2.json();
+                    result2 = JSON.stringify(data2, null, 2);
                     
-                    agro = valores;
+                    agro = data2;
                     agro.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
                     agro.forEach(stat =>{
                         console.log(stat);
@@ -92,30 +92,30 @@
                         temp_med.push(stat["medium_temperature"]);
                         provincia_año.push(stat.province+"-"+stat.year);
                          
-                        primaria.push(0); 
+                        primario.push(0); 
                         fp.push(0); 
-                        educ.push(0); 
-                        tot.push(0);
+                        general.push(0); 
+                        total.push(0);
                         
                     });
                     
                 }catch(error){
                     console.log(`Error devolviendo la gráfica: ${error}`);
                 }
-                const status = await res.status;
-                resultStatus = status;
+                const status2 = await res2.status;
+                resultStatus2 = status2;
                 
             }else{
                 console.log("Error al cargar la gráfica");
             }
             
-            loadChartOtro();
+            loadGraph();
     }
-    async function loadChartOtro(){  
+    async function loadGraph(){  
         
         Highcharts.chart('container2', {
         title: {
-            text: 'Estadísticas Agroclimáticas y Solicitantes de Trabajo',
+            text: 'Estadísticas Agroclimáticas y Demandantes de empleo',
             style: {
                 fontWeight: 'bold',
                 fontSize: 40,
@@ -167,17 +167,17 @@
             name: 'Temperatura Media',
             data: temp_med 
         },{
-            name: 'Primaria',
-            data: primaria
+            name: 'primario',
+            data: primario
         }, {
             name: 'FP',
             data: fp
         }, {
-            name: 'Educación',
-            data: educ
+            name: 'Educación General',
+            data: general
         }, {
             name: 'Total',
-            data: tot
+            data: total
         }],
         responsive: {
                 rules: [{
@@ -206,9 +206,6 @@
     <br>
     <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
         <div id="container2"></div>
-        <p class="highcharts-description" style="text-align:center">
-            Gráfico sobre Solicitantes de Trabajo y Estadísticas Agroclimáticas.
-        </p>
     </figure>
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
    
