@@ -23,7 +23,7 @@
     let other_reason = ["Otras razones"]; 
 
 
-    let id = ["numero aviones"];
+    let id = ["Numero aviones"];
     let stats2 = [];
     let city = ["city"];
 
@@ -81,7 +81,7 @@
     }
 
     async function loadGraph(){
-        bb.generate({
+        var chart = bb.generate({
             title: {
                 text: 'Grafica de razones de personas que perdieron sus trabajos y los vuelos de aviones',
                 
@@ -105,7 +105,8 @@
                     type: 'category',
                     categories: province_gender
                 }
-            }
+            },
+            bindto: "#pieChart"
         });
     }
 </script>
@@ -113,6 +114,6 @@
 <main>
     <p style="text-align:center ;"></p>
     <div style="margin-left: 12%;max-width: 75%;">
-        <canvas id="myChart" ></canvas>
+        <div id="pieChart"></div>
     </div>
 </main>
