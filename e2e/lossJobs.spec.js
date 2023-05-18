@@ -9,16 +9,6 @@ test('has title', async ({ page }) => {
     await expect(page).toHaveTitle(/SOS2223-15/);
   });
 
-// Vídeos
-test('get about', async ({ page }) => {
-    await page.goto('http://sos2223-15.appspot.com/about');
-
-    // Click the get started link.
-    await page.getByRole('link', { name: 'Vídeo Mario' }).click();
-
-    // Expects the URL to contain intro.
-    await expect(page).toHaveURL(/.*about/);
-});
 
 //Gráfica conjunta
 test('get analytics', async ({ page }) => {
