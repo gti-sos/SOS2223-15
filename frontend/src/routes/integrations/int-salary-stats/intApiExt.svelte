@@ -134,7 +134,7 @@
 </script>
 
 <main>
-    <p style="text-align:center ;">Grafica de número de asalariados y contagios por covid - Source: https://ourworldindata.org/cancer#deaths-from-cancer</p>
+    <p style="text-align:center ;">Grafica de número de asalariados y contagios por covid</p>
     <div style="margin-left: 12%;max-width: 75%;">
         <canvas id="myChart" ></canvas>
     </div>
