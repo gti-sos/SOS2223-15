@@ -25,6 +25,7 @@
 
     let id = ["id"];
     let stats2 = [];
+    let first_name=[];
 
 
 
@@ -64,7 +65,7 @@
                 console.log("Entradas recibidas: " + stats2.length);                
 
                 stats2.forEach((stat) => {
-                    province_gender.push(stat.province);
+                    province_gender.push(stat.first_name);
                     low_due_to_placement.push("-");
                     no_renovation.push("-");
                     other_reason.push("-");
@@ -78,7 +79,7 @@
     }
 
     async function loadGraph(){
-        bb.generate({
+        var chart = bb.generate({
             title: {
                 text: 'Grafica de personas que perdieron sus trabajos por otras razones e IDs de jugadores de baloncesto',
                 
@@ -102,7 +103,11 @@
                     type: 'category',
                     categories: province_gender
                 }
-            }
+            },
+            legend: {
+                position: 'right', // posición de la leyenda en la parte superior del gráfico
+            },
+            bindto: "#pieChart"
         });
     }
 </script>
@@ -110,6 +115,6 @@
 <main>
     <p style="text-align:center ;"></p>
     <div style="margin-left: 12%;max-width: 75%;">
-        <canvas id="myChart" ></canvas>
+        <div id="pieChart"></div>
     </div>
 </main>
