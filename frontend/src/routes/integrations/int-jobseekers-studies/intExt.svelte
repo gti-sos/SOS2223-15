@@ -164,7 +164,7 @@
           opacity: 1
         },
         title: {
-            text: "Estadísticas unogsNG API y Solicitantes de Trabajo",
+            text: "Estadísticas unogsNG API y Demandantes de empleo",
             align: "center",
             style: {
             fontSize: "30px",
@@ -199,8 +199,5 @@
 <br>
   <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
     <div id="chart" />
-    <p class="highcharts-description" style="text-align:center">
-      Gráfico sobre Solicitantes de Trabajo y Estadísticas unogsNG API.
-    </p>
   </figure>
 </main>

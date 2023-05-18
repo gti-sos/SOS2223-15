@@ -115,7 +115,7 @@
         
         Highcharts.chart('container2', {
         title: {
-            text: 'Estadísticas Agroclimáticas y Solicitantes de Trabajo',
+            text: 'Estadísticas Agroclimáticas y Demandantes de empleo',
             style: {
                 fontWeight: 'bold',
                 fontSize: 40,
@@ -206,9 +206,6 @@
     <br>
     <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
         <div id="container2"></div>
-        <p class="highcharts-description" style="text-align:center">
-            Gráfico sobre Solicitantes de Trabajo y Estadísticas Agroclimáticas.
-        </p>
     </figure>
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
    
