@@ -36,7 +36,7 @@ test('get loss-jobs', async ({ page }) => {
     await page.goto('http://sos2223-15.appspot.com/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Estudio de perdidas de empleo' }).click();
+    await page.getByRole('link', { name: 'Causas de pérdidas de trabajo' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*loss-jobs/);
@@ -47,7 +47,7 @@ test('get graph loss-jobs', async ({ page }) => {
     await page.goto('http://sos2223-15.appspot.com/graficas/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Gráficas Perdidas-Empleo' }).click();
+    await page.getByRole('link', { name: 'Gráficas Mario' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*loss-jobs-graph/);
@@ -58,7 +58,7 @@ test('get uses', async ({ page }) => {
     await page.goto('http://sos2223-15.appspot.com/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Usos Perdidas-Empleo' }).click();
+    await page.getByRole('link', { name: 'Uso 1' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*usos-loss-jobs/);
@@ -69,7 +69,7 @@ test('get integrations', async ({ page }) => {
     await page.goto('http://sos2223-15.appspot.com/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Integraciones Perdidas-Empleo' }).click();
+    await page.getByRole('link', { name: 'Integracion 1' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*int-loss-jobs/);
