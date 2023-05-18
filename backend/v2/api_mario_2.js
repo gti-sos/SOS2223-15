@@ -23,7 +23,19 @@ function loadBackend_mario_2(app) {
     { province: "Huelva", year: 2022, gender: "Hombres", low_due_to_placement: 68019, no_renovation: 21665, other_reason: 7518 },
     { province: "Sevilla", year: 2022, gender: "Hombres", low_due_to_placement: 195063, no_renovation: 70369, other_reason: 13977 }];
 
+    //////// PROXY //////
 
+    /*
+    var paths = "/localentities";
+    var apiServerHost = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
+    app.use(paths, function(req, res) {
+        var url = apiServerHost + req.url;
+        req.pipe(request(url)).pipe(res);
+    });
+
+    */
+    ////// PROXY ///////
+    
   db.insert(población_media);
   //console.log("Insertados datos al comenzar");
 
