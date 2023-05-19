@@ -54,34 +54,14 @@ app.use(paths2, function(req, res) {
     req.pipe(request(url)).pipe(res);
 });
 */
-<<<<<<< HEAD
-/*
-var paths2 = "/games";
-=======
 
 /*var paths = "/games";
->>>>>>> 0b279f0b26645a461f96955307416125fdeaf41d
 var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
 app.use(paths2, function(req, res) {
     var url = apiServerHost + req.url;
     req.pipe(request(url)).pipe(res);
-<<<<<<< HEAD
-});
-*/
-/*
-app.use(`${BASE_API_GAMES}`, function(req, res){
-    var url = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
-    var head = {
-        'X-RapidAPI-Host': 'gamerpower.p.rapidapi.com',
-        'X-RapidAPI-Key': 'eca9d9dcb9mshdd4d65d4646bc18p192490jsn55ba9c868f8c'
-    }
-    req.pipe(request({ url: url, headers: head })).pipe(res);
-});
-*/
-=======
 });*/
 
->>>>>>> 0b279f0b26645a461f96955307416125fdeaf41d
 //////// PROXY ANGEL ////////
 
 //////// PROXY MARIO ////////
@@ -92,9 +72,6 @@ app.use(`${BASE_API_GAMES}`, function(req, res){
 //     var url = apiServerHost + req.url;
 //     req.pipe(request(url)).pipe(res);
 // });
-
-
-
 
 //////// PROXY MARIO ////////
 
