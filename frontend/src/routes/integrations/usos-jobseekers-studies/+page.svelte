@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>SOS2223-12 Usos-Demandantes-Empleo</title>
+    <title>SOS2223-15 Usos-Demandantes-Empleo</title>
 </svelte:head>
 <main>
     <h1 style="text-align: center; font-size:50px; font-weight:bold">Usos</h1>
