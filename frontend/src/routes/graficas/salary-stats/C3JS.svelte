@@ -53,7 +53,6 @@
         var chart = c3.generate({
             title: {
                 text: 'Gráfica de estadísticas de asalariados: https://www.juntadeandalucia.es/institutodeestadisticaycartografia/badea/operaciones/consulta/anual/20537?CodOper=b3_2034&codConsulta=20537',
-                
             },
             data: {
                 columns: [
@@ -61,13 +60,7 @@
                     average_salary,
                     standard_deviation,
                 ],
-                names: {
-                    156725: 'Asalariados', // Usamos esto para cambiar el nombre de las columnas que aparecen dibujadas de colores, pues por defecto cogen el primer elemento de salaried en columns, de average_salary y de standard_deviation respectivamente para cada una de las columnas
-                    21163: 'Salario medio',
-                    11718: 'Desviación típica',
-
-                },
-                type: 'bar'
+                type: 'scatter'
             },
             bar: {
                 width: {

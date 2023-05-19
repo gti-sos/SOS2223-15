@@ -14,7 +14,8 @@
         getData();
     });
 
-    let API = "http://localhost:12345/api/v2/salary-stats";
+    //let API = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
+    let API = "http://localhost:12345/api/v2/salary-stats"; 
 
 
     let stats = [];
@@ -45,7 +46,7 @@
         const res = await fetch(API);
         console.log("Fetching Games stats....");
         //const res2 = await fetch('https://sos2223-15.appspot.com/games', options);
-        const res2 = await fetch('http://localhost:5173/games', options);
+        const res2 = await fetch('https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4', options);
         if (res.ok && res2.ok) {
             const data = await res.json();
             stats = data;
@@ -93,6 +94,9 @@
 
     async function loadGraph() {
         var chart = c3.generate({
+            title: {
+                text: 'Estadísticas de asalariados y precios de videojuegos de ps4',
+            },
             data: {
                 columns: [
                     salaried,
