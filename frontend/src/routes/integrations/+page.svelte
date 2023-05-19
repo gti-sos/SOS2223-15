@@ -9,7 +9,7 @@
         <ul>
             <li><a href="/integrations/uses-salary-stats">Uso 1 Estadisticas-Asalariados</a></li>
             <li><a href="/integrations/uses-salary-stats2">Uso 2 Estadisticas-Asalariados</a></li>
-            <li><a href="/integrations/int-salary-stats">Integraciones</a></li>
+            <li><a href="/integrations/int-salary-stats">Integraciones Estadisticas-Asalariados</a></li>
         </ul>
     </ul>
   </div>

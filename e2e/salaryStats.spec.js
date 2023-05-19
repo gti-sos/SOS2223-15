@@ -47,7 +47,7 @@ test('get uses', async ({ page }) => {
     await page.goto('http://localhost:12345/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Uso 1 Asalariados' }).click();
+    await page.getByRole('link', { name: 'Uso 1 Estadisticas-Asalariados' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*uses-salary-stats/);
@@ -58,7 +58,7 @@ test('get integrations', async ({ page }) => {
     await page.goto('http://localhost:12345/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Integraciones Asalariados' }).click();
+    await page.getByRole('link', { name: 'Integraciones Estadisticas-Asalariados' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*int-salary-stats/);
