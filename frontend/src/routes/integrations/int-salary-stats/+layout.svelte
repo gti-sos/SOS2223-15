@@ -9,6 +9,5 @@
     <slot></slot>
     <!--<IntLocalEntities></IntLocalEntities>-->
     <IntApiExt></IntApiExt>
-    <hr>
     <IntApiExt2></IntApiExt2>
 </main>

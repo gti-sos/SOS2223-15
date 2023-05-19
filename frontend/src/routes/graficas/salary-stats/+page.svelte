@@ -53,7 +53,7 @@
     async function loadGraph(){
         Highcharts.chart('container', {
   chart: {
-    type: 'area'
+    type: 'scatter'
   },
   title: {
         text: 'Estudio de asalariados en Andalucía',

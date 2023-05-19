@@ -9,16 +9,24 @@
     // @ts-nocheck
 
     import {onMount} from "svelte";
+    import { dev } from '$app/environment';
+
 
     onMount(async () =>{
         getData();
     });
 
-    let API = "http://localhost:12345/api/v2/salary-stats";
+    //let API = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
+    //let API = "http://localhost:12345/api/v2/salary-stats"; 
+
+    let API = "/api/v2/covd";
+        
+    if(dev)
+        API = 'http://localhost:12345'+API
 
 
     let stats = [];
-    let province_gender_year =[]
+    let province_gender_year =[];
     let salaried = [];
     let average_salary = [];
     let standard_deviation = []; 
@@ -42,7 +50,7 @@
         console.log("Fetching salary-stats....");
         const res = await fetch(API);
         console.log("Fetching virus stats....");
-        const res2 = await fetch('https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=Spain', options);
+        const res2 = await fetch(`${API}`, options);
         if (res.ok) {
             const data = await res.json();
             stats = data;
