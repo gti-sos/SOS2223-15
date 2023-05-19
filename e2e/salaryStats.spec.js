@@ -47,7 +47,7 @@ test('get uses', async ({ page }) => {
     await page.goto('http://sos2223-15.appspot.com/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Usos Asalariados' }).click();
+    await page.getByRole('link', { name: 'Uso 1 Asalariados' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*uses-salary-stats/);
@@ -58,7 +58,7 @@ test('get integrations', async ({ page }) => {
     await page.goto('http://sos2223-15.appspot.com/integrations/');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Integraciones Asalariados' }).click();
+    await page.getByRole('link', { name: 'Integraciones' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*int-salary-stats/);
