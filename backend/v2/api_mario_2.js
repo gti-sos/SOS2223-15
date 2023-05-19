@@ -3,6 +3,7 @@ var db = new Datastore;
 //const BASE_API_URL = "/api/v2";
 //const rutaMMS = BASE_API_URL + '/loss-jobs';
 const API_DOC_PORTAL = 'https://documenter.getpostman.com/view/26052697/2s93XzwMYW';
+const API = "api/v2/nba";
 
 //DATA MARIO
 function loadBackend_mario_2(app) {
@@ -25,15 +26,14 @@ function loadBackend_mario_2(app) {
 
     //////// PROXY //////
 
-    /*
-    var paths = "/localentities";
-    var apiServerHost = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
-    app.use(paths, function(req, res) {
-        var url = apiServerHost + req.url;
-        req.pipe(request(url)).pipe(res);
-    });
-
-    */
+    app.use(`${API}`, function(req, res){
+      var url = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
+      var head = {
+          "X-RapidAPI-Host": "free-nba.p.rapidapi.com",
+          "X-RapidAPI-Key": "c39120aa81msh087d47ca1543c02p1d12abjsnfb5f66461395"
+      };
+      req.pipe(request({ url: url, headers: head })).pipe(res);
+  });
     ////// PROXY ///////
     
   db.insert(población_media);

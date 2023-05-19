@@ -21,6 +21,8 @@ app.use(cors());
 
 var port = process.env.PORT || 12345;
 
+
+
 // Modularización--------------------
 
 app.use(express.json());
@@ -58,6 +60,14 @@ app.use(paths, function(req, res) {
 //////// PROXY ANGEL ////////
 
 //////// PROXY MARIO ////////
+
+// var paths3 = "/nba";
+// var apiServerHost = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
+// app.use(paths3, function(req, res) {
+//     var url = apiServerHost + req.url;
+//     req.pipe(request(url)).pipe(res);
+// });
+
 
 
 
