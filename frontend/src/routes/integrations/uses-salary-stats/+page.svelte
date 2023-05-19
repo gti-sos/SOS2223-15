@@ -62,6 +62,16 @@
 
 </script>
 
+<h3 align="center"><u>LocalEntities</u></h3>
+<p style="text-align:center">
+    Datos de: <a
+        style="text-decoration: none; color:black"
+        href="https://sos2223-13.appspot.com/api/v2/localentities"
+        target="_blank"><u>LocalEntities Grupo 13 SOS</u></a
+    >
+</p>
+<br>
+
 <Container class="d-flex justify-content-end">
     <Button class="ms-auto" color="secondary" on:click={getPgAnt}>Anterior</Button>
     <Button class="ms-2" color="secondary" on:click={getPgSig}>Siguiente</Button>
@@ -101,27 +111,3 @@
         {/each}
     </tbody>
 </Table>
-
-{#if message != "" && (resultStatus == 200 || resultStatus == 201)}
-    <!--Alerta para los códigos 200 y 201-->
-
-    <div class="container text-center">
-        <Alert color="success" dismissible>{message}</Alert>
-    </div>
-{/if}
-
-{#if message != "" && (resultStatus == 400 || resultStatus == 404 || resultStatus == 409)}
-    <!--Alerta para los códigos 400,404,409, ...-->
-
-    <div class="container text-center">
-        <Alert color="warning" dismissible>{message}</Alert>
-    </div>
-{/if}
-
-{#if message != "" && resultStatus == 500}
-    <!--Alerta para los códigos 500 (internal server error)-->
-
-    <div class="container text-center">
-        <Alert color="danger" dismissible>{message}</Alert>
-    </div>
-{/if}

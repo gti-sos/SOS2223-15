@@ -2,6 +2,7 @@
 import Datastore from 'nedb'
 var db = new Datastore;
 
+const rutaCOVD = "/api/v2/covd";
 
 const BASE_API_URL = "/api/v2";
 const rutaAMR = BASE_API_URL + '/salary-stats';
@@ -10,6 +11,15 @@ const API_DOC_PORTAL_2 = "https://documenter.getpostman.com/view/26059557/2s93Xs
 
 function loadBackend_angel_2 (app) {
 
+    app.use(`${rutaCOVD}`, function(req, res) {
+        var apiExterna = "https://covid-193.p.rapidapi.com/statistics";
+        var requestHeaders = {
+            "X-RapidAPI-Key": "16ee2bd576msh9cc1a680fac4200p18deefjsn2b38b3ee309e",
+            "X-RapidAPI-Host": "covid-193.p.rapidapi.com"
+          };
+        req.pipe(request({ url: apiExterna, headers: requestHeaders })).pipe(res);
+     });
+     
     var salario_medio = [
         {
             province: "Almería",
