@@ -7,8 +7,8 @@
     <h2>Integraciones/Usos Ángel</h2>
     <ul>
         <ul>
-            <li><a href="/integrations/uses-salary-stats">Uso 1</a></li>
-            <li><a href="/integrations/uses-salary-stats">Uso 2</a></li>
+            <li><a href="/integrations/uses-salary-stats">Uso 1 Estadisticas-Asalariados</a></li>
+            <li><a href="/integrations/uses-salary-stats2">Uso 2 Estadisticas-Asalariados</a></li>
             <li><a href="/integrations/int-salary-stats">Integraciones</a></li>
         </ul>
     </ul>
