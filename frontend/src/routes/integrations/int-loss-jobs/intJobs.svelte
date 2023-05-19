@@ -27,6 +27,10 @@
     let id = ["id"];
     let stats2 = [];
     let first_name=[];
+    let API2 = "/api/v2/nba";
+
+    if(dev)
+        API2 = 'http://localhost:12345'+API2;
 
 
 
@@ -40,7 +44,7 @@
 
     async function getData() {
         const res = await fetch(API);
-        const res2 = await fetch('https://free-nba.p.rapidapi.com/players?page=0&per_page=25', options);
+        const res2 = await fetch(`${API2}`, options);
         if (res.ok) {
             const data = await res.json();
             stats = data;
@@ -66,6 +70,7 @@
                 console.log("Entradas recibidas: " + stats2.length);                
 
                 stats2.forEach((stat) => {
+                    console.log(stat);
                     province_gender.push(stat.first_name);
                     low_due_to_placement.push("-");
                     no_renovation.push("-");

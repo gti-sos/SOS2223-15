@@ -11,7 +11,7 @@
     // @ts-nocheck
     import {onMount} from "svelte";
     //import { dev } from "$app/environment"; 
-    let API = "http://sos2223-15.appspot.com/agro"; 
+    let API = "https://sos2223-15.appspot.com/agro"; 
     
     let API2 = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
 

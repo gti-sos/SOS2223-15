@@ -21,6 +21,8 @@ app.use(cors());
 
 var port = process.env.PORT || 12345;
 
+
+
 // Modularización--------------------
 
 app.use(express.json());
@@ -52,12 +54,18 @@ app.use(paths2, function(req, res) {
     req.pipe(request(url)).pipe(res);
 });
 */
+<<<<<<< HEAD
 /*
 var paths2 = "/games";
+=======
+
+/*var paths = "/games";
+>>>>>>> 0b279f0b26645a461f96955307416125fdeaf41d
 var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
 app.use(paths2, function(req, res) {
     var url = apiServerHost + req.url;
     req.pipe(request(url)).pipe(res);
+<<<<<<< HEAD
 });
 */
 /*
@@ -70,9 +78,21 @@ app.use(`${BASE_API_GAMES}`, function(req, res){
     req.pipe(request({ url: url, headers: head })).pipe(res);
 });
 */
+=======
+});*/
+
+>>>>>>> 0b279f0b26645a461f96955307416125fdeaf41d
 //////// PROXY ANGEL ////////
 
 //////// PROXY MARIO ////////
+
+// var paths3 = "/nba";
+// var apiServerHost = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
+// app.use(paths3, function(req, res) {
+//     var url = apiServerHost + req.url;
+//     req.pipe(request(url)).pipe(res);
+// });
+
 
 
 
