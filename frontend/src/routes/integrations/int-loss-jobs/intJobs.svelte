@@ -8,6 +8,7 @@
 
     import {onMount} from "svelte";
     import bb, {bar, donut, line} from "billboard.js";
+    import { dev } from '$app/environment';
 
     onMount(async () =>{
         getData();

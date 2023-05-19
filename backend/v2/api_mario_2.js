@@ -7,6 +7,17 @@ const API = "api/v2/nba";
 
 //DATA MARIO
 function loadBackend_mario_2(app) {
+      //////// PROXY //////
+
+      app.use(`${API}`, function(req, res){
+        var url = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
+        var head = {
+            "X-RapidAPI-Host": "free-nba.p.rapidapi.com",
+            "X-RapidAPI-Key": "c39120aa81msh087d47ca1543c02p1d12abjsnfb5f66461395"
+        };
+        req.pipe(request({ url: url, headers: head })).pipe(res);
+    });
+      ////// PROXY ///////
   var población_media = [
     { province: "Almeria", year: 2021, gender: "Ambos sexos", low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827 },
     { province: "Cadiz", year: 2022, gender: "Ambos sexos", low_due_to_placement: 246181, no_renovation: 124697, other_reason: 26756 },
@@ -24,17 +35,7 @@ function loadBackend_mario_2(app) {
     { province: "Huelva", year: 2022, gender: "Hombres", low_due_to_placement: 68019, no_renovation: 21665, other_reason: 7518 },
     { province: "Sevilla", year: 2022, gender: "Hombres", low_due_to_placement: 195063, no_renovation: 70369, other_reason: 13977 }];
 
-    //////// PROXY //////
 
-    app.use(`${API}`, function(req, res){
-      var url = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
-      var head = {
-          "X-RapidAPI-Host": "free-nba.p.rapidapi.com",
-          "X-RapidAPI-Key": "c39120aa81msh087d47ca1543c02p1d12abjsnfb5f66461395"
-      };
-      req.pipe(request({ url: url, headers: head })).pipe(res);
-  });
-    ////// PROXY ///////
     
   db.insert(población_media);
   //console.log("Insertados datos al comenzar");
