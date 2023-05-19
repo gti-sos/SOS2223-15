@@ -17,7 +17,7 @@
     </ul>
     <ul>
       <ul>
-          <li><a href="/graficas/loss-jobs-graph">Vídeo Mario</a></li>
+          <li><a href="https://youtu.be/K3ueU56UPCwhttps://youtu.be/K3ueU56UPCw">Vídeo Mario</a></li>
         </ul>
     </ul>
   </div>

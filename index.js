@@ -51,8 +51,8 @@ app.use(paths2, function(req, res) {
     req.pipe(request(url)).pipe(res);
 });
 */
-/*
-var paths2 = "/games";
+
+/*var paths = "/games";
 var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
 app.use(paths2, function(req, res) {
     var url = apiServerHost + req.url;
@@ -79,9 +79,6 @@ app.use(`${BASE_API_GAMES}`, function(req, res){
 //     var url = apiServerHost + req.url;
 //     req.pipe(request(url)).pipe(res);
 // });
-
-
-
 
 //////// PROXY MARIO ////////
 

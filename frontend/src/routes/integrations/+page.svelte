@@ -32,10 +32,10 @@
     <h2>Integraciones/Usos Mario</h2>
     <ul>
       <ul>
-          <li><a href="/integrations/usos-loss-jobs">Uso 1</a></li>
-          <li><a href="/integrations/usos-loss-jobs2">Uso 2</a></li>
-          <li><a href="/integrations/int-loss-jobs">Integracion 1</a></li>
-          <li><a href="/integrations/int-loss-jobs2">Integracion 2</a></li>
+          <li><a href="/integrations/usos-loss-jobs">Uso 1 Perdidas</a></li>
+          <li><a href="/integrations/usos-loss-jobs2">Uso 2 Perdidas</a></li>
+          <li><a href="/integrations/int-loss-jobs">Integracion 1 Perdidas</a></li>
+          <li><a href="/integrations/int-loss-jobs2">Integracion 2 Perdidas</a></li>
       </ul>
   </ul>
   </div>

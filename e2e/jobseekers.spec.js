@@ -3,7 +3,7 @@
 import { test, expect } from '@playwright/test';
 
 test('has title', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/');
+    await page.goto('http://localhost:12345/');
   
     // Expect a title "to contain" a substring.
     await expect(page).toHaveTitle(/SOS2223-15/);
@@ -11,7 +11,7 @@ test('has title', async ({ page }) => {
 
 //Gráfica conjunta
 test('get analytics', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/');
+    await page.goto('http://localhost:12345/');
 
     // Click the get started link.
     await page.getByRole('link', { name: 'Gráfica Conjunta' }).click();
@@ -22,7 +22,7 @@ test('get analytics', async ({ page }) => {
 
 // Vídeos
 test('get about', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/about');
+    await page.goto('http://localhost:12345/about');
 
     // Click the get started link.
     await page.getByRole('link', { name: 'Vídeo Demandantes-Empleo' }).click();
@@ -33,7 +33,7 @@ test('get about', async ({ page }) => {
 
 //Datos api
 test('get jobseekers-studies', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/');
+    await page.goto('http://localhost:12345/');
 
     // Click the get started link.
     await page.getByRole('link', { name: 'Estudio de demandantes de empleo' }).click();
@@ -44,7 +44,7 @@ test('get jobseekers-studies', async ({ page }) => {
 
 // Gráficas 
 test('get graph jobseekers-studies', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/graficas/');
+    await page.goto('http://localhost:12345/graficas/');
 
     // Click the get started link.
     await page.getByRole('link', { name: 'Gráficas Demandantes-Empleo' }).click();
@@ -55,7 +55,7 @@ test('get graph jobseekers-studies', async ({ page }) => {
 
 // Usos
 test('get uses', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/integrations/');
+    await page.goto('http://localhost:12345/integrations/');
 
     // Click the get started link.
     await page.getByRole('link', { name: 'Usos Demandantes-Empleo' }).click();
@@ -66,7 +66,7 @@ test('get uses', async ({ page }) => {
 
 // Integraciones
 test('get integrations', async ({ page }) => {
-    await page.goto('https://sos2223-15.appspot.com/integrations/');
+    await page.goto('http://localhost:12345/integrations/');
 
     // Click the get started link.
     await page.getByRole('link', { name: 'Integraciones Demandantes-Empleo' }).click();
