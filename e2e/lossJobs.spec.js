@@ -50,6 +50,7 @@ test('get uses', async ({ page }) => {
     // Click the get started link.
     await page.getByRole('link', { name: 'Uso 1 Perdidas' }).click();
 
+    
     // Expects the URL to contain intro.
     await expect(page).toHaveURL(/.*usos-loss-jobs/);
 });
