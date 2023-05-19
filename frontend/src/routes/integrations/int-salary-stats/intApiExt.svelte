@@ -19,7 +19,7 @@
     //let API = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
     //let API = "http://localhost:12345/api/v2/salary-stats"; 
 
-    let API = "/api/v2/covd";
+    let API = "/api/v2/salary-stats";
         
     if(dev)
         API = 'http://localhost:12345'+API
@@ -42,15 +42,16 @@
 	    method: 'GET',
 	    headers: {
 		    'X-RapidAPI-Host': 'covid-19-coronavirus-statistics.p.rapidapi.com',
-		    'X-RapidAPI-Key': 'eca9d9dcb9mshdd4d65d4646bc18p192490jsn55ba9c868f8c'
+		    'X-RapidAPI-Key': 'b72bf7a6a9mshc58f9ea15845135p17ac66jsne782008c78e3'
 	    }
     };
 
+    //https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=Spain
     async function getData() {
         console.log("Fetching salary-stats....");
         const res = await fetch(API);
         console.log("Fetching virus stats....");
-        const res2 = await fetch(`${API}`, options);
+        const res2 = await fetch('https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=Spain', options);
         if (res.ok) {
             const data = await res.json();
             stats = data;
@@ -142,7 +143,7 @@
 </script>
 
 <main>
-    <p style="text-align:center ;">Grafica de número de asalariados y contagios por covid</p>
+    <p style="text-align:center ;">Grafica de número de asalariados y contagios y muertes por covid</p>
     <div style="margin-left: 12%;max-width: 75%;">
         <canvas id="myChart" ></canvas>
     </div>

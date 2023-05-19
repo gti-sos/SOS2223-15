@@ -30,9 +30,6 @@ app.use(express.json());
 
 
 
-const BASE_API_GAMES = "api/v2/games"
-
-
 //////// PROXY JARA ////////
 var paths = "/agro";
 var apiServerHost = "https://sos2223-12.appspot.com/api/v2/agroclimatic";
@@ -60,8 +57,18 @@ var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps
 app.use(paths2, function(req, res) {
     var url = apiServerHost + req.url;
     req.pipe(request(url)).pipe(res);
-});*/
-
+});
+*/
+/*
+app.use(`${BASE_API_GAMES}`, function(req, res){
+    var url = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
+    var head = {
+        'X-RapidAPI-Host': 'gamerpower.p.rapidapi.com',
+        'X-RapidAPI-Key': 'eca9d9dcb9mshdd4d65d4646bc18p192490jsn55ba9c868f8c'
+    }
+    req.pipe(request({ url: url, headers: head })).pipe(res);
+});
+*/
 //////// PROXY ANGEL ////////
 
 //////// PROXY MARIO ////////
