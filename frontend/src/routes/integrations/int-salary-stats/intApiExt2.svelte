@@ -14,8 +14,8 @@
         getData();
     });
 
-    //let API = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
-    let API = "http://localhost:12345/api/v2/salary-stats"; 
+    let API = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
+    //let API = "http://localhost:12345/api/v2/salary-stats"; 
 
 
     let stats = [];
@@ -50,10 +50,9 @@
         if (res.ok && res2.ok) {
             const data = await res.json();
             stats = data;
-                console.log("Entradas recibidas de api: " + stats.length);
+                console.log("Entradas recibidas de mi API: " + stats.length);
                 //con la siguiente funcion ordeno los datos por años de menor a mayor
                 stats.sort((a,b) => a.year-b.year); // Ordena los datos por año (Resta el año a al b, y si es menor, lo pone antes que el mayor) de menor a mayor.
-                console.log("Ordenadas correctamente");
                 stats.forEach((stat) => {
                     province.push(stat.province);
                     province_gender_year.push(stat.province+"-"+stat.gender+"-"+stat.year);
@@ -71,7 +70,7 @@
         if (res2.ok) {
             const data2 = await res2.json();
             stats2 = data2;
-            console.log("Entradas recibidas de api externa: " + stats2.length);                
+            console.log("Entradas recibidas de API_EXT 2: " + stats2.length);                
             console.log(stats2);            
 
                 stats2.forEach((stat) => {
@@ -85,7 +84,7 @@
                        
             });
         } else {
-            console.log("Error, can`t charge data");
+            console.log("Error, can`t charge data from API EXT 2");
         }
         console.log(titulo);
         loadGraph();

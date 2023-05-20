@@ -43,6 +43,17 @@ app.use(paths, function(req, res) {
 
 //////// PROXY ANGEL ////////
 
+var paths2 = "/covid-19"
+var apiserverHost2 = "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=Spain"
+app.use(paths2, function(req, res){
+    var url = apiserverHost2;
+    var head = {
+        "X-RapidAPI-Host": "covid-19-coronavirus-statistics.p.rapidapi.com",
+        "X-RapidAPI-Key": "b72bf7a6a9mshc58f9ea15845135p17ac66jsne782008c78e3"
+    }
+    req.pipe(request({ url: url, headers: head })).pipe(res);
+});
+
 /*
 var paths2 = "/games";
 var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";

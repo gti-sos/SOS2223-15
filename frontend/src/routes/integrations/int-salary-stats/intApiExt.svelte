@@ -16,14 +16,19 @@
         getData();
     });
 
-    //let API = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
+    //let API_EXT = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
     //let API = "http://localhost:12345/api/v2/salary-stats"; 
 
-    let API = "/api/v2/salary-stats";
-        
+    //let API = "/api/v2/salary-stats";
+    //let API_EXT = "/api/v2/covid-19";
+    /*
     if(dev)
         API = 'http://localhost:12345'+API
-
+        API_EXT = "http://localhost:12345"+API_EXT;
+    */
+    
+    let API = "https://sos2223-15.appspot.com/api/v2/salary-stats";
+    let API_EXT = "https://sos2223-15.appspot.com/covid-19"; 
 
     let stats = [];
     let province_gender_year =[];
@@ -43,22 +48,23 @@
 	    headers: {
 		    'X-RapidAPI-Host': 'covid-19-coronavirus-statistics.p.rapidapi.com',
 		    'X-RapidAPI-Key': 'b72bf7a6a9mshc58f9ea15845135p17ac66jsne782008c78e3'
-	    }
+	    },
     };
 
     //https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=Spain
     async function getData() {
         console.log("Fetching salary-stats....");
         const res = await fetch(API);
-        console.log("Fetching virus stats....");
-        const res2 = await fetch('https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=Spain', options);
+        console.log("Fetching covid-19 stats....");
+        const res2 = await fetch(`${API_EXT}`, options);
         if (res.ok) {
+            console.log(`res.ok bien. res: ${res}`);
             const data = await res.json();
+            console.log(`Mostrando data: ${data} y data.response ${data.response}`);
             stats = data;
-                console.log("Entradas recibidas: " + stats.length);
+                console.log("Entradas recibidas de mi API: " + stats.length);
                 //con la siguiente funcion ordeno los datos por años de menor a mayor
                 stats.sort((a,b) => a.year-b.year); // Ordena los datos por año (Resta el año a al b, y si es menor, lo pone antes que el mayor) de menor a mayor.
-                console.log("Ordenadas correctamente");
                 stats.forEach((stat) => {
                     province_gender_year.push(stat.province+"-"+stat.gender+"-"+stat.year);
                     salaried.push(stat.salaried);
@@ -72,11 +78,12 @@
         }
         // api externa
         if (res2.ok) {
+            console.log(`res2.ok bien de integración 1. res2: ${res2}`);
             const data2 = await res2.json();
+            console.log(`Mostrando data 2 : ${data2} y data2.response ${data2.response}`);
             stats2 = data2.data.covid19Stats;
-            console.log(stats2);            
-                console.log("Entradas recibidas: " + stats2.length);                
-
+            console.log(stats2);
+                console.log("Entradas recibidas de la API_EXT 1: " + stats2.length);             
                 stats2.forEach((stat) => {
                     province_gender_year.push(stat.province);
                     salaried.push("-");
@@ -87,7 +94,7 @@
                 });
             province_gender_year.pop();
         } else {
-            console.log("Error, can`t charge data");
+            console.log("Error, can`t charge data from API EXT 1");
         }
         loadGraph();
     }
