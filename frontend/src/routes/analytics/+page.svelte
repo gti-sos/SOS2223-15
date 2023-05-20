@@ -243,6 +243,7 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2"></script>
+    <title>SOS2223-15</title>
 </svelte:head>
 
 <main>
