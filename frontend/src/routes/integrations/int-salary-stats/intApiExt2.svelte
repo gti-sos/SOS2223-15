@@ -23,7 +23,7 @@
     let province_gender_year =[]
     let salaried = ["Asalariados"];
     let average_salary = [];
-    let standard_deviation = []; 
+    let standard_deviation = [];
 
 
     let precio = ["precio"];
@@ -62,6 +62,7 @@
                     precio.push("-");
                     titulo.push("-");
                     usuarios.push("-");
+                    fecha_finalización.push("-");
                 });
         } else {
             console.log("Error, can`t charge data");
@@ -80,7 +81,7 @@
                     }else{
                         precio.push(stat.worth.split("$",2)[1]);
                     }
-                        usuarios.push(stat.users); 
+                    usuarios.push(stat.users);
                        
             });
         } else {
@@ -94,7 +95,7 @@
     async function loadGraph() {
         var chart = c3.generate({
             title: {
-                text: 'Estadísticas de asalariados y precios de videojuegos de ps4',
+                text: 'Estadísticas de asalariados y usuarios que aprovecharon ofertas de videojuegos de ps4',
             },
             data: {
                 columns: [
