@@ -70,16 +70,6 @@ app.use(paths2, function(req, res) {
     req.pipe(request(url)).pipe(res);
 });
 */
-/*
-app.use(`${BASE_API_GAMES}`, function(req, res){
-    var url = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
-    var head = {
-        'X-RapidAPI-Host': 'gamerpower.p.rapidapi.com',
-        'X-RapidAPI-Key': 'eca9d9dcb9mshdd4d65d4646bc18p192490jsn55ba9c868f8c'
-    }
-    req.pipe(request({ url: url, headers: head })).pipe(res);
-});
-*/
 //////// PROXY ANGEL ////////
 
 //////// PROXY MARIO ////////
