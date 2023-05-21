@@ -39,7 +39,7 @@
 
     async function getData() {
         const res = await fetch(API);
-        const res2 = await fetch(`${API2}`, options); //'https://free-nba.p.rapidapi.com/players?page=0&per_page=25'
+        const res2 = await fetch(`${API_EXT}`, options); //'https://free-nba.p.rapidapi.com/players?page=0&per_page=25'
         if (res.ok) {
             const data = await res.json();
             stats = data;
