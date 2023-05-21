@@ -62,7 +62,6 @@
                     precio.push("-");
                     titulo.push("-");
                     usuarios.push("-");
-                    fecha_finalización.push("-");
                 });
         } else {
             console.log("Error, can`t charge data");
