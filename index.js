@@ -84,12 +84,16 @@ app.use(`${BASE_API_GAMES}`, function(req, res){
 
 //////// PROXY MARIO ////////
 
-// var paths3 = "/nba";
-// var apiServerHost = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
-// app.use(paths3, function(req, res) {
-//     var url = apiServerHost + req.url;
-//     req.pipe(request(url)).pipe(res);
-// });
+var paths3 = "/nba";
+var apiServerHost3 = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
+app.use(paths3, function(req, res) {
+    var url = apiServerHost3;
+    var head = {
+        "X-RapidAPI-Host": "free-nba.p.rapidapi.com",
+        "X-RapidAPI-Key": "c39120aa81msh087d47ca1543c02p1d12abjsnfb5f66461395"
+    }
+    req.pipe(request({ url: url, headers: head })).pipe(res);
+});
 
 //////// PROXY MARIO ////////
 

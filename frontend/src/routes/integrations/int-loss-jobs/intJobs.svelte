@@ -14,8 +14,8 @@
         getData();
     });
 
-    //let API = "https://sos2223-15.ew.r.appspot.com/api/v2/loss-jobs";
-    let API = "http://localhost:12345/api/v2/loss-jobs";
+    let API = "https://sos2223-15.appspot.com/api/v2/loss-jobs";
+    let API_EXT = "https://sos2223-15.appspot.com/nba";
 
 
     let stats = [];
@@ -28,12 +28,6 @@
     let id = ["id"];
     let stats2 = [];
     let first_name=[];
-    let API2 = "/api/v2/nba";
-
-    // if(dev)
-    //     API2 = 'http://localhost:12345'+API2;
-
-
 
     const options = {
 	    method: 'GET',
@@ -45,7 +39,7 @@
 
     async function getData() {
         const res = await fetch(API);
-        const res2 = await fetch('https://free-nba.p.rapidapi.com/players?page=0&per_page=25', options);
+        const res2 = await fetch(`${API2}`, options); //'https://free-nba.p.rapidapi.com/players?page=0&per_page=25'
         if (res.ok) {
             const data = await res.json();
             stats = data;
