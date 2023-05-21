@@ -2,7 +2,7 @@
 import Datastore from 'nedb'
 var db = new Datastore;
 
-const rutaCOVD = "/api/v2/covd";
+const rutaCovid19 = "/api/v2/covid-19";
 
 const BASE_API_URL = "/api/v2";
 const rutaAMR = BASE_API_URL + '/salary-stats';
@@ -11,16 +11,22 @@ const API_DOC_PORTAL_2 = "https://documenter.getpostman.com/view/26059557/2s93Xs
 
 function loadBackend_angel_2 (app) {
 
+
     
-    app.use(`${rutaCOVD}`, function(req, res) {
-        var apiExterna = "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats";
+    
+    /*
+    app.use(rutaCovid19, function(req, res) {
+        //var apiExterna = "https://sos2223-15.appspot.com/api/v2/covid-19";
+        //var apiExterna = "https://localhost:12345/api/v2/covid-19";
+        var apiExterna = "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats?country=Spain";
+        console.log('piped:' + req.url);
         var requestHeaders = {
-            "X-RapidAPI-Key": "b72bf7a6a9mshc58f9ea15845135p17ac66jsne782008c78e3",
-            "X-RapidAPI-Host": "covid-19-coronavirus-statistics.p.rapidapi.com"
+            "X-RapidAPI-Host": "covid-19-coronavirus-statistics.p.rapidapi.com",
+            "X-RapidAPI-Key": "b72bf7a6a9mshc58f9ea15845135p17ac66jsne782008c78e3"
           };
         req.pipe(request({ url: apiExterna, headers: requestHeaders })).pipe(res);
      });
-     
+     */
      
     var salario_medio = [
         {

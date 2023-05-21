@@ -7,7 +7,7 @@
     <h2>Videos Explicativos</h2>
     <ul>
         <ul>
-            <li><a href="https://drive.google.com/file/d/1HtPHvUtvIbG6NcK7wD2wNBS4_8nHLXAQ/view?usp=share_link">Vídeo Estadísticas de asalariados</a></li>
+            <li><a href="https://drive.google.com/file/d/1NoSN7f5sMV_a66n-tyjqPLHxSxNosf4T/view?usp=sharing">Vídeo Estadísticas de asalariados</a></li>
         </ul>
     </ul>
     <ul>
