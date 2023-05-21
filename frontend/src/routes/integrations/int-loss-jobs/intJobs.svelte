@@ -15,6 +15,7 @@
     });
 
     let API = "https://sos2223-15.appspot.com/api/v2/loss-jobs";
+    //let API = "https://localhost:12345/api/v2/loss-jobs";
     let API_EXT = "https://sos2223-15.appspot.com/nba";
 
 
