@@ -13,7 +13,8 @@
         getData();
     });
 
-    let API = "http://localhost:12345/api/v2/loss-jobs";
+    //let API = "http://localhost:12345/api/v2/loss-jobs";
+    let API = "https://sos2223-15.appspot.com/api/v2/loss-jobs";
 
 
     let stats = [];

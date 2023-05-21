@@ -3,21 +3,9 @@ var db = new Datastore;
 //const BASE_API_URL = "/api/v2";
 //const rutaMMS = BASE_API_URL + '/loss-jobs';
 const API_DOC_PORTAL = 'https://documenter.getpostman.com/view/26052697/2s93XzwMYW';
-const API = "api/v2/nba";
 
 //DATA MARIO
 function loadBackend_mario_2(app) {
-      //////// PROXY //////
-
-    //   app.use(`${API}`, function(req, res){
-    //     var url = "https://free-nba.p.rapidapi.com/players?page=0&per_page=25";
-    //     var head = {
-    //         "X-RapidAPI-Host": "free-nba.p.rapidapi.com",
-    //         "X-RapidAPI-Key": "c39120aa81msh087d47ca1543c02p1d12abjsnfb5f66461395"
-    //     };
-    //     req.pipe(request({ url: url, headers: head })).pipe(res);
-    // });
-      ////// PROXY ///////
   var población_media = [
     { province: "Almeria", year: 2021, gender: "Ambos sexos", low_due_to_placement: 110379, no_renovation: 60831, other_reason: 22827 },
     { province: "Cadiz", year: 2022, gender: "Ambos sexos", low_due_to_placement: 246181, no_renovation: 124697, other_reason: 26756 },
