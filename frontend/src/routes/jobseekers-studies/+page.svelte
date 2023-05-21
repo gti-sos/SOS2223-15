@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>SOS2223-12 Datos-Demandantes-Empleo</title>
+    <title>SOS2223-15 Datos-Demandantes-Empleo</title>
 </svelte:head>
 <script>
     // @ts-nocheck
