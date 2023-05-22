@@ -65,51 +65,9 @@
             if (average_salary_behind != "") parametros.push(`average_salary_behind=${average_salary_behind}`);
             if (standard_deviation_over != "") parametros.push(`standard_deviation_over=${standard_deviation_over}`);
         }
+
         ruta = `${ruta}&${parametros.join('&')}`;
-        /*
-        if (to !=""){ //  Búsqueda por From y To (búsqueda por rango de año).
-            if(from == ""){
-                from = 0;
-            }
-            ruta = ruta + `&from=${from}&to=${to}`
-            if ( province != ""){ //Búsqueda por provincia (query)
-                ruta = ruta + `&province=${province}`;
-            } else if ( gender != "" ){ //Búsqueda por género.
-                ruta = ruta + `&gender=${gender}`;
-            } else if (salaried_behind != ""){
-                ruta = ruta + `&salaried_behind=${salaried_behind}`;
-            } else if (average_salary_behind != ""){
-                ruta = ruta + `&average_salary_behind=${average_salary_behind}`;
-            } else if ( standard_deviation_over != "") {
-                ruta = ruta + `&standard_deviation_over=${standard_deviation_over}`;
-            }
-        } else if ( province != ""  ){ //Búsqueda por provincia (query)
-            ruta = ruta + `&province=${province}`;
-            if(gender != "" && year != ""){ // Búsqueda por provincia, género y año.
-                ruta = ruta + `&gender=${gender}&year=${year}`
-            } else if(gender != ""){ //Búsqueda por provincia y género.
-                ruta = ruta + `&gender=${gender}`;
-            } else if ( salaried_behind != ""){
-                ruta = ruta + `&salaried_behind=${salaried_behind}`;
-            } else if ( average_salary_behind != ""){
-                ruta = ruta + `&average_salary_behind=${average_salary_behind}`;
-            } else if ( standard_deviation_over !="") {
-                ruta = ruta + `&standard_deviation_over=${standard_deviation_over}`;
-            }
-        } else if ( gender != "" ) { // Búsqueda por género.
-            ruta = ruta + `&gender=${gender}`;
-        } else if ( year != "" ) { // Búsqueda por año.
-            ruta = ruta + `&year=${year}`;
-        } else if ( salaried_behind != "" ) { // Búsqueda por número de asalariados.
-            ruta = ruta + `&salaried_behind=${salaried_behind}`;
-        } else if ( average_salary_behind != "" ) { // Búsqueda por salario medio.
-            ruta = ruta + `&average_salary_behind=${average_salary_behind}`;
-        } else if ( standard_deviation_over != "" ) { // Búsqueda por desviación típica.
-            ruta = ruta + `&standard_deviation_over=${standard_deviation_over}`;
-        }
-        console.log(`Introduced a date range. from = ${from} and to = ${to}. Ruta ${ruta}`);
-        */
-       console.log(` la url es ${API}${ruta}`);
+        console.log(` la url es ${API}${ruta}`);
        
         const res = await fetch(API + ruta, {
             // fetch (url)
@@ -142,47 +100,7 @@
         }
         console.log(` Número de datos devueltos: ${salary_stats.length}`);
     }
-    //GET A TODOS LOS DATOS PARA OBTENER EL NÚMERO TOTAL DE RECURSOS.
-    /*
-    async function getSalaryStatsPaginacion() {
-        resultStatus2 = result2 = "";
-        const res2 = await fetch(API , {
-            // fetch (url)
-            method: "GET",
-        });
-        try {
-            const data2 = await res2.json();
-            result2 = JSON.stringify(data2, null, 2);
-            salary_stats2 = data2;
-        } catch (error) {
-            console.log(`Error parsing result: ${error}`);
-        }
-        const status = await res2.status;
-        resultStatus2 = status;
-        if (status == 200) {
-            message = `Obtenidos todos los recursos correctamente.`;
-            console.log(`GET correctly done.`);
-        } else if (status == 404) {
-            message = `No hay recursos en la base de datos.`;
-            console.log(`There is no data to show with GET method.`);
-        }
-    }
-    */
-    //PAGINACIÓN
-/*
-    async function irAPagina() {
-        getSalaryStatsPaginacion()
-        paginas_totales = salary_stats2.length % 10;
-        if (pagina * 10 > paginas_totales) { // Si nos pasamos de página, se pondrá la última que haya automáticamente.
-            offset = paginas_totales*10;
-            console.log(`Offset demasiado grande. ${salary_stats2.length}`);
-            getSalaryStats();
-        } else {
-            offset = offset * 10;
-            getSalaryStats();
-        }
-    }
-    */
+
     async function getPgSig() {
         if (offset * 10 < salary_stats.length && salary_stats.length>(limit-1)) {
             //console.log(`salary_stats.length ${salary_stats.length}`);
@@ -231,38 +149,7 @@
             );
         }
     }
-    /*
-    async function updateSalary(province,gender,year) {
-        resultStatus = result = "";
-        const res = await fetch(API + "/" + province + "/" + gender + "/" + year, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                province: province,
-                gender: gender,
-                year: parseInt(year),
-                salaried: parseInt(newSalaried),
-                average_salary: parseInt(newAverage_salary),
-                standard_deviation: parseInt(newStandard_deviation)
-            })
-        });
-        const status = await res.status;
-        resultStatus = status;
-        if(status==200){
-            getSalaryStats();
-            message = `Se ha actualizado el recurso correctamente.`;
-            console.log("Resource updated correctly.");
-        }
-        else if(status ==400){
-        }
-        else if(status==500){
-            message = `Error en el cliente.`;
-            console.log("ERROR. Client error.");
-        }
-    }
-    */
+
     async function deleteResource(province, gender, year) {
         resultStatus = result = "";
         const res = await fetch(
@@ -320,7 +207,6 @@
             <th>Salario medio</th>
             <th>Desviación típica</th>
             <th>Acción</th>
-          <!-- <td><Button on:click={irAPagina}>Página:</Button><input bind:value={pagina}/></td>--> 
 
             <td>&nbsp</td>
         </tr>
@@ -334,8 +220,6 @@
             <td><input bind:value={newAverage_salary} /></td>
             <td><input bind:value={newStandard_deviation} /></td>
             <td><Button color="warning" on:click={createSalary}>Crear</Button></td>
-
-            <!--    <td><Button on:click={updateSalary(newProvince,newGender,newYear)}>Editar</Button></td> -->
         </tr>
  
         {#if salary_stats.length<1}

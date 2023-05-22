@@ -62,14 +62,6 @@ app.use(paths2, function(req, res) {
     req.pipe(request(url)).pipe(res);
 });
 */
-
-/*var paths = "/games";
-var apiServerHost = "https://gamerpower.p.rapidapi.com/api/giveaways?platform=ps4";
-app.use(paths2, function(req, res) {
-    var url = apiServerHost + req.url;
-    req.pipe(request(url)).pipe(res);
-});
-*/
 //////// PROXY ANGEL ////////
 
 //////// PROXY MARIO ////////

@@ -541,7 +541,7 @@ function loadBackend_angel (app) {
         });
     });
 
-    //DELETE PARA UN RECURSO ESPECÍFICO.
+    //DELETE PARA UN RECURSO ESPECÍFICO POR PARÁMETROS.
     app.delete(BASE_API_URL + '/salary-stats/:province/:gender/:year', (req, res) => {
         const province = req.params.province;
         const gender = req.params.gender;
@@ -595,7 +595,8 @@ function loadBackend_angel (app) {
 
     };
 
-    function comprobar_tipos(province, gender, year, salaried, average_salary, standard_deviation) { //Esta función es para comprobar que los datos introducidos en el POST son correctos.
+    //Esta función es para comprobar que los datos introducidos en el POST son correctos.
+    function comprobar_tipos(province, gender, year, salaried, average_salary, standard_deviation) {
         return ( typeof province !== "string" ||
             typeof gender !== "string" ||
             typeof year !== "number" ||
